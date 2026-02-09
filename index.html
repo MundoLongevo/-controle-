@@ -3,707 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 Meu Dinheiro</title>
+    <title>💰 Zero Gastos</title>
     
-    <!-- Configurações para ícone bonito na tela inicial -->
-    <meta name="theme-color" content="#FF6B35">
+    <!-- Configurações PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF3B30">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Meu Dinheiro">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Zero Gastos">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
     
-    <style>
-        /* CORES VIVAS E ALEGRES */
-        :root {
-            --verde: #2ecc71;
-            --vermelho: #e74c3c;
-            --azul: #3498db;
-            --roxo: #9b59b6;
-            --laranja: #e67e22;
-            --amarelo: #f1c40f;
-            --cinza: #ecf0f1;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px 15px 100px;
-        }
-        
-        /* CABEÇALHO GRANDE E COLORIDO */
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            padding: 25px 20px;
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .saldo {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--verde);
-            margin: 10px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .mes {
-            font-size: 1.5rem;
-            color: #7f8c8d;
-            margin-bottom: 15px;
-        }
-        
-        /* BOTÕES GRANDES E COLORIDOS */
-        .menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .botao {
-            background: white;
-            padding: 25px 15px;
-            border-radius: 20px;
-            text-align: center;
-            text-decoration: none;
-            color: #333;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            font-size: 1.1rem;
-        }
-        
-        .botao:hover, .botao:active {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        .botao i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .botao-gastar {
-            background: var(--vermelho);
-            color: white;
-        }
-        
-        .botao-cartoes {
-            background: var(--roxo);
-            color: white;
-        }
-        
-        .botao-fixas {
-            background: var(--azul);
-            color: white;
-        }
-        
-        .botao-calendario {
-            background: var(--verde);
-            color: white;
-        }
-        
-        .botao-limites {
-            background: var(--laranja);
-            color: white;
-        }
-        
-        .botao-relatorio {
-            background: var(--amarelo);
-            color: #333;
-        }
-        
-        /* SEÇÃO DE HOJE */
-        .hoje {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .hoje h3 {
-            color: var(--azul);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .gasto-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .gasto-item:last-child {
-            border-bottom: none;
-        }
-        
-        .gasto-valor {
-            font-weight: bold;
-            color: var(--vermelho);
-        }
-        
-        /* FORMULÁRIO SIMPLES */
-        .formulario {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            display: none;
-        }
-        
-        .formulario.ativo {
-            display: block;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-        }
-        
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .btn-salvar {
-            background: var(--verde);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            width: 100%;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        
-        .btn-voltar {
-            background: #95a5a6;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        /* ÍCONES BONITOS */
-        .icon {
-            font-size: 2rem;
-            margin-right: 10px;
-        }
-        
-        /* MENU INFERIOR FIXO */
-        .menu-inferior {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-        
-        .menu-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #7f8c8d;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .menu-item i {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        
-        .menu-item.ativo {
-            color: var(--azul);
-            font-weight: bold;
-        }
-        
-        /* RESPONSIVO */
-        @media (max-width: 600px) {
-            .menu {
-                grid-template-columns: 1fr;
-            }
-            
-            .saldo {
-                font-size: 2.5rem;
-            }
-        }
-        
-        /* ANIMAÇÕES */
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .botao {
-            animation: aparecer 0.3s ease-out;
-        }
-        
-        .botao:nth-child(2) { animation-delay: 0.1s; }
-        .botao:nth-child(3) { animation-delay: 0.2s; }
-        .botao:nth-child(4) { animation-delay: 0.3s; }
-        
-        /* TELA DE CARREGAMENTO */
-        .carregando {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        .carregando i {
-            font-size: 4rem;
-            color: white;
-            margin-bottom: 20px;
-            animation: pulsar 1.5s infinite;
-        }
-        
-        @keyframes pulsar {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
     
-    <!-- Ícone em base64 para evitar arquivos externos -->
-    <link rel="icon" type="image/png" href="data:image/png;base64,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">
-    
-    <!-- Font Awesome para ícones -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- TELA DE CARREGAMENTO -->
+    <!-- Tela de carregamento -->
     <div class="carregando" id="carregando">
-        <i class="fas fa-piggy-bank"></i>
-        <h2 style="color: white;">Meu Dinheiro</h2>
+        <div class="logo-central">
+            <div class="quadrado-preto"></div>
+        </div>
+        <h2 class="titulo-app">Zero Gastos</h2>
+        <p class="subtitulo">Controle total das suas despesas</p>
     </div>
 
-    <!-- TELA PRINCIPAL -->
+    <!-- Tela principal -->
     <div class="container" id="telaPrincipal" style="display: none;">
-        <div class="header">
-            <h1 style="color: var(--roxo);">
-                <i class="fas fa-wallet"></i> Meu Dinheiro
-            </h1>
-            <p class="mes">Fevereiro 2026</p>
-            <div class="saldo" id="saldoTotal">R$ 13.470</div>
-            <p>Disponível após despesas fixas</p>
+        <!-- Cabeçalho -->
+        <header class="header">
+            <div class="logo-cabecalho">
+                <div class="quadrado-preto pequeno"></div>
+                <h1>Zero Gastos</h1>
+            </div>
+            <div class="contador-dias">
+                <span id="diasSemGastar">0</span>
+                <small>dias sem gastar</small>
+            </div>
+        </header>
+
+        <!-- Meta do dia -->
+        <div class="meta-dia">
+            <h3><i class="fas fa-bullseye"></i> Meta de Hoje</h3>
+            <div class="progresso-container">
+                <div class="progresso-bar" id="progressoMeta">
+                    <span id="textoProgresso">100% - Meta alcançada!</span>
+                </div>
+            </div>
+            <p class="saldo-hoje" id="saldoHoje">R$ 0,00 gastos hoje</p>
         </div>
 
-        <!-- MENU DE BOTÕES COLORIDOS -->
-        <div class="menu">
-            <button class="botao botao-gastar" onclick="mostrarTela('gastar')">
-                <i class="fas fa-plus-circle"></i>
+        <!-- Medalhas -->
+        <div class="medalhas">
+            <h3><i class="fas fa-medal"></i> Medalhas</h3>
+            <div class="medalhas-container">
+                <div class="medalha" id="medalha1">
+                    <i class="fas fa-medal"></i>
+                    <span>1 dia</span>
+                </div>
+                <div class="medalha" id="medalha3">
+                    <i class="fas fa-medal"></i>
+                    <span>3 dias</span>
+                </div>
+                <div class="medalha" id="medalha7">
+                    <i class="fas fa-medal"></i>
+                    <span>7 dias</span>
+                </div>
+                <div class="medalha" id="medalha30">
+                    <i class="fas fa-medal"></i>
+                    <span>30 dias</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão principal de registro -->
+        <div class="botao-principal-container">
+            <button class="botao-principal" onclick="mostrarRegistro()">
+                <i class="fas fa-plus"></i>
                 Registrar Gasto
             </button>
-            
-            <button class="botao botao-cartoes" onclick="mostrarTela('cartoes')">
-                <i class="fas fa-credit-card"></i>
-                Cartões
-            </button>
-            
-            <button class="botao botao-fixas" onclick="mostrarTela('fixas')">
-                <i class="fas fa-list-alt"></i>
-                Despesas Fixas
-            </button>
-            
-            <button class="botao botao-calendario" onclick="mostrarTela('calendario')">
-                <i class="fas fa-calendar-alt"></i>
-                Calendário
-            </button>
-            
-            <button class="botao botao-limites" onclick="mostrarTela('limites')">
-                <i class="fas fa-chart-pie"></i>
-                Limites
-            </button>
-            
-            <button class="botao botao-relatorio" onclick="mostrarTela('relatorio')">
-                <i class="fas fa-file-pdf"></i>
-                Relatório
-            </button>
         </div>
 
-        <!-- GASTOS DE HOJE -->
-        <div class="hoje">
-            <h3><i class="fas fa-sun"></i> Gastos de Hoje</h3>
-            <div id="gastosHoje">
-                <div class="gasto-item">
-                    <span><i class="fas fa-hamburger" style="color: var(--vermelho);"></i> iFood</span>
-                    <span class="gasto-valor">R$ 78,50</span>
-                </div>
-                <div class="gasto-item">
-                    <span><i class="fas fa-car" style="color: var(--azul);"></i> Uber</span>
-                    <span class="gasto-valor">R$ 32,90</span>
-                </div>
-                <div class="gasto-item">
-                    <span><i class="fas fa-shopping-cart" style="color: var(--verde);"></i> Supermercado</span>
-                    <span class="gasto-valor">R$ 245,00</span>
-                </div>
+        <!-- Gastos de hoje -->
+        <div class="gastos-hoje">
+            <h3><i class="fas fa-list"></i> Gastos de Hoje</h3>
+            <div class="lista-gastos" id="listaGastos">
+                <!-- Gastos serão carregados aqui -->
             </div>
         </div>
 
-        <!-- RESUMO DOS LIMITES -->
-        <div style="background: white; padding: 20px; border-radius: 20px; margin-bottom: 25px;">
-            <h3 style="color: var(--laranja);">
-                <i class="fas fa-bullseye"></i> Limites do Mês
-            </h3>
-            <div style="margin: 15px 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span><i class="fas fa-utensils"></i> iFood</span>
-                    <span>R$ 200 / R$ 800</span>
-                </div>
-                <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
-                    <div style="width: 25%; height: 100%; background: var(--vermelho);"></div>
-                </div>
-            </div>
-            <div style="margin: 15px 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span><i class="fas fa-car"></i> Uber</span>
-                    <span>R$ 240 / R$ 600</span>
-                </div>
-                <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
-                    <div style="width: 40%; height: 100%; background: var(--azul);"></div>
-                </div>
+        <!-- Calendário resumido -->
+        <div class="calendario-resumo">
+            <h3><i class="fas fa-calendar"></i> Calendário</h3>
+            <div class="dias-mes" id="calendarioDias">
+                <!-- Dias do mês serão carregados aqui -->
             </div>
         </div>
     </div>
 
-    <!-- TELA REGISTRAR GASTO -->
-    <div class="formulario" id="telaGastar">
-        <h2 style="color: var(--vermelho); margin-bottom: 20px;">
-            <i class="fas fa-plus-circle"></i> Novo Gasto
-        </h2>
-        
-        <div class="input-group">
-            <label><i class="fas fa-tag"></i> Categoria</label>
-            <select id="categoria">
-                <option value="ifood">🍔 iFood / Delivery</option>
-                <option value="uber">🚗 Uber / Transporte</option>
-                <option value="supermercado">🛒 Supermercado</option>
-                <option value="lazer">🎬 Lazer</option>
-                <option value="outros">📦 Outros</option>
-            </select>
+    <!-- Tela de registro de gasto -->
+    <div class="tela-formulario" id="telaRegistro" style="display: none;">
+        <div class="formulario-cabecalho">
+            <button class="btn-voltar" onclick="voltarPrincipal()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Registrar Gasto</h2>
         </div>
-        
-        <div class="input-group">
-            <label><i class="fas fa-align-left"></i> Descrição</label>
-            <input type="text" id="descricao" placeholder="O que você comprou?">
-        </div>
-        
-        <div class="input-group">
-            <label><i class="fas fa-money-bill-wave"></i> Valor (R$)</label>
-            <input type="number" id="valor" placeholder="0,00">
-        </div>
-        
-        <div class="input-group">
-            <label><i class="fas fa-credit-card"></i> Como pagou?</label>
-            <select id="pagamento">
-                <option value="nubank">💜 Nubank</option>
-                <option value="cef">🏦 Caixa</option>
-                <option value="porto">🛡️ Porto</option>
-                <option value="mercado">🛒 Mercado Pago</option>
-                <option value="dinheiro">💵 Dinheiro</option>
-            </select>
-        </div>
-        
-        <button class="btn-salvar" onclick="salvarGasto()">
-            <i class="fas fa-save"></i> Salvar Gasto
-        </button>
-        
-        <button class="btn-voltar" onclick="voltarPrincipal()">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </button>
+
+        <form id="formRegistro" onsubmit="registrarGasto(event)">
+            <!-- Categoria -->
+            <div class="input-group">
+                <label><i class="fas fa-tag"></i> Categoria</label>
+                <div class="categorias-grid">
+                    <button type="button" class="categoria-btn" data-categoria="padaria" onclick="selecionarCategoria('padaria')">
+                        <i class="fas fa-bread-slice"></i> Padaria
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="compras" onclick="selecionarCategoria('compras')">
+                        <i class="fas fa-shopping-bag"></i> Compras
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="gasolina" onclick="selecionarCategoria('gasolina')">
+                        <i class="fas fa-gas-pump"></i> Gasolina
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="farmacia" onclick="selecionarCategoria('farmacia')">
+                        <i class="fas fa-pills"></i> Farmácia
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="bares" onclick="selecionarCategoria('bares')">
+                        <i class="fas fa-beer"></i> Bares
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="ifood" onclick="selecionarCategoria('ifood')">
+                        <i class="fas fa-hamburger"></i> iFood
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="uber" onclick="selecionarCategoria('uber')">
+                        <i class="fas fa-taxi"></i> Uber
+                    </button>
+                    <button type="button" class="categoria-btn" data-categoria="outros" onclick="selecionarCategoria('outros')">
+                        <i class="fas fa-ellipsis-h"></i> Outros
+                    </button>
+                </div>
+                <input type="hidden" id="categoriaSelecionada" required>
+            </div>
+
+            <!-- Valor -->
+            <div class="input-group">
+                <label><i class="fas fa-money-bill-wave"></i> Valor (R$)</label>
+                <input type="number" id="valorGasto" step="0.01" min="0" placeholder="0,00" required>
+            </div>
+
+            <!-- Descrição -->
+            <div class="input-group">
+                <label><i class="fas fa-align-left"></i> Descrição</label>
+                <input type="text" id="descricaoGasto" placeholder="O que você comprou?" required>
+            </div>
+
+            <!-- Forma de pagamento -->
+            <div class="input-group">
+                <label><i class="fas fa-credit-card"></i> Forma de Pagamento</label>
+                <div class="pagamento-opcoes">
+                    <label class="pagamento-option">
+                        <input type="radio" name="pagamento" value="dinheiro" required>
+                        <i class="fas fa-money-bill"></i> Dinheiro
+                    </label>
+                    <label class="pagamento-option">
+                        <input type="radio" name="pagamento" value="pix">
+                        <i class="fas fa-qrcode"></i> Pix
+                    </label>
+                    <label class="pagamento-option">
+                        <input type="radio" name="pagamento" value="cartao">
+                        <i class="fas fa-credit-card"></i> Cartão
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-registrar">
+                <i class="fas fa-save"></i> Registrar Gasto
+            </button>
+        </form>
     </div>
 
-    <!-- TELA CARTÕES -->
-    <div class="formulario" id="telaCartoes">
-        <h2 style="color: var(--roxo); margin-bottom: 20px;">
-            <i class="fas fa-credit-card"></i> Meus Cartões
-        </h2>
-        
-        <div style="background: var(--roxo); color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-            <h3 style="color: white;">💜 Nubank</h3>
-            <p>Parcela: <strong>R$ 1.250,00</strong></p>
-            <p>Saldo: <strong>R$ 8.500,00</strong></p>
+    <!-- Tela de relatório -->
+    <div class="tela-formulario" id="telaRelatorio" style="display: none;">
+        <div class="formulario-cabecalho">
+            <button class="btn-voltar" onclick="voltarPrincipal()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2>Relatório Diário</h2>
         </div>
-        
-        <div style="background: #0060a9; color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-            <h3 style="color: white;">🏦 Caixa</h3>
-            <p>Parcela: <strong>R$ 900,00</strong></p>
-            <p>Saldo: <strong>R$ 6.500,00</strong></p>
+
+        <div class="relatorio-container">
+            <div class="data-seletor">
+                <button onclick="mudarDataRelatorio(-1)"><i class="fas fa-chevron-left"></i></button>
+                <h3 id="dataRelatorio">Hoje</h3>
+                <button onclick="mudarDataRelatorio(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <div class="resumo-relatorio">
+                <div class="resumo-item">
+                    <span>Total Gasto:</span>
+                    <span id="totalRelatorio">R$ 0,00</span>
+                </div>
+                <div class="resumo-item">
+                    <span>Categoria Mais Gasta:</span>
+                    <span id="categoriaRelatorio">-</span>
+                </div>
+                <div class="resumo-item">
+                    <span>Forma de Pagamento:</span>
+                    <span id="pagamentoRelatorio">-</span>
+                </div>
+            </div>
+
+            <div class="gastos-relatorio" id="listaRelatorio">
+                <!-- Gastos do relatório serão carregados aqui -->
+            </div>
+
+            <button class="btn-compartilhar" onclick="compartilharRelatorio()">
+                <i class="fas fa-share-alt"></i> Compartilhar Relatório
+            </button>
         </div>
-        
-        <div style="background: #0033a0; color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-            <h3 style="color: white;">🛡️ Porto</h3>
-            <p>Parcela: <strong>R$ 600,00</strong></p>
-            <p>Saldo: <strong>R$ 3.200,00</strong></p>
-        </div>
-        
-        <button class="btn-voltar" onclick="voltarPrincipal()">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </button>
     </div>
 
-    <!-- TELA DESPESAS FIXAS -->
-    <div class="formulario" id="telaFixas">
-        <h2 style="color: var(--azul); margin-bottom: 20px;">
-            <i class="fas fa-list-alt"></i> Despesas Fixas
-        </h2>
-        
-        <div style="background: var(--cinza); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-            <p>Mamãe: <strong>R$ 2.800,00</strong></p>
-            <p>Aluguel: <strong>R$ 3.100,00</strong></p>
-            <p>Faculdade: <strong>R$ 2.200,00</strong></p>
-            <p>Consórcio: <strong>R$ 1.900,00</strong></p>
-            <p>CASSI: <strong>R$ 1.500,00</strong></p>
-            <p style="border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px;">
-                <strong>TOTAL: R$ 14.530,00</strong>
-            </p>
-        </div>
-        
-        <button class="btn-voltar" onclick="voltarPrincipal()">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </button>
-    </div>
-
-    <!-- MENU INFERIOR FIXO -->
-    <div class="menu-inferior">
-        <a href="#" class="menu-item ativo" onclick="voltarPrincipal()">
+    <!-- Menu inferior -->
+    <nav class="menu-inferior">
+        <button class="menu-item ativo" onclick="mostrarTela('principal')">
             <i class="fas fa-home"></i>
             Início
-        </a>
-        <a href="#" class="menu-item" onclick="mostrarTela('gastar')">
+        </button>
+        <button class="menu-item" onclick="mostrarRegistro()">
             <i class="fas fa-plus-circle"></i>
-            Gastar
-        </a>
-        <a href="#" class="menu-item" onclick="mostrarTela('cartoes')">
-            <i class="fas fa-credit-card"></i>
-            Cartões
-        </a>
-        <a href="#" class="menu-item" onclick="mostrarTela('relatorio')">
-            <i class="fas fa-chart-bar"></i>
+            Registrar
+        </button>
+        <button class="menu-item" onclick="mostrarRelatorio()">
+            <i class="fas fa-chart-pie"></i>
             Relatório
-        </a>
-    </div>
+        </button>
+        <button class="menu-item" onclick="mostrarCalendario()">
+            <i class="fas fa-calendar-alt"></i>
+            Calendário
+        </button>
+    </nav>
 
+    <!-- Scripts -->
+    <script src="app.js"></script>
     <script>
-        // Dados do aplicativo
-        const dados = {
-            saldo: 13470,
-            gastosHoje: [
-                { categoria: "ifood", descricao: "Almoço", valor: 78.50 },
-                { categoria: "uber", descricao: "Uber trabalho", valor: 32.90 },
-                { categoria: "supermercado", descricao: "Mercado", valor: 245.00 }
-            ],
-            cartoes: [
-                { nome: "Nubank", parcela: 1250, saldo: 8500 },
-                { nome: "Caixa", parcela: 900, saldo: 6500 },
-                { nome: "Porto", parcela: 600, saldo: 3200 }
-            ],
-            limites: {
-                ifood: { gasto: 200, limite: 800 },
-                uber: { gasto: 240, limite: 600 }
-            }
-        };
-
-        // Funções para mostrar telas
-        function mostrarTela(tela) {
-            // Esconder todas as telas
-            document.getElementById('telaPrincipal').style.display = 'none';
-            document.getElementById('telaGastar').style.display = 'none';
-            document.getElementById('telaCartoes').style.display = 'none';
-            document.getElementById('telaFixas').style.display = 'none';
-            
-            // Mostrar a tela selecionada
-            if (tela === 'principal') {
-                document.getElementById('telaPrincipal').style.display = 'block';
-            } else {
-                document.getElementById('tela' + tela.charAt(0).toUpperCase() + tela.slice(1)).style.display = 'block';
-            }
-            
-            // Atualizar menu inferior
-            atualizarMenu(tela);
-        }
-
-        function voltarPrincipal() {
-            mostrarTela('principal');
-        }
-
-        function atualizarMenu(telaAtiva) {
-            const itens = document.querySelectorAll('.menu-item');
-            itens.forEach(item => item.classList.remove('ativo'));
-            
-            if (telaAtiva === 'principal') {
-                document.querySelector('.menu-item:nth-child(1)').classList.add('ativo');
-            } else if (telaAtiva === 'gastar') {
-                document.querySelector('.menu-item:nth-child(2)').classList.add('ativo');
-            } else if (telaAtiva === 'cartoes') {
-                document.querySelector('.menu-item:nth-child(3)').classList.add('ativo');
-            }
-        }
-
-        function salvarGasto() {
-            const categoria = document.getElementById('categoria').value;
-            const descricao = document.getElementById('descricao').value;
-            const valor = parseFloat(document.getElementById('valor').value);
-            const pagamento = document.getElementById('pagamento').value;
-            
-            if (!descricao || !valor) {
-                alert('Preencha todos os campos!');
-                return;
-            }
-            
-            // Adicionar à lista de gastos
-            dados.gastosHoje.push({ categoria, descricao, valor });
-            
-            // Atualizar limite se for iFood ou Uber
-            if (categoria === 'ifood') {
-                dados.limites.ifood.gasto += valor;
-            } else if (categoria === 'uber') {
-                dados.limites.uber.gasto += valor;
-            }
-            
-            // Reduzir saldo
-            dados.saldo -= valor;
-            
-            // Atualizar tela
-            atualizarTelaPrincipal();
-            
-            // Voltar para tela principal
-            voltarPrincipal();
-            
-            // Limpar formulário
-            document.getElementById('descricao').value = '';
-            document.getElementById('valor').value = '';
-            
-            // Mostrar mensagem
-            alert('Gasto salvo com sucesso! 💰');
-        }
-
-        function atualizarTelaPrincipal() {
-            // Atualizar saldo
-            document.getElementById('saldoTotal').textContent = 'R$ ' + dados.saldo.toFixed(2).replace('.', ',');
-            
-            // Atualizar gastos de hoje
-            const gastosHojeDiv = document.getElementById('gastosHoje');
-            gastosHojeDiv.innerHTML = '';
-            
-            dados.gastosHoje.forEach(gasto => {
-                const iconMap = {
-                    'ifood': 'fa-hamburger',
-                    'uber': 'fa-car',
-                    'supermercado': 'fa-shopping-cart',
-                    'lazer': 'fa-film',
-                    'outros': 'fa-box'
-                };
-                
-                const colorMap = {
-                    'ifood': 'var(--vermelho)',
-                    'uber': 'var(--azul)',
-                    'supermercado': 'var(--verde)',
-                    'lazer': 'var(--roxo)',
-                    'outros': 'var(--laranja)'
-                };
-                
-                const div = document.createElement('div');
-                div.className = 'gasto-item';
-                div.innerHTML = `
-                    <span><i class="fas ${iconMap[gasto.categoria]}" style="color: ${colorMap[gasto.categoria]};"></i> ${gasto.descricao}</span>
-                    <span class="gasto-valor">R$ ${gasto.valor.toFixed(2).replace('.', ',')}</span>
-                `;
-                gastosHojeDiv.appendChild(div);
-            });
-            
-            // Atualizar barras de progresso
-            const ifoodProgresso = (dados.limites.ifood.gasto / dados.limites.ifood.limite) * 100;
-            const uberProgresso = (dados.limites.uber.gasto / dados.limites.uber.limite) * 100;
-            
-            document.querySelector('.hoje + div').innerHTML = `
-                <h3 style="color: var(--laranja);">
-                    <i class="fas fa-bullseye"></i> Limites do Mês
-                </h3>
-                <div style="margin: 15px 0;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span><i class="fas fa-utensils"></i> iFood</span>
-                        <span>R$ ${dados.limites.ifood.gasto.toFixed(2).replace('.', ',')} / R$ ${dados.limites.ifood.limite.toFixed(2).replace('.', ',')}</span>
-                    </div>
-                    <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
-                        <div style="width: ${ifoodProgresso}%; height: 100%; background: var(--vermelho);"></div>
-                    </div>
-                </div>
-                <div style="margin: 15px 0;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span><i class="fas fa-car"></i> Uber</span>
-                        <span>R$ ${dados.limites.uber.gasto.toFixed(2).replace('.', ',')} / R$ ${dados.limites.uber.limite.toFixed(2).replace('.', ',')}</span>
-                    </div>
-                    <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
-                        <div style="width: ${uberProgresso}%; height: 100%; background: var(--azul);"></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Inicializar aplicativo
-        window.onload = function() {
-            // Simular carregamento
-            setTimeout(function() {
-                document.getElementById('carregando').style.display = 'none';
-                document.getElementById('telaPrincipal').style.display = 'block';
-            }, 1500);
-            
-            // Configurar data de hoje
-            const hoje = new Date();
-            const mes = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
-                         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-            document.querySelector('.mes').textContent = mes[hoje.getMonth()] + ' ' + hoje.getFullYear();
-            
-            // Atualizar tela principal
-            atualizarTelaPrincipal();
-        };
-
-        // Configurar para PWA (instalar na tela inicial)
+        // Registrar Service Worker para PWA
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(console.error);
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado com sucesso:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Falha ao registrar Service Worker:', error);
+                    });
+            });
         }
     </script>
 </body>
