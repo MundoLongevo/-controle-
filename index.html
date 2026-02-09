@@ -4,50 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meu Controle de Gastos</title>
-  
-  <!-- Comportamento como app -->
-  <meta name="theme-color" content="#4CAF50" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Controle" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
-  <!-- Ícone para iOS -->
-  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAABTEoJ7AAAD2klEQVR4nO3dMW4bMRBFUUrg+1/ZQZAgcGHHM5L4XlUUKYKvGATB/Pl8Pp8Akv6s/gCAfQQLiAgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJYQESxgIhiARHFAiKKBUQUC4goFhBRLCCiWEBEsYCIYgERxQIiigVEFAuIKBYQUSwgolhARLGAiGIBEcUCIooFRBQLiCgWEFEsIKJ......Peço desculpas pela falha! O código foi truncado e corrompido devido a um erro na geração do ícone em base64. Vamos resolver isso **de forma simples, confiável e funcional**.
-
-Abaixo está o **código completo, 100% funcional**, com um **ícone embutido válido** (testado), todas as funcionalidades solicitadas e **sem corrupção**. Tudo em **um único arquivo HTML**, pronto para salvar e usar no celular.
-
----
-
-### ✅ Funcionalidades incluídas:
-- Registro de gastos em qualquer data (hoje ou retroativo)
-- Categorias personalizadas (gasolina, alimentação, boletos, etc.)
-- Balanço diário
-- Medalha por 2 dias sem gastos
-- Calendário visual
-- Relatório em PDF
-- Dados salvos localmente (`localStorage`)
-- **Ícone verde bonito** ao adicionar à tela inicial (Android e iPhone)
-- Nome curto: **“Controle”**
-- Abre como app (sem barra do navegador)
-
----
-
-### 📄 Código completo e limpo (copie tudo abaixo):
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meu Controle de Gastos</title>
   <meta name="theme-color" content="#4CAF50" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Controle" />
   
-  <!-- Ícone simples e válido para iOS e Android -->
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%234CAF50'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%234CAF50'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
+  <!-- Ícone com SVG inline -->
+  <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%234CAF50'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%234CAF50'/><text x='50' y='65' font-size='60' text-anchor='middle' fill='white'>💰</text></svg>">
 
   <style>
     :root {
@@ -55,7 +18,7 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       --light: #E8F5E9;
       --dark: #2E7D32;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
     body {
       background-color: var(--light);
       color: #333;
@@ -87,7 +50,7 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       margin-bottom: 6px;
       font-weight: bold;
     }
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -106,14 +69,6 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       cursor: pointer;
     }
     button:hover { background: var(--dark); }
-    .history { margin-top: 24px; }
-    .day-entry {
-      background: white;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border-left: 4px solid var(--primary);
-    }
     .medal {
       text-align: center;
       font-size: 1.2rem;
@@ -140,6 +95,115 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
     .cal-day.today {
       border: 2px solid var(--dark);
     }
+
+    /* Tabela de resumo */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .summary-table th,
+    .summary-table td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .summary-table th {
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+    }
+    .summary-table tr:last-child td {
+      border-bottom: none;
+    }
+    .summary-table tr:hover td {
+      background-color: #f9f9f9;
+    }
+
+    /* Backup section */
+    .backup-section {
+      margin-top: 24px;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+    }
+    .backup-section h3 {
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+    #backupData {
+      width: 100%;
+      height: 100px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 8px 0;
+    }
+
+    /* Monthly summary */
+    .monthly-summary {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .month-nav {
+      display: flex;
+      justify-content: space-between;
+      max-width: 200px;
+      margin: 8px auto;
+    }
+    .presente {
+      background: #e3f2fd;
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+      color: #1976d2;
+    }
+
+    /* Pergunta do dia */
+    .pergunta-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      color: white;
+      font-size: 1.4rem;
+      text-align: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .pergunta-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #666;
+    }
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -149,6 +213,11 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
 
   <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
+  <!-- Presente para Mim -->
+  <div class="presente" id="presenteBox">
+    <!-- Preenchido por JS -->
+  </div>
+
   <div class="form-group">
     <label for="date">Data do gasto</label>
     <input type="date" id="date">
@@ -157,22 +226,28 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
   <div class="form-group">
     <label for="category">Categoria</label>
     <select id="category">
-      <option value="gasolina">Gasolina</option>
-      <option value="alimentacao">Alimentação</option>
-      <option value="feira">Feira</option>
-      <option value="uber">Uber/Transporte</option>
-      <option value="bares">Bares/Restaurantes</option>
-      <option value="padaria">Padaria</option>
-      <option value="farmacia">Farmácia</option>
-      <option value="diversos">Diversos</option>
-      <option value="contas">Contas Fixas</option>
-      <option value="aluguel">Aluguel</option>
-      <option value="cartao">Fatura Cartão</option>
-      <option value="energia">Energia</option>
-      <option value="telefone">Telefone/Internet</option>
-      <option value="impostos">Impostos</option>
-      <option value="dizimo">Dízimo/Doação</option>
-      <option value="online">Compras Online</option>
+      <option value="alimentacao">🛒 Alimentação</option>
+      <option value="feira">🧺 Feira</option>
+      <option value="padaria">🥐 Padaria</option>
+      <option value="bares">🍷 Bares/Restaurantes</option>
+      <option value="farmacia">💊 Farmácia</option>
+      <option value="gasolina">⛽ Gasolina</option>
+      <option value="uber">🚕 Uber/Transporte</option>
+      <option value="agua">💧 Água</option>
+      <option value="energia">⚡ Energia</option>
+      <option value="telefone">📱 Telefone/Internet</option>
+      <option value="condominio">🏢 Condomínio</option>
+      <option value="diarista">🧹 Diarista</option>
+      <option value="impostos">🏛️ Impostos</option>
+      <option value="prestacoes">🏠 Prestações (casa/carro)</option>
+      <option value="manutencao">🔧 Manutenção (casa/carro)</option>
+      <option value="lazer">🎭 Lazer</option>
+      <option value="contas">📄 Contas Fixas</option>
+      <option value="aluguel">🏠 Aluguel</option>
+      <option value="cartao">💳 Fatura Cartão</option>
+      <option value="dizimo">❤️ Dízimo/Doação</option>
+      <option value="online">📦 Compras Online</option>
+      <option value="diversos">✨ Diversos</option>
     </select>
   </div>
 
@@ -181,35 +256,131 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
     <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
   </div>
 
+  <div class="form-group">
+    <label for="note">Observação (opcional)</label>
+    <textarea id="note" placeholder="Ex: Almoço com Sofia – dia especial!"></textarea>
+  </div>
+
   <button onclick="addExpense()">➕ Registrar Gasto</button>
 
   <div class="medal" id="medal"></div>
 
+  <!-- Resumo Mensal -->
+  <div class="monthly-summary">
+    <div class="month-nav">
+      <button onclick="changeMonth(-1)">◀</button>
+      <span id="currentMonth">Fevereiro 2026</span>
+      <button onclick="changeMonth(1)">▶</button>
+    </div>
+    <div id="monthlyStats">Total: R$ 0,00 | Dias: 0/29 | Média: R$ 0,00</div>
+  </div>
+
   <div class="calendar" id="calendar"></div>
 
-  <div class="history" id="history"></div>
+  <h3 style="margin-top: 24px;">📅 Resumo Diário</h3>
+  <table class="summary-table" id="summaryTable">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="summaryBody">
+    </tbody>
+  </table>
+
+  <!-- Seção de Backup -->
+  <div class="backup-section">
+    <h3>📤📥 Backup dos Dados</h3>
+    <button onclick="exportData()">Copiar dados para backup</button>
+    <textarea id="backupData" placeholder="Seus dados aparecerão aqui ao exportar. Para restaurar, cole e clique em 'Restaurar'."></textarea>
+    <button onclick="importData()" style="background:#FF9800;">Restaurar do backup</button>
+  </div>
 
   <button onclick="generatePDF()" style="background:#2196F3;margin-top:20px;">📄 Gerar Relatório PDF</button>
 
+  <!-- Pergunta do Dia -->
+  <div class="pergunta-overlay" id="perguntaOverlay">
+    <!-- Preenchido por JS -->
+  </div>
+
+  <footer>
+    © 2026 Ricardo de Faria Barros. Todos os direitos reservados.<br>
+    Inspire-se na longelescência: <a href="https://www.plenalongevidade.com.br" target="_blank">www.plenalongevidade.com.br</a>
+  </footer>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
+    // --- CONFIGURAÇÕES ---
+    const perguntas = [
+      "O que hoje merece meu cuidado?",
+      "Gastei com o que realmente importa?",
+      "Hoje, cuidei de mim ou só sobrevivi?",
+      "Que gesto simples me trouxe alegria hoje?",
+      "Estou envelhecendo com leveza ou peso?"
+    ];
+
+    // Meta semanal de autocuidado (em centavos para evitar erros de ponto flutuante)
+    let metaSemanal = 5000; // R$ 50,00
+
+    // --- UTILITÁRIOS ---
     function formatDate(date = new Date()) {
       return date.toISOString().split('T')[0];
     }
 
+    function formatBR(dateStr) {
+      const [y, m, d] = dateStr.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    function getWeekStart(date) {
+      const d = new Date(date);
+      const day = d.getDay();
+      const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Segunda como início
+      return new Date(d.setDate(diff));
+    }
+
+    function getMonthDates(year, month) {
+      const start = new Date(year, month, 1);
+      const end = new Date(year, month + 1, 0);
+      const days = [];
+      for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+        days.push(formatDate(new Date(d)));
+      }
+      return days;
+    }
+
+    // --- DADOS ---
     let expenses = JSON.parse(localStorage.getItem('expenses')) || {};
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
     const today = formatDate();
+
     document.getElementById('date').value = today;
 
+    // --- PERGUNTA DO DIA ---
+    function showPergunta() {
+      const overlay = document.getElementById('perguntaOverlay');
+      const pergunta = perguntas[Math.floor(Math.random() * perguntas.length)];
+      overlay.textContent = pergunta;
+      overlay.classList.add('show');
+      setTimeout(() => {
+        overlay.classList.remove('show');
+      }, 3000);
+    }
+
+    // --- SALVAR ---
     function save() {
       localStorage.setItem('expenses', JSON.stringify(expenses));
       render();
     }
 
+    // --- ADICIONAR GASTO ---
     function addExpense() {
       const dateInput = document.getElementById('date').value;
       const amount = parseFloat(document.getElementById('amount').value);
       const category = document.getElementById('category').value;
+      const note = (document.getElementById('note').value || '').trim();
 
       if (!dateInput) {
         alert('Selecione uma data.');
@@ -221,20 +392,24 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       }
 
       if (!expenses[dateInput]) expenses[dateInput] = [];
-      expenses[dateInput].push({ amount, category });
+      expenses[dateInput].push({ amount, category, note });
       save();
       document.getElementById('amount').value = '';
+      document.getElementById('note').value = '';
     }
 
+    // --- FORMATAÇÃO ---
     function formatCurrency(value) {
       return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
     }
 
+    // --- BALANÇO DO DIA ---
     function getTodayTotal() {
       if (!expenses[today]) return 0;
       return expenses[today].reduce((sum, e) => sum + e.amount, 0);
     }
 
+    // --- MEDALHA ---
     function checkMedal() {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -250,8 +425,9 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       }
     }
 
+    // --- CALENDÁRIO ---
     function renderCalendar() {
-      const now = new Date();
+      const now = new Date(currentYear, currentMonth);
       const year = now.getFullYear();
       const month = now.getMonth();
       const firstDay = new Date(year, month, 1);
@@ -280,27 +456,125 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       document.getElementById('calendar').innerHTML = html;
     }
 
-    function renderHistory() {
-      let html = '<h3>Últimos Registros</h3>';
-      const sortedDates = Object.keys(expenses).sort((a, b) => new Date(b) - new Date(a)).slice(0, 10);
-      sortedDates.forEach(date => {
+    // --- RESUMO DIÁRIO ---
+    function renderSummaryTable() {
+      const tbody = document.getElementById('summaryBody');
+      const datesWithExpenses = Object.keys(expenses)
+        .filter(date => expenses[date].length > 0)
+        .sort((a, b) => new Date(b) - new Date(a));
+
+      if (datesWithExpenses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#888;">Nenhum gasto registrado</td></tr>`;
+        return;
+      }
+
+      let html = '';
+      datesWithExpenses.forEach(date => {
         const total = expenses[date].reduce((s, e) => s + e.amount, 0);
-        html += `<div class="day-entry"><strong>${date}</strong> – ${formatCurrency(total)}<br>`;
-        expenses[date].forEach(e => {
-          html += `- ${e.category}: ${formatCurrency(e.amount)}<br>`;
-        });
-        html += '</div>';
+        html += `
+          <tr>
+            <td>${formatBR(date)}</td>
+            <td>${formatCurrency(total)}</td>
+          </tr>
+        `;
       });
-      document.getElementById('history').innerHTML = html;
+      tbody.innerHTML = html;
     }
 
-    function render() {
-      document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
-      checkMedal();
-      renderCalendar();
-      renderHistory();
+    // --- RESUMO MENSAL ---
+    function renderMonthlySummary() {
+      const monthDates = getMonthDates(currentYear, currentMonth);
+      const daysInMonth = monthDates.length;
+      const expensesThisMonth = monthDates.filter(d => expenses[d] && expenses[d].length > 0);
+      const total = expensesThisMonth.reduce((sum, d) => {
+        return sum + expenses[d].reduce((s, e) => s + e.amount, 0);
+      }, 0);
+      const avg = daysInMonth > 0 ? total / daysInMonth : 0;
+
+      document.getElementById('currentMonth').textContent = 
+        new Date(currentYear, currentMonth, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      document.getElementById('monthlyStats').textContent = 
+        `Total: ${formatCurrency(total)} | Dias: ${expensesThisMonth.length}/${daysInMonth} | Média: ${formatCurrency(avg)}`;
     }
 
+    // --- PRESENTE PARA MIM ---
+    function renderPresente() {
+      const weekStart = getWeekStart(new Date());
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+      
+      let gastoAutocuidado = 0;
+      for (let d = new Date(weekStart); d <= weekEnd; d.setDate(d.getDate() + 1)) {
+        const dateStr = formatDate(new Date(d));
+        if (expenses[dateStr]) {
+          expenses[dateStr].forEach(e => {
+            if (['farmacia', 'lazer', 'padaria', 'alimentacao', 'diversos'].includes(e.category)) {
+              gastoAutocuidado += e.amount;
+            }
+          });
+        }
+      }
+
+      const metaReal = metaSemanal / 100; // converte de centavos para reais
+      const gastoReal = gastoAutocuidado;
+      const faltam = Math.max(0, metaReal - gastoReal);
+
+      let msg = `🌸 Você já investiu ${formatCurrency(gastoReal)} em autocuidado esta semana.`;
+      if (gastoReal >= metaReal) {
+        msg += " Parabéns! Você se presenteou!";
+      } else {
+        msg += ` Falta(m) ${formatCurrency(faltam)} para seu presente!`;
+      }
+
+      document.getElementById('presenteBox').innerHTML = msg;
+    }
+
+    // --- NAVEGAÇÃO MENSAL ---
+    function changeMonth(delta) {
+      currentMonth += delta;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderAll();
+    }
+
+    // --- BACKUP ---
+    function exportData() {
+      const dataStr = JSON.stringify(expenses, null, 2);
+      const textarea = document.getElementById('backupData');
+      textarea.value = dataStr;
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        alert('Dados copiados! Salve em um local seguro.');
+      } catch (err) {
+        alert('Selecione e copie manualmente o texto acima.');
+      }
+    }
+
+    function importData() {
+      const textarea = document.getElementById('backupData');
+      const value = textarea.value.trim();
+      if (!value) {
+        alert('Cole os dados de backup primeiro.');
+        return;
+      }
+      try {
+        const imported = JSON.parse(value);
+        if (typeof imported !== 'object' || Array.isArray(imported)) throw new Error();
+        expenses = imported;
+        save();
+        alert('Backup restaurado com sucesso!');
+      } catch (e) {
+        alert('Erro: formato inválido.');
+      }
+    }
+
+    // --- PDF ---
     async function generatePDF() {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
@@ -310,13 +584,17 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       doc.setFontSize(12);
       let y = 30;
 
-      const sortedDates = Object.keys(expenses).sort((a, b) => new Date(a) - new Date(b));
+      const sortedDates = Object.keys(expenses)
+        .filter(d => expenses[d].length > 0)
+        .sort((a, b) => new Date(a) - new Date(b));
+
       sortedDates.forEach(date => {
         const total = expenses[date].reduce((s, e) => s + e.amount, 0);
-        doc.text(`${date} – Total: ${formatCurrency(total)}`, 20, y);
+        doc.text(`${formatBR(date)} – Total: ${formatCurrency(total)}`, 20, y);
         y += 10;
         expenses[date].forEach(e => {
-          const line = `- ${e.category}: ${formatCurrency(e.amount)}`;
+          let line = `- ${e.category}: ${formatCurrency(e.amount)}`;
+          if (e.note) line += ` (${e.note})`;
           if (y > 280) {
             doc.addPage();
             y = 20;
@@ -330,6 +608,22 @@ Abaixo está o **código completo, 100% funcional**, com um **ícone embutido v�
       doc.save('meu-controle-gastos.pdf');
     }
 
+    // --- RENDER GERAL ---
+    function renderAll() {
+      document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
+      checkMedal();
+      renderCalendar();
+      renderSummaryTable();
+      renderMonthlySummary();
+      renderPresente();
+    }
+
+    function render() {
+      renderAll();
+    }
+
+    // --- INICIALIZAÇÃO ---
+    showPergunta();
     render();
   </script>
 </body>
