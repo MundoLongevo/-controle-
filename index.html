@@ -1,3179 +1,1140 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    
-    <!-- METADADOS GERAIS -->
-    <meta name="theme-color" content="#4361ee">
-    <meta name="description" content="LongeViver FQ5C - Planejador de Vida Pessoal e Bem-Estar">
-    <meta name="author" content="Ricardo de Faria Barros - Psicólogo, ricardo@animodh.com.br">
-    
-    <!-- MANIFEST PWA -->
-    <link rel="manifest" href="./manifest.webmanifest">
-    <!-- iOS CONFIGURAÇÃO -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="LongeViver FQ5C">
-    <meta name="format-detection" content="telephone=no">
-    
-    <!-- ÍCONE PARA iOS -->
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="icons/icon-192.png">
-    <title>LongeViver FQ5C - Sistema Completo</title>
-    
-    <style>
-        /* RESET E VARIÁVEIS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --success: #4cc9f0;
-            --warning: #f8961e;
-            --danger: #e63946;
-            --card-bg: #ffffff;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --radius: 16px;
-            --finance: #2a9d8f;
-            --reminders: #7209b7;
-            --mood: #f8961e;
-            --challenge: #f72585;
-            --social: #4cc9f0;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
-            min-height: 100vh;
-            padding: 20px;
-            padding-top: calc(20px + env(safe-area-inset-top));
-            padding-bottom: calc(20px + env(safe-area-inset-bottom));
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* BANNER DE BOAS-VINDAS */
-        .welcome-banner {
-            text-align: center;
-            padding: 25px;
-            background: linear-gradient(135deg, #4361ee, #3a0ca3);
-            color: white;
-            border-radius: var(--radius);
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(to right, #4cc9f0, #f72585, #f8961e, #2a9d8f, #7209b7);
-        }
-
-        .welcome-banner h1 {
-            margin-bottom: 10px;
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .welcome-banner p {
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-            font-size: 16px;
-        }
-
-        /* HEADER */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        .tagline {
-            font-size: 14px;
-            color: var(--gray);
-            font-style: italic;
-        }
-
-        /* VARAL FQ5C */
-        .fqc-varal {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(to right, #4cc9f0, #4361ee, #7209b7, #f72585, #f8961e, #2a9d8f);
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .fqc-clothesline {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .fqc-verb {
-            padding: 6px 12px;
-            background: white;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--dark);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .fqc-verb:hover {
-            transform: translateY(-2px);
-        }
-
-        /* USER INFO */
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--secondary);
-        }
-
-        .btn-logout {
-            padding: 8px 16px;
-            background: var(--light);
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-logout:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* INSTALL BUTTON */
-        .install-btn {
-            padding: 8px 16px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: none;
-        }
-
-        .install-btn:hover {
-            background: #3ab0d9;
-        }
-
-        /* DIÁRIO DE VERBOS */
-        .verbos-section {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 25px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .verbos-section h2 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .verbos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .verb-card {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s;
-        }
-
-        .verb-card:nth-child(1) { border-left-color: #4cc9f0; }
-        .verb-card:nth-child(2) { border-left-color: #4361ee; }
-        .verb-card:nth-child(3) { border-left-color: #7209b7; }
-        .verb-card:nth-child(4) { border-left-color: #f72585; }
-        .verb-card:nth-child(5) { border-left-color: #f8961e; }
-        .verb-card:nth-child(6) { border-left-color: #2a9d8f; }
-        .verb-card:nth-child(7) { border-left-color: #e9c46a; }
-
-        .verb-card:hover {
-            background: white;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .verb-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .verb-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        .verb-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .verb-input {
-            width: 100%;
-            min-height: 100px;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 14px;
-            resize: vertical;
-            transition: border 0.3s;
-            font-family: inherit;
-        }
-
-        .verb-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-        }
-
-        .verb-input::placeholder {
-            color: #adb5bd;
-            font-style: italic;
-        }
-
-        .verb-counter {
-            text-align: right;
-            font-size: 12px;
-            color: var(--gray);
-            margin-top: 5px;
-        }
-
-        /* TABS PRINCIPAIS */
-        .main-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 25px;
-            background: var(--card-bg);
-            padding: 10px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            flex-wrap: wrap;
-            overflow-x: auto;
-        }
-
-        .main-tab {
-            padding: 12px 20px;
-            border: none;
-            background: none;
-            font-size: 15px;
-            color: var(--gray);
-            cursor: pointer;
-            border-radius: 10px;
-            transition: all 0.3s;
-            -webkit-tap-highlight-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .main-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .main-tab:hover:not(.active) {
-            background: var(--light);
-        }
-
-        /* TAB CONTENT */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* HABITS GRID */
-        .habits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .habit-card {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .habit-card.weekly {
-            border-left-color: var(--accent);
-        }
-
-        .habit-card:hover {
-            background: white;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .habit-card h4 {
-            font-size: 17px;
-            color: var(--dark);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .habit-number {
-            background: var(--primary);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .habit-frequency {
-            font-size: 11px;
-            background: var(--primary);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .habit-card p {
-            font-size: 14px;
-            color: var(--gray);
-            margin-bottom: 12px;
-            line-height: 1.5;
-        }
-
-        .habit-meta {
-            font-size: 12px;
-            color: var(--primary);
-            margin-bottom: 15px;
-            padding: 5px 10px;
-            background: rgba(67, 97, 238, 0.1);
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .habit-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .habit-check {
-            width: 28px;
-            height: 28px;
-            border: 2px solid var(--gray);
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            transition: all 0.2s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .habit-check.checked {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-
-        .habit-check:hover {
-            border-color: var(--primary);
-        }
-
-        .habit-streak {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--warning);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* CALENDAR */
-        .calendar-container {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .calendar-title {
-            font-size: 18px;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .calendar-nav button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            color: var(--primary);
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 6px;
-            transition: background 0.3s;
-        }
-
-        .calendar-nav button:hover {
-            background: var(--light);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-
-        .calendar-day-name {
-            text-align: center;
-            font-weight: 600;
-            color: var(--gray);
-            font-size: 13px;
-            padding: 8px 0;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            position: relative;
-            font-size: 14px;
-        }
-
-        .calendar-day:hover:not(.empty):not(.today) {
-            background: var(--light);
-        }
-
-        .calendar-day.empty {
-            background: transparent;
-            cursor: default;
-        }
-
-        .calendar-day.today {
-            background: var(--primary);
-            color: white;
-            font-weight: 700;
-        }
-
-        .calendar-day.completed::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            width: 6px;
-            height: 6px;
-            background: var(--success);
-            border-radius: 50%;
-        }
-
-        /* TRILHAS - COM NÚMEROS DOS HÁBITOS */
-        .trails-container {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .trails-container h3 {
-            font-size: 18px;
-            color: var(--secondary);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .trail-item {
-            background: var(--light);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            transition: all 0.3s;
-        }
-
-        .trail-item:hover {
-            transform: translateX(3px);
-            background: white;
-        }
-
-        .trail-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .trail-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        .trail-info {
-            flex: 1;
-        }
-
-        .trail-info h4 {
-            color: var(--dark);
-            margin-bottom: 2px;
-            font-size: 15px;
-        }
-
-        .trail-progress {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 5px;
-        }
-
-        .habit-numbers {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 8px;
-        }
-
-        .habit-number-badge {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            border: 1px solid rgba(67, 97, 238, 0.2);
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #e9ecef;
-            border-radius: 3px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-
-        /* MODAIS */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: var(--radius);
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .modal h2 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 24px;
-        }
-
-        .modal-subtitle {
-            text-align: center;
-            color: var(--gray);
-            margin-bottom: 20px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 14px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        .pin-inputs {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .pin-input {
-            width: 50px;
-            height: 60px;
-            font-size: 24px;
-            text-align: center;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            transition: all 0.3s;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .pin-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-
-        .pin-input.filled {
-            border-color: var(--success);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary);
-        }
-
-        .btn-secondary {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-secondary:hover {
-            background: var(--light);
-        }
-
-        /* NOTIFICAÇÕES */
-        .notification {
-            position: fixed;
-            top: calc(20px + env(safe-area-inset-top));
-            right: 20px;
-            padding: 15px 20px;
-            background: var(--success);
-            color: white;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            z-index: 1001;
-            animation: slideIn 0.3s ease;
-            max-width: 300px;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* FOOTER COM INFORMAÇÕES DO AUTOR */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            color: var(--gray);
-            font-size: 12px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .author-info {
-            margin-bottom: 15px;
-            padding: 15px;
-            background: var(--light);
-            border-radius: var(--radius);
-        }
-
-        .author-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 5px;
-        }
-
-        .author-profession {
-            font-size: 13px;
-            color: var(--gray);
-            margin-bottom: 10px;
-        }
-
-        .author-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .author-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 12px;
-            background: rgba(67, 97, 238, 0.1);
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .author-link:hover {
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-        }
-
-        .copyright {
-            font-size: 11px;
-            color: var(--gray);
-            margin-top: 15px;
-        }
-
-        .footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .fqc-varal {
-                padding: 8px 15px;
-            }
-            
-            .fqc-verb {
-                font-size: 11px;
-                padding: 4px 8px;
-            }
-            
-            .main-tabs {
-                overflow-x: auto;
-                padding: 8px;
-            }
-            
-            .main-tab {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
-            
-            .verbos-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .habits-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .author-links {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .main-content {
-                display: grid;
-                grid-template-columns: 1fr 350px;
-                gap: 30px;
-            }
-        }
-
-        /* iOS SPECIFIC */
-        @supports (-webkit-touch-callout: none) {
-            input, button, textarea, select {
-                font-size: 16px !important;
-            }
-        }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Meu Controle de Gastos</title>
+
+  <!-- App-like (PWA) -->
+  <meta name="theme-color" content="#4CAF50" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Gastos" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Ícone inline -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon"
+    href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
+
+  <style>
+    :root{
+      --primary:#4CAF50;
+      --dark:#2E7D32;
+      --light:#E8F5E9;
+      --card:#FFFFFF;
+      --text:#222;
+      --muted:#666;
+      --border:#d9d9d9;
+      --shadow: 0 1px 3px rgba(0,0,0,0.10);
+      --danger:#d32f2f;
+      --warn:#FF9800;
+      --info:#2196F3;
+      --bg: var(--light);
+    }
+    body.dark{
+      --bg:#0f1411;
+      --card:#151b17;
+      --text:#f1f1f1;
+      --muted:#b9b9b9;
+      --border:#2a332d;
+      --shadow: 0 1px 3px rgba(0,0,0,0.45);
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, sans-serif;}
+    body{
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      max-width: 720px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+    header{
+      background: var(--primary);
+      color:#fff;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    header h1{ font-size: 1.35rem; }
+    .top-actions{ display:flex; gap: 10px; align-items:center; }
+    .chip{
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      color:#fff;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      cursor:pointer;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+      box-shadow: var(--shadow);
+    }
+    .balance{
+      text-align:center;
+      font-weight: 800;
+      color: var(--dark);
+      font-size: 1.15rem;
+    }
+    body.dark .balance{ color: #a7ffb0; }
+    .row{ display:flex; gap: 12px; flex-wrap: wrap; }
+    .col{ flex:1; min-width: 220px; }
+    label{ display:block; font-weight: 700; margin-bottom: 6px; }
+    input, select{
+      width:100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+    button{
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.05rem;
+      cursor:pointer;
+      background: var(--primary);
+      color:#fff;
+    }
+    button:hover{ filter: brightness(0.95); }
+    .btn-info{ background: var(--info); }
+    .btn-warn{ background: var(--warn); color:#1f1f1f; font-weight: 800; }
+    .btn-danger{ background: var(--danger); }
+    .btn-ghost{
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 700;
+    }
+    .install-card{ display:none; }
+    .install-row{ display:flex; gap: 12px; align-items:center; justify-content: space-between; }
+    .install-row button{ width: auto; padding: 10px 14px; font-size: 1rem; }
+    .small{ color: var(--muted); font-size: 0.95rem; }
+    .medal{
+      text-align:center;
+      font-size: 1.05rem;
+      color: #b8860b;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
+    .calendar{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .cal-day{
+      text-align:center;
+      padding: 10px 6px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      user-select:none;
+    }
+    body.dark .cal-day{ background: rgba(255,255,255,0.08); }
+    .cal-day.head{ background: transparent; border:none; cursor: default; font-weight:800; color: var(--muted); }
+    .cal-day.has-data{ background: var(--primary); color:#fff; }
+    .cal-day.today{ border-color: var(--dark); }
+    body.dark .cal-day.today{ border-color: #a7ffb0; }
+    .cal-day.selected{ outline: 3px solid rgba(33,150,243,0.45); }
+
+    .progress{
+      height: 14px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 999px;
+      overflow:hidden;
+      margin-top: 10px;
+      border: 1px solid var(--border);
+    }
+    body.dark .progress{ background: rgba(255,255,255,0.10); }
+    .progress > div{
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width .25s ease;
+    }
+
+    .summary-table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+    .summary-table th, .summary-table td{
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align:left;
+      font-size: 0.98rem;
+    }
+    .summary-table th{
+      background: rgba(76,175,80,0.18);
+      font-weight: 900;
+    }
+    .summary-table tr:last-child td{ border-bottom:none; }
+
+    .detail-item{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-item:last-child{ border-bottom:none; }
+    .detail-left{ min-width: 0; }
+    .detail-main{ font-weight: 800; margin-bottom: 2px; }
+    .detail-note{ color: var(--muted); font-size: 0.95rem; word-break: break-word; }
+    .detail-actions{ display:flex; gap: 8px; flex-shrink: 0; }
+    .mini-btn{ width: auto; padding: 10px 10px; border-radius: 10px; font-size: 0.95rem; font-weight: 800; }
+
+    .modal-backdrop{
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      display:none; align-items:center; justify-content:center;
+      padding: 16px; z-index: 999;
+    }
+    .modal{
+      width: 100%; max-width: 520px;
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .modal h3{ margin-bottom: 10px; }
+    .modal .row{ margin-top: 10px; }
+    .modal .modal-actions{ display:flex; gap: 10px; margin-top: 12px; }
+    .modal .modal-actions button{ flex:1; }
+
+    canvas{
+      width: 100%;
+      height: 230px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(0,0,0,0.02);
+    }
+    body.dark canvas{ background: rgba(255,255,255,0.04); }
+
+    footer{
+      margin-top: 18px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding-bottom: 10px;
+    }
+    footer a{ color: var(--primary); text-decoration:none; }
+    footer a:hover{ text-decoration: underline; }
+  </style>
 </head>
+
 <body>
-    <!-- MODAL CRIAR CONTA -->
-    <div id="createAccountModal" class="modal">
-        <div class="modal-content">
-            <h2>Comece sua jornada LongeViver</h2>
-            <p class="modal-subtitle">Crie sua conta para acompanhar hábitos, desafios e conexões sociais</p>
-            
-            <div class="input-group">
-                <label for="userName">Como gostaria de ser chamado?</label>
-                <input type="text" id="userName" placeholder="Seu nome ou apelido">
-            </div>
-            
-            <div class="input-group">
-                <label for="userPin">Crie um PIN de 4 dígitos</label>
-                <div class="pin-inputs">
-                    <input type="number" class="pin-input" maxlength="1" data-index="0" id="pin1" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                    <input type="number" class="pin-input" maxlength="1" data-index="1" id="pin2" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                    <input type="number" class="pin-input" maxlength="1" data-index="2" id="pin3" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                    <input type="number" class="pin-input" maxlength="1" data-index="3" id="pin4" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                </div>
-                <p style="font-size: 12px; color: var(--gray); margin-top: 10px;">
-                    Escolha um PIN fácil de lembrar. Você precisará dele para acessar sua conta.
-                    <br><strong>Dica:</strong> Anote em um lugar seguro!
-                </p>
-            </div>
-            
-            <button id="btnCreateAccount" class="btn-primary">Criar minha conta</button>
-        </div>
+  <header>
+    <h1>💰 Meu Controle Diário</h1>
+    <div class="top-actions">
+      <div class="chip" id="darkToggle">🌙 Modo</div>
+      <div class="chip" id="helpBtn">❔ Ajuda</div>
+    </div>
+  </header>
+
+  <div class="card balance" id="balance">Balanço de hoje: R$ 0,00</div>
+
+  <!-- Instalar (Android/Chrome) -->
+  <div class="card install-card" id="installCard">
+    <div class="install-row">
+      <div>
+        <div style="font-weight:900;">Instalar como app</div>
+        <div class="small">Fica na tela inicial e abre sem barra do navegador.</div>
+      </div>
+      <button id="installBtn">Instalar</button>
+    </div>
+  </div>
+
+  <!-- Lançamento -->
+  <div class="card">
+    <div class="row">
+      <div class="col">
+        <label for="date">Data do gasto</label>
+        <input type="date" id="date">
+        <div class="small" id="dateBR" style="margin-top:6px;"></div>
+      </div>
+
+      <div class="col">
+        <label for="amount">Valor</label>
+        <input type="text" id="amount" inputmode="numeric" autocomplete="off" placeholder="R$ 0,00">
+        <div class="small" style="margin-top:6px;">Digite “1250” → R$ 12,50</div>
+      </div>
     </div>
 
-    <!-- MODAL LOGIN -->
-    <div id="pinModal" class="modal">
-        <div class="modal-content">
-            <h2>Bem-vindo de volta</h2>
-            <p class="modal-subtitle">Digite seu PIN de 4 dígitos para acessar</p>
-            <div class="pin-inputs">
-                <input type="number" class="pin-input" maxlength="1" data-index="0" id="loginPin1" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                <input type="number" class="pin-input" maxlength="1" data-index="1" id="loginPin2" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                <input type="number" class="pin-input" maxlength="1" data-index="2" id="loginPin3" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-                <input type="number" class="pin-input" maxlength="1" data-index="3" id="loginPin4" inputmode="numeric" pattern="[0-9]*" placeholder="•">
-            </div>
-            <button id="btnEnterPin" class="btn-primary">Acessar minha conta</button>
-            <button id="btnForgotPin" class="btn-secondary">Esqueci meu PIN</button>
-            <p style="font-size: 12px; color: var(--gray); margin-top: 20px; text-align: center;">
-                ⚠️ Resetar o PIN apagará todos os seus dados
-            </p>
-        </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="col">
+        <label for="category">Categoria</label>
+        <select id="category"></select>
+      </div>
+      <div class="col">
+        <label for="note">Observação (opcional)</label>
+        <input type="text" id="note" placeholder="Ex: almoço com Sofia">
+      </div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div id="appContent" class="hidden">
-        <div class="container">
-            <!-- BANNER DE BOAS-VINDAS -->
-            <div class="welcome-banner">
-                <h1>LongeViver FQ5C</h1>
-                <p>Verbos em ação, atitudes que vestimos. Transformando dias em jornadas com sentido.</p>
-            </div>
-
-            <!-- HEADER -->
-            <header>
-                <div>
-                    <div class="logo">
-                        🌟 <span>LongeViver FQ5C</span>
-                    </div>
-                    <div class="tagline">Sistema completo de hábitos, desafios e conexão social</div>
-                </div>
-                
-                <div class="fqc-varal">
-                    <div class="fqc-clothesline">
-                        <div class="fqc-verb">FAZER</div>
-                        <div class="fqc-verb">QUERER</div>
-                        <div class="fqc-verb">CONVERSAR</div>
-                        <div class="fqc-verb">COMPARTILHAR</div>
-                        <div class="fqc-verb">CURTIR</div>
-                        <div class="fqc-verb">CONHECER</div>
-                        <div class="fqc-verb">CUIDAR</div>
-                    </div>
-                </div>
-                
-                <div class="user-info">
-                    <span class="user-name">Olá, <span id="displayName">Usuário</span></span>
-                    <button class="install-btn" id="installBtn">📲 Instalar App</button>
-                    <button class="btn-logout" id="btnLogout">Sair</button>
-                </div>
-            </header>
-
-            <!-- DIÁRIO DE VERBOS -->
-            <section class="verbos-section">
-                <h2>📝 Diário dos Verbos do Dia</h2>
-                <div class="verbos-grid" id="verbosGrid"></div>
-                <div style="text-align: center;">
-                    <button id="btnSaveVerbos" class="btn-primary" style="max-width: 200px;">Salvar Meu Diário</button>
-                </div>
-            </section>
-
-            <!-- TABS PRINCIPAIS -->
-            <div class="main-tabs">
-                <button class="main-tab active" data-tab="habits">
-                    📋 Hábitos
-                </button>
-                <button class="main-tab" data-tab="challenge">
-                    🏆 Desafio Mensal
-                </button>
-                <button class="main-tab" data-tab="social">
-                    👥 Social Termômetro
-                </button>
-                <button class="main-tab" data-tab="finances">
-                    💰 Controle Financeiro
-                </button>
-                <button class="main-tab" data-tab="reminders">
-                    🔔 Lembretes
-                </button>
-                <button class="main-tab" data-tab="mood">
-                    😊 Emociômetro
-                </button>
-            </div>
-
-            <!-- CONTEÚDO DAS TABS -->
-            <div class="main-content">
-                <!-- CONTEÚDO PRINCIPAL -->
-                <div>
-                    <!-- ABA HÁBITOS -->
-                    <div id="habitsTab" class="tab-content active">
-                        <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-                            <button class="main-tab active" data-tab-type="daily">Hábitos Diários</button>
-                            <button class="main-tab" data-tab-type="weekly">Hábitos Semanais</button>
-                        </div>
-                        
-                        <div id="dailyHabitsGrid" class="habits-grid"></div>
-                        <div id="weeklyHabitsGrid" class="habits-grid hidden"></div>
-                    </div>
-
-                    <!-- ABA DESAFIO MENSAL -->
-                    <div id="challengeTab" class="tab-content">
-                        <section class="challenge-container">
-                            <div class="challenge-header">
-                                <h2>🏆 Desafio do Mês</h2>
-                                <div class="current-month" id="currentMonth"></div>
-                            </div>
-                            
-                            <div class="challenge-current" id="currentChallenge">
-                                <p style="text-align: center;">Nenhum desafio definido para este mês.</p>
-                            </div>
-                            
-                            <div class="challenge-form">
-                                <h3>🎯 Definir Novo Desafio</h3>
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label for="challengeTitle">Título do Desafio</label>
-                                        <input type="text" id="challengeTitle" placeholder="Ex: Leitura de 1 livro por semana">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="challengeCategory">Categoria</label>
-                                        <select id="challengeCategory">
-                                            <option value="saude">Saúde & Bem-estar</option>
-                                            <option value="aprendizado">Aprendizado</option>
-                                            <option value="produtividade">Produtividade</option>
-                                            <option value="social">Social</option>
-                                            <option value="financeiro">Financeiro</option>
-                                            <option value="criatividade">Criatividade</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="challengeDescription">Descrição</label>
-                                    <textarea id="challengeDescription" placeholder="Descreva seu desafio em detalhes..."></textarea>
-                                </div>
-                                
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label for="challengeGoal">Meta (número)</label>
-                                        <input type="number" id="challengeGoal" placeholder="Ex: 30">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="challengeUnit">Unidade de Medida</label>
-                                        <input type="text" id="challengeUnit" placeholder="Ex: páginas, horas, dias">
-                                    </div>
-                                </div>
-                                
-                                <button id="btnSaveChallenge" class="btn-primary">Salvar Desafio do Mês</button>
-                            </div>
-                            
-                            <div class="challenge-history">
-                                <h3>📅 Histórico de Desafios</h3>
-                                <div class="history-grid" id="challengeHistory"></div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <!-- ABA SOCIAL TERMÔMETRO -->
-                    <div id="socialTab" class="tab-content">
-                        <section class="social-container">
-                            <div class="social-header">
-                                <h2>👥 Social Termômetro</h2>
-                                <p>Registre sua participação social e mantenha conexões ativas</p>
-                            </div>
-                            
-                            <div class="social-stats">
-                                <div class="social-stat-card">
-                                    <div class="social-stat-icon">👨‍👩‍👧</div>
-                                    <div class="social-stat-number" id="familyEvents">0</div>
-                                    <div class="social-stat-label">Eventos Familiares</div>
-                                </div>
-                                <div class="social-stat-card">
-                                    <div class="social-stat-icon">🏢</div>
-                                    <div class="social-stat-number" id="workEvents">0</div>
-                                    <div class="social-stat-label">Reuniões</div>
-                                </div>
-                                <div class="social-stat-card">
-                                    <div class="social-stat-icon">🎯</div>
-                                    <div class="social-stat-number" id="socialScore">0%</div>
-                                    <div class="social-stat-label">Participação Ativa</div>
-                                </div>
-                                <div class="social-stat-card">
-                                    <div class="social-stat-icon">📅</div>
-                                    <div class="social-stat-number" id="socialDays">0</div>
-                                    <div class="social-stat-label">Dias Sociais</div>
-                                </div>
-                            </div>
-                            
-                            <div class="social-categories">
-                                <div class="social-category">
-                                    <h3>👨‍👩‍👧‍👦 Vida Familiar</h3>
-                                    <div class="social-events" id="familyEventsList"></div>
-                                </div>
-                                
-                                <div class="social-category">
-                                    <h3>🏢 Trabalho & Instituições</h3>
-                                    <div class="social-events" id="workEventsList"></div>
-                                </div>
-                                
-                                <div class="social-category">
-                                    <h3>🎭 Lazer & Amigos</h3>
-                                    <div class="social-events" id="leisureEventsList"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="social-form">
-                                <h3>➕ Adicionar Participação Social</h3>
-                                <div class="form-row-social">
-                                    <div class="form-group">
-                                        <label for="socialEvent">Evento/Atividade</label>
-                                        <input type="text" id="socialEvent" placeholder="Ex: Jantar em família">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="socialCategory">Categoria</label>
-                                        <select id="socialCategory">
-                                            <option value="family">Família</option>
-                                            <option value="work">Trabalho/Instituição</option>
-                                            <option value="leisure">Lazer/Amigos</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="socialDuration">Duração (horas)</label>
-                                        <input type="number" id="socialDuration" placeholder="2" min="0.5" step="0.5">
-                                    </div>
-                                    <button id="btnAddSocial" class="btn-add-social">➕</button>
-                                </div>
-                            </div>
-                            
-                            <div class="social-insights">
-                                <h3>💡 Insights Sociais</h3>
-                                <div id="socialInsights"></div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <!-- ABA FINANÇAS -->
-                    <div id="financesTab" class="tab-content">
-                        <section style="background: var(--card-bg); border-radius: var(--radius); padding: 25px; box-shadow: var(--shadow); margin-bottom: 30px;">
-                            <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--finance);">
-                                <h2 style="color: var(--finance); font-size: 22px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">💰 Controle Financeiro Diário</h2>
-                                <div style="font-size: 36px; font-weight: 700; color: var(--finance);" id="totalSpent">R$ 0,00</div>
-                            </div>
-                            
-                            <div style="background: white; padding: 25px; border-radius: var(--radius); border: 2px dashed var(--finance); margin-bottom: 30px;">
-                                <h3 style="color: var(--dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">➕ Adicionar Despesa</h3>
-                                
-<div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; margin-bottom: 12px; align-items: end;">
-                                    <div class="form-group">
-                                        <label for="expenseDescription">Descrição (opcional)</label>
-                                        <input type="text" id="expenseDescription" placeholder="Ex: Uber para casa (ou deixe em branco)">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="expenseCategory">Categoria</label>
-                                        <select id="expenseCategory">
-                                            <option value="alimentacao">Alimentação</option>
-                                            <option value="transporte">Transporte</option>
-                                            <option value="lazer">Lazer</option>
-                                            <option value="saude">Saúde</option>
-                                            <option value="educacao">Educação</option>
-                                            <option value="outros">Outros</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="expenseAmount">Valor (R$)</label>
-                                        <input inputmode="decimal" type="text" id="expenseAmount" placeholder="Ex: 200 ou 200,00" autocomplete="off">
-                                    </div>
-                                </div>
-                                <button id="btnAddExpense" style="background: var(--finance); color: white; border: none; padding: 14px 16px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: transform 0.08s ease, filter 0.2s ease; height: 54px; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; box-shadow: 0 12px 20px rgba(0,0,0,0.10); font-size: 16px;">💾 Salvar despesa</button>
-                                <div style="font-size: 12px; color: var(--gray); margin-top: 8px;">Dica: se você deixar a descrição em branco, eu salvo como a categoria (ex.: Transporte).</div>
-
-                            </div>
-                            
-                            <div id="expensesList"></div>
-                        </section>
-                    </div>
-
-                    <!-- ABA LEMBRETES -->
-                    <div id="remindersTab" class="tab-content">
-                        <section style="background: var(--card-bg); border-radius: var(--radius); padding: 25px; box-shadow: var(--shadow); margin-bottom: 30px;">
-                            <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--reminders);">
-                                <h2 style="color: var(--reminders); font-size: 22px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">🔔 Lembretes Importantes</h2>
-                            </div>
-                            
-                            <div style="background: white; padding: 25px; border-radius: var(--radius); border: 2px dashed var(--reminders); margin-bottom: 30px;">
-                                <h3 style="color: var(--dark); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">➕ Adicionar Lembrete</h3>
-                                <div style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; margin-bottom: 15px; align-items: end;">
-                                    <div class="form-group" style="flex: 2;">
-                                        <label for="reminderText">O que não posso esquecer?</label>
-                                        <input type="text" id="reminderText" placeholder="Ex: Pagar conta de luz">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="reminderPriority">Prioridade</label>
-                                        <select id="reminderPriority">
-                                            <option value="normal">Normal</option>
-                                            <option value="urgent">Urgente</option>
-                                        </select>
-                                    </div>
-                                    <button id="btnAddReminder" style="background: var(--reminders); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.3s; height: 46px; display: flex; align-items: center; gap: 8px;">➕</button>
-                                </div>
-                            </div>
-                            
-                            <div id="remindersList"></div>
-                        </section>
-                    </div>
-
-                    <!-- ABA EMOÇIÔMETRO -->
-                    <div id="moodTab" class="tab-content">
-                        <section style="background: var(--card-bg); border-radius: var(--radius); padding: 25px; box-shadow: var(--shadow); margin-bottom: 30px;">
-                            <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--mood);">
-                                <h2 style="color: var(--mood); font-size: 22px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">😊 Emociômetro do Dia</h2>
-                                <p>Como você está se sentindo hoje?</p>
-                            </div>
-                            
-                            <div style="text-align: center; padding: 30px; background: white; border-radius: var(--radius); margin-bottom: 30px; border: 2px solid var(--light);" id="todayMood">
-                                <p>Selecione seu humor para hoje</p>
-                            </div>
-                            
-                            <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;" id="moodSelector"></div>
-                            
-                            <div style="margin-bottom: 30px;">
-                                <label for="moodNotes" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark);">Observações (opcional)</label>
-                                <textarea id="moodNotes" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; min-height: 100px; resize: vertical; font-family: inherit;" placeholder="Descreva brevemente o que está contribuindo para este humor..."></textarea>
-                            </div>
-                            
-                            <button id="btnSaveMood" class="btn-primary" style="margin-top: 20px; width: 100%;">Salvar Humor</button>
-                            
-                            <div style="margin-top: 40px;">
-                                <h3 style="color: var(--secondary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">📊 Histórico de Humor</h3>
-                                <div id="moodHistory"></div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- SIDEBAR -->
-                <div class="sidebar">
-                    <!-- CALENDÁRIO -->
-                    <div class="calendar-container">
-                        <div class="calendar-header">
-                            <h3 class="calendar-title" id="calendarTitle">Calendário</h3>
-                            <div class="calendar-nav">
-                                <button id="prevMonth">&lt;</button>
-                                <button id="nextMonth">&gt;</button>
-                            </div>
-                        </div>
-                        <div id="calendarDays" class="calendar-grid"></div>
-                    </div>
-
-                    <!-- TRILHAS TEMÁTICAS COM NÚMEROS DOS HÁBITOS -->
-                    <div class="trails-container">
-                        <h3>🎯 Trilhas Temáticas</h3>
-                        <div id="trailsList"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- FOOTER COM INFORMAÇÕES DO AUTOR -->
-            <div class="footer">
-                <div class="author-info">
-                    <div class="author-name">Ricardo de Faria Barros</div>
-                    <div class="author-profession">Psicólogo • Especialista em Longevidade • Consultor Projeto 70+ ANABB</div>
-                    <div class="author-links">
-                        <a href="https://a.co/d/g4s6fZ6" target="_blank" rel="noopener" class="author-link">
-                            📚 Meu livro na Amazon
-                        </a>
-                        <a href="https://www.plenalongevidade.com.br/" target="_blank" rel="noopener" class="author-link">
-                            🌐 Site: Plena Longevidade
-                        </a>
-                    </div>
-                </div>
-                
-                <p>Sistema <strong>LongeViver FQ5C</strong> - Desenvolvido por <strong>Ricardo de Faria Barros, psicólogo</strong></p>
-                <p style="font-size: 12px; color: var(--gray); margin-top: 10px;">Verbos em ação, atitudes que vestimos. Transformando dias em jornadas com sentido.</p>
-                <div class="copyright">
-                    © 2026 LongeViver FQ5C - Todos os direitos reservados
-                </div>
-            </div>
-        </div>
+    <div class="row" style="margin-top:12px;">
+      <button class="btn-ghost" type="button" onclick="setToday()">📌 Registrar gasto de hoje</button>
     </div>
 
-    <script>
-        // ============================================
-        // CONFIGURAÇÃO INICIAL
-        // ============================================
-        const STORAGE_KEY = 'longeviver_fq5c_completo';
-        
-        // DETECTAR DISPOSITIVO
-        const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    <button id="saveBtn" style="margin-top:10px;" onclick="addExpense()">💾 Gravar despesa</button>
+    <div class="medal" id="medal"></div>
+  </div>
 
-        // ============================================
-        // PWA - SERVICE WORKER (OFFLINE + INSTALÁVEL)
-        // ============================================
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(console.error);
-            });
-        }
+  <!-- Meta mensal -->
+  <div class="card">
+    <div class="row">
+      <div class="col">
+        <div style="font-weight:900;">📌 Meta do mês</div>
+        <div class="small">Defina um teto mensal para acompanhar o ritmo do gasto.</div>
+      </div>
+      <div class="col">
+        <label for="monthlyGoal">Meta (R$)</label>
+        <input type="number" id="monthlyGoal" step="1" min="0" placeholder="Ex: 2500">
+        <button class="btn-ghost" style="margin-top:10px;" onclick="saveGoal()">Salvar meta</button>
+      </div>
+    </div>
 
-        // ============================================
-        // iOS - DICA PARA INSTALAR (Safari)
-        // ============================================
-        function showIOSInstallHint() {
-            if (!isIOS() || isStandalone()) return;
-            if (document.getElementById('iosInstallHint')) return;
+    <div style="margin-top:12px; font-weight:900;" id="currentMonth">Mês/Ano</div>
+    <div class="small" id="monthlyStats">Total: R$ 0,00 | Dias com gastos: 0/0 | Média/dia: R$ 0,00</div>
+    <div class="progress"><div id="goalBar"></div></div>
+    <div class="small" id="goalText" style="margin-top:8px;"></div>
 
-            const bar = document.createElement('div');
-            bar.id = 'iosInstallHint';
-            bar.style.cssText = `
-                position: fixed;
-                left: 12px; right: 12px; bottom: 12px;
-                background: rgba(0,0,0,.85);
-                color: #fff;
-                padding: 10px 12px;
-                border-radius: 14px;
-                font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-                font-size: 14px; line-height: 1.25;
-                z-index: 99999;
-                box-shadow: 0 10px 30px rgba(0,0,0,.25);
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                justify-content: space-between;
-            `;
+    <div class="row" style="margin-top:12px;">
+      <button class="btn-ghost" onclick="changeMonth(-1)">◀ Mês anterior</button>
+      <button class="btn-ghost" onclick="changeMonth(1)">Mês seguinte ▶</button>
+    </div>
 
-            bar.innerHTML = `
-                <div>
-                    <b>Instalar no iPhone:</b><br/>
-                    Toque em <b>Compartilhar</b> → <b>Adicionar à Tela de Início</b>.
-                </div>
-                <button id="closeIOSHint" style="
-                    border: 0;
-                    background: rgba(255,255,255,.18);
-                    color:#fff;
-                    padding: 8px 10px;
-                    border-radius: 12px;
-                    cursor:pointer;
-                    font-weight:600;
-                ">OK</button>
-            `;
+    <div class="row" style="margin-top:12px;">
+      <button class="btn-warn" onclick="rollMonth()">🗓️ Virar o mês (arquivar)</button>
+    </div>
+    <div class="small" style="margin-top:8px;">
+      “Virar o mês” guarda o mês atual no histórico e limpa o mês em andamento (sem apagar meses antigos).
+    </div>
+  </div>
 
-            document.body.appendChild(bar);
-            document.getElementById('closeIOSHint').onclick = () => bar.remove();
-        }
+  <!-- Calendário -->
+  <div class="card">
+    <div style="font-weight:900;">📅 Calendário</div>
+    <div class="small">Clique em um dia para ver, editar ou excluir gastos daquele dia.</div>
+    <div class="calendar" id="calendar"></div>
+  </div>
 
+  <!-- Detalhe -->
+  <div class="card">
+    <div style="font-weight:900;" id="selectedDayTitle">🧾 Detalhe do dia</div>
+    <div class="small" id="selectedDaySubtitle">Selecione um dia no calendário.</div>
+    <div id="dayDetailList" style="margin-top:10px;"></div>
+  </div>
 
-        // VERBOS DO DIA
-        const VERBOS = [
-            { id: 1, verbo: "FAZER", pergunta: "O que fiz hoje?", placeholder: "Descreva o que realizou, criou, produziu..." },
-            { id: 2, verbo: "QUERER", pergunta: "O que quis hoje?", placeholder: "O que desejou, almejou, planejou..." },
-            { id: 3, verbo: "CONVERSAR", pergunta: "Com quem conversei hoje?", placeholder: "Com quem trocou palavras, ideias, sentimentos..." },
-            { id: 4, verbo: "COMPARTILHAR", pergunta: "O que compartilhei hoje?", placeholder: "O que ofereceu, dividiu, ensinou..." },
-            { id: 5, verbo: "CURTIR", pergunta: "O que curti hoje?", placeholder: "O que apreciou, desfrutou, sentiu prazer..." },
-            { id: 6, verbo: "CONHECER", pergunta: "O que conheci hoje?", placeholder: "O que descobriu, aprendeu, explorou..." },
-            { id: 7, verbo: "CUIDAR", pergunta: "De que, ou quem, cuidei hoje?", placeholder: "De si, de alguém, de algo, do ambiente..." }
-        ];
+  <!-- Resumo -->
+  <div class="card">
+    <div style="font-weight:900;">📋 Resumo por dia (últimos lançamentos)</div>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="summaryBody"></tbody>
+    </table>
+  </div>
 
-        // HÁBITOS
-        const ALL_HABITS = [
-            // DIÁRIOS (1-26)
-            { id: 1, title: "COPOS DE ÁGUA", description: "Beber água ao longo do dia sustenta o corpo e a energia vital", category: "corpo", frequency: "daily", meta: "8 copos por dia" },
-            { id: 2, title: "SONO REVITALIZANTE", description: "Dormir bem organiza emoções, memória e recuperação física", category: "corpo", frequency: "daily", meta: "8 horas por noite" },
-            { id: 3, title: "SOL E AR LIVRE", description: "Luz natural regula o humor e rompe o isolamento", category: "mente", frequency: "daily", meta: "20 minutos por dia" },
-            { id: 4, title: "EXERCÍCIO", description: "Movimentar o corpo mantém autonomia e confiança", category: "corpo", frequency: "daily", meta: "30 minutos por dia" },
-            { id: 5, title: "RESPIRAÇÃO E ATENÇÃO PLENA", description: "Uma pausa consciente para estar no corpo e no agora", category: "mente", frequency: "daily", meta: "5 minutos por dia" },
-            { id: 6, title: "DESCONEXÃO TECNOLÓGICA", description: "Reduzir telas devolve presença e descanso mental", category: "mente", frequency: "daily", meta: "30 minutos por dia" },
-            { id: 7, title: "LEITURA", description: "Ler amplia o mundo e mantém a mente viva", category: "mente", frequency: "daily", meta: "20 páginas por dia" },
-            { id: 8, title: "EXERCITAR A MEMÓRIA", description: "Jogos, lembranças e narrativas mantêm a cognição ativa", category: "mente", frequency: "daily", meta: "10 minutos por dia" },
-            { id: 9, title: "ESCUTA MUSICAL", description: "A música acessa emoções profundas e memórias afetivas", category: "mente", frequency: "daily", meta: "15 minutos por dia" },
-            { id: 10, title: "APRECIAR BELEZA", description: "Perceber algo bonito no cotidiano", category: "mente", frequency: "daily", meta: "1 momento por dia" },
-            { id: 11, title: "RIR UM POUCO", description: "Rir alivia tensões e devolve leveza", category: "social", frequency: "daily", meta: "1 momento por dia" },
-            { id: 12, title: "CUIDAR DA CASA E DA VIDA", description: "Cuidar do lar, plantas, pets ou pequenos afazeres", category: "vida", frequency: "daily", meta: "1 cuidado por dia" },
-            { id: 13, title: "MENSAGENS AFETUOSAS", description: "Enviar carinho fortalece vínculos", category: "social", frequency: "daily", meta: "3 mensagens por dia" },
-            { id: 14, title: "BOA CONVERSA", description: "Conversar com escuta e presença cria pertencimento", category: "social", frequency: "daily", meta: "1 conversa por dia" },
-            { id: 15, title: "REGISTRO DE VIDA", description: "Registrar o day ou a própria história ajuda a dar sentido à caminhada", category: "vida", frequency: "daily", meta: "1 registro por dia" },
-            { id: 16, title: "PARADA ESPIRITUAL", description: "Silêncio, oração ou reflexão alimentam o sentido da vida", category: "espiritual", frequency: "daily", meta: "10 minutos por dia" },
-            { id: 17, title: "GRATIDÃO", description: "Reconhecer algo bom muda o olhar sobre o dia", category: "espiritual", frequency: "daily", meta: "1 agradecimento por dia" },
-            { id: 18, title: "DESPOLUIÇÃO MENTAL", description: "Interromper pensamentos negativos repetitivos é higiene emocional", category: "mente", frequency: "daily", meta: "1 prática por dia" },
-            { id: 19, title: "SÓ POR HOJE, NÃO", description: "Escolhas conscientes com álcool, açúcar, sal e gorduras", category: "corpo", frequency: "daily", meta: "1 compromisso por dia" },
-            { id: 20, title: "COLORIR O PRATO", description: "Quanto mais cores naturais, mais vida no corpo", category: "corpo", frequency: "daily", meta: "1 refeição colorida por dia" },
-            { id: 21, title: "APRENDER ALGO NOVO", description: "Aprender mantém a curiosidade viva", category: "mente", frequency: "daily", meta: "1 aprendizado por dia" },
-            { id: 22, title: "RECONHECER ALGUÉM", description: "Valorizar o outro fortalece vínculos e dignidade", category: "social", frequency: "daily", meta: "1 reconhecimento por dia" },
-            { id: 23, title: "MISSÃO PORTA AFORA", description: "Sair de casa, mesmo que pouco, quebra a apatia", category: "social", frequency: "daily", meta: "1 saída por dia" },
-            { id: 24, title: "LIGAÇÃO QUE AQUECE", description: "Ouvir e ser ouvido aproxima corações", category: "social", frequency: "daily", meta: "1 ligação por dia" },
-            { id: 25, title: "PEQUENA AVENTURA", description: "Fazer algo diferente da rotina reativa a vida", category: "vida", frequency: "daily", meta: "1 novidade por dia" },
-            { id: 26, title: "REGISTRO DE DESPESAS", description: "Anotar gastos devolve controle, segurança e consciência financeira", category: "vida", frequency: "daily", meta: "1 registro por dia" },
-            
-            // SEMANAIS (27-31)
-            { id: 27, title: "PARTICIPAR DE ALGO", description: "Grupos, encontros ou atividades presenciais ou online", category: "social", frequency: "weekly", meta: "1 vez por semana" },
-            { id: 28, title: "AJUDAR ALGUÉM DE VERDADE", description: "Oferecer ajuda concreta ou simbólica, com atenção e presença", category: "social", frequency: "weekly", meta: "1 gesto deliberado por semana" },
-            { id: 29, title: "ARRUMAÇÃO COM MEMÓRIA", description: "Organizar livros, fotos e objetos com calma e presença", category: "vida", frequency: "weekly", meta: "20 minutos por semana" },
-            { id: 30, title: "RITUAL DE LIBERAÇÃO E PERDÃO", description: "Culpa e mágoa se escrevem e se soltam. O perdão fica guardado no coração", category: "espiritual", frequency: "weekly", meta: "1 ritual por semana" },
-            { id: 31, title: "CURTIR CONSCIENTEMENTE", description: "Permitir-se prazer simples e presente, sem culpa", category: "vida", frequency: "weekly", meta: "ao menos 1 escolha consciente por semana" }
-        ];
+  <!-- Gráfico -->
+  <div class="card">
+    <div style="font-weight:900;">📊 Categorias do mês</div>
+    <div class="small">Visão simples: quanto foi em cada categoria no mês atual.</div>
+    <canvas id="catChart" width="700" height="260"></canvas>
+    <div class="small" id="chartHint" style="margin-top:10px;"></div>
+  </div>
 
-        // TRILHAS TEMÁTICAS COM INFORMAÇÕES COMPLETAS
-        const TRAILS = [
-            { 
-                id: 1, 
-                title: "Sair da Apatia", 
-                habits: [1, 2, 4, 9, 11, 23, 25], 
-                color: "#4cc9f0",
-                description: "Hábitos que reativam energia e interesse pela vida"
-            },
-            { 
-                id: 2, 
-                title: "Vencer o Isolamento", 
-                habits: [13, 14, 22, 24, 27, 28], 
-                color: "#4361ee",
-                description: "Conectar-se e construir relacionamentos significativos"
-            },
-            { 
-                id: 3, 
-                title: "Cuidar da Cabeça", 
-                habits: [5, 6, 16, 17, 18], 
-                color: "#f72585",
-                description: "Saúde mental e bem-estar emocional"
-            },
-            { 
-                id: 4, 
-                title: "Cuidar do Corpo com Carinho", 
-                habits: [1, 2, 3, 4, 19, 20], 
-                color: "#f8961e",
-                description: "Hábitos físicos para saúde e vitalidade"
-            },
-            { 
-                id: 5, 
-                title: "Manter a Mente Viva", 
-                habits: [7, 8, 9, 21, 10], 
-                color: "#7209b7",
-                description: "Estímulo cognitivo e aprendizado contínuo"
-            },
-            { 
-                id: 6, 
-                title: "Cuidar da Vida ao Redor", 
-                habits: [12, 15, 29], 
-                color: "#2a9d8f",
-                description: "Organização e significado no ambiente pessoal"
-            },
-            { 
-                id: 7, 
-                title: "Sentido e Espiritualidade", 
-                habits: [16, 17, 28, 30], 
-                color: "#e9c46a",
-                description: "Práticas que alimentam propósito e conexão"
-            },
-            { 
-                id: 8, 
-                title: "Revisão de Vida", 
-                habits: [15, 29, 30], 
-                color: "#e76f51",
-                description: "Reflexão, organização e liberação do passado"
-            }
-        ];
+  <div class="card">
+    <button class="btn-info" onclick="generatePDF()">📄 Gerar relatório PDF</button>
+  </div>
 
-        // OPÇÕES DE HUMOR
-        const MOOD_OPTIONS = [
-            { emoji: "😢", name: "Triste", level: "Baixo", color: "#4361ee", description: "Dia difícil, precisando de cuidado" },
-            { emoji: "😐", name: "Neutro", level: "Médio-Baixo", color: "#4cc9f0", description: "Dia comum, sem altos nem baixos" },
-            { emoji: "🙂", name: "Bem", level: "Médio", color: "#2a9d8f", description: "Dia bom, tranquilo e produtivo" },
-            { emoji: "😊", name: "Feliz", level: "Médio-Alto", color: "#f8961e", description: "Dia alegre e satisfatório" },
-            { emoji: "🤩", name: "Excelente", level: "Alto", color: "#f72585", description: "Dia incrível, cheio de energia" }
-        ];
+  <footer>
+    © 2026 Ricardo de Faria Barros. Todos os direitos reservados.<br>
+    Inspire-se na longelescência:
+    <a href="https://www.plenalongevidade.com.br" target="_blank" rel="noopener">www.plenalongevidade.com.br</a>
+  </footer>
 
-        // ESTADO DA APLICAÇÃO
-        let appState = {
-            user: null,
-            habits: [],
-            verbos: {},
-            completed: {},
-            finances: {
-                expenses: [],
-                dailyBudget: 0
-            },
-            reminders: [],
-            mood: {},
-            challenges: {
-                current: null,
-                history: []
-            },
-            social: {
-                events: [],
-                categories: {
-                    family: [],
-                    work: [],
-                    leisure: []
-                }
-            },
-            currentDate: new Date(),
-            currentMonth: new Date().getMonth(),
-            currentYear: new Date().getFullYear()
-        };
+  <!-- Modal Editar -->
+  <div class="modal-backdrop" id="editBackdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>✏️ Editar despesa</h3>
+      <div class="small" id="editInfo"></div>
 
-        // ============================================
-        // FUNÇÕES UTILITÁRIAS
-        // ============================================
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            notification.style.background = type === 'error' ? '#e63946' : 
-                                          type === 'info' ? '#4361ee' : 
-                                          type === 'warning' ? '#f8961e' : '#4cc9f0';
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
+      <div class="row">
+        <div class="col">
+          <label for="editAmount">Valor (R$)</label>
+          <input type="number" id="editAmount" step="0.01" min="0">
+        </div>
+        <div class="col">
+          <label for="editCategory">Categoria</label>
+          <select id="editCategory"></select>
+        </div>
+      </div>
 
-        function formatDate(date) {
-            return date.toISOString().split('T')[0];
-        }
+      <div class="row">
+        <div class="col">
+          <label for="editNote">Observação</label>
+          <input type="text" id="editNote" placeholder="Opcional">
+        </div>
+      </div>
 
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(value);
-        }
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeEdit()">Cancelar</button>
+        <button onclick="saveEdit()">Salvar</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- Modal Ajuda -->
+  <div class="modal-backdrop" id="helpBackdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>❔ Ajuda rápida</h3>
+      <div class="small">
+        • Valor tem máscara: digite “1250” → R$ 12,50.<br>
+        • Enter no Valor → Categoria → Observação → grava.<br>
+        • Clique no calendário para ver/editar/excluir.<br>
+        • iPhone: Safari → Compartilhar → “Adicionar à Tela de Início”.
+      </div>
+      <div class="modal-actions" style="margin-top:12px;">
+        <button onclick="closeHelp()">Fechar</button>
+      </div>
+    </div>
+  </div>
 
-        function parseBRLAmount(raw) {
-            const s = String(raw ?? '').trim();
-            if (!s) return NaN;
-            // Remove currency and spaces, keep digits, dot and comma and minus
-            let cleaned = s.replace(/\s/g, '').replace(/^R\$?/i, '').replace(/[^0-9,.-]/g, '');
-            // If both '.' and ',' exist, assume '.' are thousand separators and ',' decimal
-            const hasComma = cleaned.includes(',');
-            const hasDot = cleaned.includes('.');
-            if (hasComma && hasDot) {
-                cleaned = cleaned.replace(/\./g, '').replace(',', '.');
-            } else if (hasComma && !hasDot) {
-                cleaned = cleaned.replace(',', '.');
-            }
-            const n = Number(cleaned);
-            return Number.isFinite(n) ? n : NaN;
-        }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // =========================
+    // Manifest embutido (arquivo único)
+    // =========================
+    (function injectManifest() {
+      const manifest = {
+        name: "Meu Controle de Gastos",
+        short_name: "Gastos",
+        start_url: "./",
+        scope: "./",
+        display: "standalone",
+        background_color: "#E8F5E9",
+        theme_color: "#4CAF50",
+        lang: "pt-BR",
+        orientation: "portrait",
+        icons: [{
+          src: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E",
+          sizes: "512x512",
+          type: "image/svg+xml",
+          purpose: "any maskable"
+        }]
+      };
+      const href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
+      let link = document.querySelector('link[rel="manifest"]');
+      if (!link) { link = document.createElement("link"); link.rel = "manifest"; document.head.appendChild(link); }
+      link.href = href;
+    })();
 
-        function getCategoryLabel(category) {
-            const map = {
-                alimentacao: 'Alimentação',
-                transporte: 'Transporte',
-                lazer: 'Lazer',
-                saude: 'Saúde',
-                educacao: 'Educação',
-                outros: 'Outros'
-            };
-            return map[String(category || '').toLowerCase()] || 'Outros';
-        }
-
-        function getMonthName(monthIndex) {
-            const months = [
-                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-            ];
-            return months[monthIndex];
-        }
-
-        function saveToLocalStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-                return true;
-            } catch (error) {
-                console.error('Erro ao salvar:', error);
-                showNotification('Erro ao salvar dados.', 'error');
-                return false;
-            }
-        }
-
-        function loadFromLocalStorage() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    
-                    // Inicializar estruturas se não existirem
-                    if (!parsed.completed) parsed.completed = {};
-                    if (!parsed.verbos) parsed.verbos = {};
-                    if (!parsed.finances) parsed.finances = { expenses: [], dailyBudget: 0 };
-                    if (!parsed.reminders) parsed.reminders = [];
-                    if (!parsed.mood) parsed.mood = {};
-                    if (!parsed.challenges) parsed.challenges = { current: null, history: [] };
-                    if (!parsed.social) parsed.social = { events: [], categories: { family: [], work: [], leisure: [] } };
-                    
-                    if (!parsed.habits || parsed.habits.length === 0) {
-                        parsed.habits = ALL_HABITS.map(habit => ({
-                            ...habit,
-                            streak: 0
-                        }));
-                    }
-                    
-                    appState = parsed;
-                    return true;
-                }
-            } catch (error) {
-                console.error('Erro ao carregar:', error);
-            }
-            return false;
-        }
-
-        // ============================================
-        // FUNÇÕES DE DIÁRIO DE VERBOS
-        // ============================================
-        function renderVerbosDiario() {
-            const container = document.getElementById('verbosGrid');
-            if (!container) {
-                console.error('Container de verbos não encontrado');
-                return;
-            }
-            
-            const today = formatDate(new Date());
-            const todayVerbos = appState.verbos[today] || {};
-            
-            container.innerHTML = '';
-            
-            VERBOS.forEach(verbo => {
-                const verboElement = document.createElement('div');
-                verboElement.className = 'verb-card';
-                verboElement.innerHTML = `
-                    <div class="verb-header">
-                        <div class="verb-icon">${verbo.id}</div>
-                        <div>
-                            <div class="verb-title">${verbo.verbo}</div>
-                            <div style="font-size: 12px; color: var(--gray);">${verbo.pergunta}</div>
-                        </div>
-                    </div>
-                    <textarea 
-                        class="verb-input" 
-                        data-verbo-id="${verbo.id}"
-                        placeholder="${verbo.placeholder}"
-                        maxlength="500"
-                    >${todayVerbos[verbo.id] || ''}</textarea>
-                    <div class="verb-counter">
-                        <span id="counter${verbo.id}">${(todayVerbos[verbo.id] || '').length || 0}/500</span>
-                    </div>
-                `;
-                container.appendChild(verboElement);
-                
-                const textarea = verboElement.querySelector('textarea');
-                const counter = document.getElementById(`counter${verbo.id}`);
-                
-                if (textarea && counter) {
-                    textarea.addEventListener('input', function() {
-                        const length = this.value.length;
-                        counter.textContent = `${length}/500`;
-                        
-                        if (length >= 450) {
-                            counter.style.color = '#e63946';
-                        } else if (length >= 400) {
-                            counter.style.color = '#f8961e';
-                        } else {
-                            counter.style.color = 'var(--gray)';
-                        }
-                    });
-                    
-                    textarea.dispatchEvent(new Event('input'));
-                }
-            });
-        }
-
-        function saveVerbosDiario() {
-            const today = formatDate(new Date());
-            const verbosData = {};
-            
-            VERBOS.forEach(verbo => {
-                const textarea = document.querySelector(`textarea[data-verbo-id="${verbo.id}"]`);
-                if (textarea) {
-                    const value = textarea.value.trim();
-                    if (value) {
-                        verbosData[verbo.id] = value;
-                    }
-                }
-            });
-            
-            if (Object.keys(verbosData).length > 0) {
-                appState.verbos[today] = verbosData;
-                saveToLocalStorage();
-                showNotification('Diário salvo com sucesso!');
-                return true;
-            } else {
-                showNotification('Nenhum verbo preenchido para salvar.', 'info');
-                return false;
-            }
-        }
-
-        // ============================================
-        // FUNÇÕES DE DESAFIO MENSAL
-        // ============================================
-        function renderDesafioMensal() {
-            const currentMonth = document.getElementById('currentMonth');
-            const currentChallenge = document.getElementById('currentChallenge');
-            const challengeHistory = document.getElementById('challengeHistory');
-            
-            if (!currentMonth || !currentChallenge) {
-                console.error('Elementos do desafio não encontrados');
-                return;
-            }
-            
-            const today = new Date();
-            const monthName = getMonthName(today.getMonth());
-            const year = today.getFullYear();
-            
-            currentMonth.textContent = `${monthName} de ${year}`;
-            
-            // Renderizar desafio atual
-            if (appState.challenges.current) {
-                const challenge = appState.challenges.current;
-                const progress = challenge.currentValue ? (challenge.currentValue / challenge.goal) * 100 : 0;
-                
-                currentChallenge.innerHTML = `
-                    <div class="challenge-title">${challenge.title}</div>
-                    <div class="challenge-description">${challenge.description}</div>
-                    
-                    <div class="challenge-metrics">
-                        <div class="metric-item">
-                            <div class="metric-label">Meta</div>
-                            <div class="metric-value">${challenge.goal} ${challenge.unit}</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">Atual</div>
-                            <div class="metric-value">${challenge.currentValue || 0} ${challenge.unit}</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">Progresso</div>
-                            <div class="metric-value">${Math.round(progress)}%</div>
-                        </div>
-                    </div>
-                    
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>0 ${challenge.unit}</span>
-                            <span>${challenge.goal} ${challenge.unit}</span>
-                        </div>
-                        <div class="progress-bar-challenge">
-                            <div class="progress-fill-challenge" style="width: ${progress}%"></div>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 10px; margin-top: 20px;">
-                        <button class="btn-primary" onclick="updateChallengeProgress(1)" style="flex: 1;">➕ Adicionar 1</button>
-                        <button class="btn-secondary" onclick="updateChallengeProgress(-1)" style="flex: 1;">➖ Remover 1</button>
-                    </div>
-                `;
-            } else {
-                currentChallenge.innerHTML = `
-                    <p style="text-align: center;">🎯 Nenhum desafio definido para este mês.</p>
-                    <p style="text-align: center; font-size: 12px; color: var(--gray);">Defina um desafio para começar a acompanhar seu progresso!</p>
-                `;
-            }
-            
-            // Renderizar histórico
-            if (challengeHistory) {
-                challengeHistory.innerHTML = '';
-                if (appState.challenges.history.length > 0) {
-                    appState.challenges.history.forEach(challenge => {
-                        const historyItem = document.createElement('div');
-                        historyItem.className = `history-item ${challenge.completed ? 'completed' : ''}`;
-                        
-                        const progress = challenge.currentValue ? Math.round((challenge.currentValue / challenge.goal) * 100) : 0;
-                        
-                        historyItem.innerHTML = `
-                            <div class="history-month">${challenge.month}</div>
-                            <div class="history-title">${challenge.title}</div>
-                            <div class="history-progress">${progress}% concluído • ${challenge.category}</div>
-                        `;
-                        
-                        challengeHistory.appendChild(historyItem);
-                    });
-                } else {
-                    challengeHistory.innerHTML = '<p style="text-align: center; font-size: 12px; color: var(--gray);">Nenhum desafio histórico registrado.</p>';
-                }
-            }
-        }
-
-        function saveDesafioMensal() {
-            const title = document.getElementById('challengeTitle')?.value.trim();
-            const description = document.getElementById('challengeDescription')?.value.trim();
-            const category = document.getElementById('challengeCategory')?.value;
-            const goal = parseInt(document.getElementById('challengeGoal')?.value);
-            const unit = document.getElementById('challengeUnit')?.value.trim();
-            
-            if (!title || !description || !goal || !unit) {
-                showNotification('Preencha todos os campos do desafio!', 'error');
-                return;
-            }
-            
-            const today = new Date();
-            const monthName = getMonthName(today.getMonth());
-            const year = today.getFullYear();
-            
-            // Adicionar ao histórico se já existe um desafio atual
-            if (appState.challenges.current) {
-                appState.challenges.history.unshift({
-                    ...appState.challenges.current,
-                    completed: appState.challenges.current.currentValue >= appState.challenges.current.goal
-                });
-            }
-            
-            // Definir novo desafio
-            appState.challenges.current = {
-                id: Date.now(),
-                title,
-                description,
-                category,
-                goal,
-                unit,
-                currentValue: 0,
-                month: `${monthName} ${year}`,
-                startDate: formatDate(today)
-            };
-            
-            // Limpar formulário
-            if (document.getElementById('challengeTitle')) document.getElementById('challengeTitle').value = '';
-            if (document.getElementById('challengeDescription')) document.getElementById('challengeDescription').value = '';
-            if (document.getElementById('challengeGoal')) document.getElementById('challengeGoal').value = '';
-            if (document.getElementById('challengeUnit')) document.getElementById('challengeUnit').value = '';
-            
-            saveToLocalStorage();
-            renderDesafioMensal();
-            showNotification('Desafio mensal salvo com sucesso! 🎯');
-        }
-
-        function updateChallengeProgress(change) {
-            if (!appState.challenges.current) return;
-            
-            const newValue = (appState.challenges.current.currentValue || 0) + change;
-            
-            if (newValue < 0) {
-                showNotification('O valor não pode ser negativo!', 'warning');
-                return;
-            }
-            
-            appState.challenges.current.currentValue = newValue;
-            
-            // Verificar se completou o desafio
-            if (newValue >= appState.challenges.current.goal) {
-                showNotification('🎉 Parabéns! Você completou o desafio mensal!', 'success');
-            }
-            
-            saveToLocalStorage();
-            renderDesafioMensal();
-        }
-
-        // ============================================
-        // FUNÇÕES DE SOCIAL TERMÔMETRO
-        // ============================================
-        function renderSocialTermometro() {
-            const familyEvents = document.getElementById('familyEvents');
-            const workEvents = document.getElementById('workEvents');
-            const socialScore = document.getElementById('socialScore');
-            const socialDays = document.getElementById('socialDays');
-            
-            const familyEventsList = document.getElementById('familyEventsList');
-            const workEventsList = document.getElementById('workEventsList');
-            const leisureEventsList = document.getElementById('leisureEventsList');
-            const socialInsights = document.getElementById('socialInsights');
-            
-            // Calcular estatísticas
-            const today = formatDate(new Date());
-            const eventsToday = appState.social.events.filter(e => e.date === today);
-            
-            const familyCount = appState.social.categories.family.length;
-            const workCount = appState.social.categories.work.length;
-            const leisureCount = appState.social.categories.leisure.length;
-            const totalEvents = familyCount + workCount + leisureCount;
-            
-            // Dias com atividade social (últimos 30 dias)
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            
-            const socialDates = new Set();
-            appState.social.events.forEach(event => {
-                const eventDate = new Date(event.date);
-                if (eventDate >= thirtyDaysAgo) {
-                    socialDates.add(event.date);
-                }
-            });
-            
-            // Score social (0-100%)
-            const score = totalEvents > 0 ? Math.min(100, Math.round((totalEvents / 30) * 100)) : 0;
-            
-            // Atualizar estatísticas
-            if (familyEvents) familyEvents.textContent = familyCount;
-            if (workEvents) workEvents.textContent = workCount;
-            if (socialScore) socialScore.textContent = `${score}%`;
-            if (socialDays) socialDays.textContent = socialDates.size;
-            
-            // Renderizar eventos por categoria
-            renderSocialEventsList(familyEventsList, appState.social.categories.family, 'family');
-            renderSocialEventsList(workEventsList, appState.social.categories.work, 'work');
-            renderSocialEventsList(leisureEventsList, appState.social.categories.leisure, 'leisure');
-            
-            // Gerar insights
-            if (socialInsights) {
-                let insightsHTML = '';
-                
-                if (eventsToday.length === 0) {
-                    insightsHTML += `
-                        <div class="insight-item">
-                            <p>💡 Você ainda não registrou atividades sociais hoje. Que tal conectar-se com alguém?</p>
-                        </div>
-                    `;
-                }
-                
-                if (familyCount === 0) {
-                    insightsHTML += `
-                        <div class="insight-item">
-                            <p>👨‍👩‍👧‍👦 A vida familiar é importante para o bem-estar. Considere planejar um momento em família.</p>
-                        </div>
-                    `;
-                }
-                
-                if (score < 50) {
-                    insightsHTML += `
-                        <div class="insight-item">
-                            <p>🤝 Sua participação social pode ser maior. Tente participar de pelo menos uma atividade social por dia.</p>
-                        </div>
-                    `;
-                } else if (score >= 80) {
-                    insightsHTML += `
-                        <div class="insight-item">
-                            <p>🌟 Excelente! Você está mantendo uma vida social ativa e equilibrada.</p>
-                        </div>
-                    `;
-                }
-                
-                socialInsights.innerHTML = insightsHTML || '<p style="font-size: 12px; color: var(--gray);">Continue mantendo suas conexões sociais!</p>';
-            }
-        }
-
-        function renderSocialEventsList(container, events, category) {
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            if (events.length === 0) {
-                container.innerHTML = '<p style="text-align: center; font-size: 12px; color: var(--gray);">Nenhuma atividade registrada</p>';
-                return;
-            }
-            
-            // Mostrar apenas eventos recentes (últimos 7 dias)
-            const weekAgo = new Date();
-            weekAgo.setDate(weekAgo.getDate() - 7);
-            
-            const recentEvents = events.filter(event => {
-                const eventDate = new Date(event.date);
-                return eventDate >= weekAgo;
-            }).slice(0, 5); // Limitar a 5 eventos
-            
-            recentEvents.forEach(event => {
-                const eventElement = document.createElement('div');
-                eventElement.className = 'social-event';
-                
-                const formattedDate = new Date(event.date).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit'
-                });
-                
-                eventElement.innerHTML = `
-                    <div class="event-info">
-                        <h4>${event.name}</h4>
-                        <div class="event-meta">
-                            <span>${formattedDate}</span>
-                            <span>${event.duration}h</span>
-                            <span class="event-type">${getSocialCategoryName(category)}</span>
-                        </div>
-                    </div>
-                    <div class="event-check ${event.completed ? 'checked' : ''}" 
-                         data-event-id="${event.id}">
-                        ${event.completed ? '✓' : ''}
-                    </div>
-                `;
-                
-                container.appendChild(eventElement);
-            });
-        }
-
-        function getSocialCategoryName(category) {
-            const names = {
-                family: 'Família',
-                work: 'Trabalho',
-                leisure: 'Lazer'
-            };
-            return names[category] || category;
-        }
-
-        function addSocialEvent() {
-            const eventName = document.getElementById('socialEvent')?.value.trim();
-            const category = document.getElementById('socialCategory')?.value;
-            const duration = parseFloat(document.getElementById('socialDuration')?.value);
-            
-            if (!eventName || !duration) {
-                showNotification('Preencha o nome e a duração do evento!', 'error');
-                return;
-            }
-            
-            const today = formatDate(new Date());
-            const newEvent = {
-                id: Date.now(),
-                name: eventName,
-                category: category,
-                duration: duration,
-                date: today,
-                completed: true
-            };
-            
-            // Adicionar ao estado
-            appState.social.events.push(newEvent);
-            appState.social.categories[category].push(newEvent);
-            
-            // Limpar formulário
-            if (document.getElementById('socialEvent')) document.getElementById('socialEvent').value = '';
-            if (document.getElementById('socialDuration')) document.getElementById('socialDuration').value = '';
-            
-            saveToLocalStorage();
-            renderSocialTermometro();
-            showNotification('Participação social registrada! 👥');
-        }
-
-        function toggleSocialEvent(eventId) {
-            const eventIndex = appState.social.events.findIndex(e => e.id === eventId);
-            if (eventIndex === -1) return;
-            
-            appState.social.events[eventIndex].completed = !appState.social.events[eventIndex].completed;
-            saveToLocalStorage();
-            renderSocialTermometro();
-        }
-
-        // ============================================
-        // FUNÇÕES DE CONTROLE FINANCEIRO
-        // ============================================
-        function renderFinances() {
-            const totalSpent = document.getElementById('totalSpent');
-            const expensesList = document.getElementById('expensesList');
-            
-            if (!totalSpent || !expensesList) {
-                console.error('Elementos de finanças não encontrados');
-                return;
-            }
-            
-            const today = formatDate(new Date());
-            const todayExpenses = appState.finances.expenses.filter(e => e.date === today);
-            
-            // Calcular total gasto hoje
-            const total = todayExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-            totalSpent.textContent = formatCurrency(total);
-            
-            // Renderizar lista de despesas
-            expensesList.innerHTML = '';
-            
-            if (todayExpenses.length === 0) {
-                expensesList.innerHTML = '<p style="text-align: center; font-size: 12px; color: var(--gray);">Nenhuma despesa registrada hoje</p>';
-                return;
-            }
-            
-            todayExpenses.forEach(expense => {
-                const expenseElement = document.createElement('div');
-                expenseElement.style.cssText = 'background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;';
-                
-                expenseElement.innerHTML = `
-                    <div>
-                        <h4 style="color: var(--dark); margin-bottom: 5px; font-size: 16px;">${expense.description}</h4>
-                        <div style="font-size: 12px; color: var(--gray); display: flex; gap: 10px;">
-                            <span>${getCategoryLabel(expense.category)}</span>
-                            <span>${new Date(expense.time || new Date().toISOString()).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="font-weight: 700; color: var(--finance);">${formatCurrency(expense.amount)}</div>
-                        <button class="btn-delete" data-expense-id="${expense.id}" style="background: none; border: none; color: var(--danger); font-size: 20px; cursor: pointer; padding: 0 5px;">×</button>
-                    </div>
-                `;
-                
-                expensesList.appendChild(expenseElement);
-            });
-        }
-
-        function addExpense() {
-            const descriptionRaw = document.getElementById('expenseDescription')?.value.trim() || '';
-            const category = document.getElementById('expenseCategory')?.value || 'outros';
-            const amountRaw = document.getElementById('expenseAmount')?.value;
-            const amount = parseBRLAmount(amountRaw);
-
-            const description = descriptionRaw || getCategoryLabel(category);
-
-            if (!Number.isFinite(amount) || amount <= 0) {
-                showNotification('Digite um valor válido (ex.: 200 ou 200,00).', 'error');
-                return;
-            }
-
-const today = formatDate(new Date());
-            const newExpense = {
-                id: Date.now(),
-                description: description,
-                category: category,
-                amount: amount,
-                date: today,
-                time: new Date().toISOString()
-            };
-            
-            appState.finances.expenses.push(newExpense);
-            
-            // Limpar formulário
-            if (document.getElementById('expenseDescription')) document.getElementById('expenseDescription').value = '';
-            if (document.getElementById('expenseAmount')) document.getElementById('expenseAmount').value = '';
-            
-            saveToLocalStorage();
-            renderFinances();
-            showNotification('Despesa salva! 💰');
-            try { document.getElementById('expenseAmount')?.focus(); } catch (e) {}
-        }
-
-        function deleteExpense(expenseId) {
-            appState.finances.expenses = appState.finances.expenses.filter(e => e.id !== expenseId);
-            saveToLocalStorage();
-            renderFinances();
-            showNotification('Despesa removida!', 'info');
-        }
-
-        // ============================================
-        // FUNÇÕES DE LEMBRETES
-        // ============================================
-        function renderReminders() {
-            const remindersList = document.getElementById('remindersList');
-            
-            if (!remindersList) {
-                console.error('Lista de lembretes não encontrada');
-                return;
-            }
-            
-            remindersList.innerHTML = '';
-            
-            if (appState.reminders.length === 0) {
-                remindersList.innerHTML = '<p style="text-align: center; font-size: 12px; color: var(--gray);">Nenhum lembrete cadastrado</p>';
-                return;
-            }
-            
-            // Separar lembretes pendentes e completos
-            const pendingReminders = appState.reminders.filter(r => !r.completed);
-            const completedReminders = appState.reminders.filter(r => r.completed);
-            
-            // Renderizar pendentes primeiro
-            pendingReminders.forEach(reminder => {
-                const reminderElement = createReminderElement(reminder);
-                remindersList.appendChild(reminderElement);
-            });
-            
-            // Separador visual para completos
-            if (completedReminders.length > 0 && pendingReminders.length > 0) {
-                const separator = document.createElement('div');
-                separator.style.cssText = 'text-align: center; margin: 20px 0; color: var(--gray); font-size: 12px;';
-                separator.textContent = '━━━━━━━━━ Completos ━━━━━━━━━';
-                remindersList.appendChild(separator);
-            }
-            
-            // Renderizar completos
-            completedReminders.forEach(reminder => {
-                const reminderElement = createReminderElement(reminder);
-                remindersList.appendChild(reminderElement);
-            });
-        }
-
-        function createReminderElement(reminder) {
-            const reminderElement = document.createElement('div');
-            reminderElement.style.cssText = `background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid ${reminder.priority === 'urgent' ? 'var(--danger)' : 'var(--reminders)'}; ${reminder.completed ? 'opacity: 0.7;' : ''}`;
-            
-            const formattedDate = new Date(reminder.createdAt).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            reminderElement.innerHTML = `
-                <div style="font-weight: 600; color: var(--dark); margin-bottom: 8px; ${reminder.completed ? 'text-decoration: line-through;' : ''}">${reminder.text}</div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 12px; color: var(--gray); display: flex; align-items: center; gap: 5px;">
-                        📅 ${formattedDate}
-                    </div>
-                    <div class="reminder-check ${reminder.completed ? 'checked' : ''}" 
-                         data-reminder-id="${reminder.id}"
-                         style="width: 24px; height: 24px; border: 2px solid var(--gray); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; ${reminder.completed ? 'background: var(--success); border-color: var(--success); color: white;' : ''}">
-                        ${reminder.completed ? '✓' : ''}
-                    </div>
-                </div>
-            `;
-            
-            return reminderElement;
-        }
-
-        function addReminder() {
-            const text = document.getElementById('reminderText')?.value.trim();
-            const priority = document.getElementById('reminderPriority')?.value;
-            
-            if (!text) {
-                showNotification('Digite o texto do lembrete!', 'error');
-                return;
-            }
-            
-            const newReminder = {
-                id: Date.now(),
-                text: text,
-                priority: priority,
-                completed: false,
-                createdAt: new Date().toISOString()
-            };
-            
-            appState.reminders.unshift(newReminder);
-            
-            // Limpar formulário
-            if (document.getElementById('reminderText')) document.getElementById('reminderText').value = '';
-            
-            saveToLocalStorage();
-            renderReminders();
-            showNotification('Lembrete adicionado! 🔔');
-        }
-
-        function toggleReminder(reminderId) {
-            const reminderIndex = appState.reminders.findIndex(r => r.id === reminderId);
-            if (reminderIndex === -1) return;
-            
-            appState.reminders[reminderIndex].completed = !appState.reminders[reminderIndex].completed;
-            saveToLocalStorage();
-            renderReminders();
-        }
-
-        // ============================================
-        // FUNÇÕES DE EMOÇIÔMETRO
-        // ============================================
-        function renderEmociometro() {
-            const moodSelector = document.getElementById('moodSelector');
-            const todayMood = document.getElementById('todayMood');
-            const moodHistory = document.getElementById('moodHistory');
-            
-            if (!moodSelector || !todayMood) {
-                console.error('Elementos do emociômetro não encontrados');
-                return;
-            }
-            
-            const today = formatDate(new Date());
-            const todayMoodData = appState.mood[today];
-            
-            // Renderizar seletor de humor
-            moodSelector.innerHTML = '';
-            MOOD_OPTIONS.forEach((mood, index) => {
-                const isSelected = todayMoodData && todayMoodData.level === mood.level;
-                
-                const moodOption = document.createElement('div');
-                moodOption.className = `mood-option ${isSelected ? 'selected' : ''}`;
-                moodOption.setAttribute('data-mood-index', index);
-                moodOption.style.cssText = `background: white; padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s; border: 2px solid ${isSelected ? mood.color : '#e9ecef'}; min-width: 80px;`;
-                
-                moodOption.innerHTML = `
-                    <div style="font-size: 32px; margin-bottom: 8px;">${mood.emoji}</div>
-                    <div style="font-weight: 600; color: var(--dark); margin-bottom: 4px;">${mood.name}</div>
-                    <div style="font-size: 11px; color: var(--gray);">${mood.level}</div>
-                `;
-                
-                moodSelector.appendChild(moodOption);
-            });
-            
-            // Renderizar humor de hoje
-            if (todayMoodData) {
-                const mood = MOOD_OPTIONS.find(m => m.level === todayMoodData.level);
-                if (mood) {
-                    todayMood.innerHTML = `
-                        <div style="font-size: 48px; margin-bottom: 15px;">${mood.emoji}</div>
-                        <div style="font-size: 24px; font-weight: 700; color: var(--dark); margin-bottom: 10px;">${mood.name}</div>
-                        <div style="color: var(--gray); margin-bottom: 15px;">${mood.description}</div>
-                        ${todayMoodData.notes ? `<p style="font-size: 12px; color: var(--gray); margin-top: 10px;">"${todayMoodData.notes}"</p>` : ''}
-                    `;
-                }
-            } else {
-                todayMood.innerHTML = `
-                    <p>Selecione seu humor para hoje</p>
-                    <p style="font-size: 12px; color: var(--gray);">Como você está se sentindo?</p>
-                `;
-            }
-            
-            // Carregar notas se existirem
-            const moodNotes = document.getElementById('moodNotes');
-            if (moodNotes) {
-                moodNotes.value = todayMoodData ? (todayMoodData.notes || '') : '';
-            }
-            
-            // Renderizar histórico (últimos 7 dias)
-            if (moodHistory) {
-                moodHistory.innerHTML = '';
-                const weekAgo = new Date();
-                weekAgo.setDate(weekAgo.getDate() - 7);
-                
-                const recentMoods = Object.entries(appState.mood)
-                    .filter(([date, data]) => new Date(date) >= weekAgo)
-                    .sort((a, b) => new Date(b[0]) - new Date(a[0]))
-                    .slice(0, 5);
-                
-                if (recentMoods.length > 0) {
-                    recentMoods.forEach(([date, data]) => {
-                        const mood = MOOD_OPTIONS.find(m => m.level === data.level);
-                        if (!mood) return;
-                        
-                        const historyItem = document.createElement('div');
-                        historyItem.style.cssText = 'background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; gap: 15px;';
-                        
-                        const formattedDate = new Date(date).toLocaleDateString('pt-BR', {
-                            weekday: 'short',
-                            day: '2-digit',
-                            month: '2-digit'
-                        });
-                        
-                        historyItem.innerHTML = `
-                            <div style="font-size: 24px;">${mood.emoji}</div>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; color: var(--dark);">${mood.name}</div>
-                                <div style="font-size: 11px; color: var(--gray);">${formattedDate}</div>
-                            </div>
-                        `;
-                        
-                        moodHistory.appendChild(historyItem);
-                    });
-                } else {
-                    moodHistory.innerHTML = '<p style="text-align: center; font-size: 12px; color: var(--gray);">Nenhum humor registrado recentemente</p>';
-                }
-            }
-        }
-
-        function saveMood() {
-            const selectedOption = document.querySelector('.mood-option.selected');
-            const notes = document.getElementById('moodNotes')?.value.trim();
-            
-            if (!selectedOption) {
-                showNotification('Selecione um humor primeiro!', 'error');
-                return;
-            }
-            
-            const moodIndex = parseInt(selectedOption.getAttribute('data-mood-index'));
-            const mood = MOOD_OPTIONS[moodIndex];
-            
-            const today = formatDate(new Date());
-            appState.mood[today] = {
-                level: mood.level,
-                emoji: mood.emoji,
-                name: mood.name,
-                notes: notes,
-                savedAt: new Date().toISOString()
-            };
-            
-            saveToLocalStorage();
-            renderEmociometro();
-            showNotification(`Humor ${mood.name} salvo! ${mood.emoji}`);
-        }
-
-        // ============================================
-        // FUNÇÕES DE ESTATÍSTICAS E HÁBITOS
-        // ============================================
-        function getTodayCompletedCount() {
-            const today = formatDate(new Date());
-            let count = 0;
-            if (appState.completed[today]) {
-                count += (appState.completed[today].daily || []).length;
-                count += (appState.completed[today].weekly || []).length;
-            }
-            return count;
-        }
-
-        function getWeekCompletedCount() {
-            const today = new Date();
-            const weekAgo = new Date(today);
-            weekAgo.setDate(today.getDate() - 7);
-            
-            let count = 0;
-            for (let d = new Date(weekAgo); d <= today; d.setDate(d.getDate() + 1)) {
-                const dateStr = formatDate(d);
-                if (appState.completed[dateStr]) {
-                    count += (appState.completed[dateStr].daily || []).length;
-                    count += (appState.completed[dateStr].weekly || []).length;
-                }
-            }
-            return count;
-        }
-
-        function getTotalCompletedCount() {
-            let total = 0;
-            for (const date in appState.completed) {
-                const dayData = appState.completed[date];
-                total += (dayData.daily || []).length;
-                total += (dayData.weekly || []).length;
-            }
-            return total;
-        }
-
-        function calculateStreak() {
-            let streak = 0;
-            const today = new Date();
-            let currentDate = new Date(today);
-            
-            while (true) {
-                const dateStr = formatDate(currentDate);
-                const completedToday = appState.completed[dateStr] && 
-                    ((appState.completed[dateStr].daily || []).length > 0 || 
-                     (appState.completed[dateStr].weekly || []).length > 0);
-                
-                if (completedToday) {
-                    streak++;
-                    currentDate.setDate(currentDate.getDate() - 1);
-                } else {
-                    break;
-                }
-            }
-            
-            return streak;
-        }
-
-        function renderHabits() {
-            const dailyContainer = document.getElementById('dailyHabitsGrid');
-            const weeklyContainer = document.getElementById('weeklyHabitsGrid');
-            
-            if (!dailyContainer || !weeklyContainer) {
-                console.error('Containers de hábitos não encontrados');
-                return;
-            }
-            
-            const today = formatDate(new Date());
-            const todayData = appState.completed[today] || {};
-            const completedDaily = todayData.daily || [];
-            const completedWeekly = todayData.weekly || [];
-            
-            // Hábitos diários
-            const dailyHabits = appState.habits.filter(h => h.frequency === 'daily');
-            dailyContainer.innerHTML = '';
-            
-            dailyHabits.forEach(habit => {
-                const habitElement = createHabitElement(habit, completedDaily.includes(habit.id));
-                dailyContainer.appendChild(habitElement);
-            });
-            
-            // Hábitos semanais
-            const weeklyHabits = appState.habits.filter(h => h.frequency === 'weekly');
-            weeklyContainer.innerHTML = '';
-            
-            weeklyHabits.forEach(habit => {
-                const habitElement = createHabitElement(habit, completedWeekly.includes(habit.id));
-                weeklyContainer.appendChild(habitElement);
-            });
-            
-            renderTrails();
-        }
-
-        function createHabitElement(habit, isCompleted) {
-            const element = document.createElement('div');
-            element.className = `habit-card ${habit.frequency}`;
-            element.innerHTML = `
-                <div class="habit-number">${habit.id}</div>
-                <h4>
-                    ${habit.title}
-                    <span class="habit-frequency">${habit.frequency === 'daily' ? 'DIÁRIO' : 'SEMANAL'}</span>
-                </h4>
-                <p>${habit.description}</p>
-                <div class="habit-meta">${habit.meta}</div>
-                <div class="habit-actions">
-                    <div class="habit-check ${isCompleted ? 'checked' : ''}" 
-                         data-habit-id="${habit.id}" 
-                         data-frequency="${habit.frequency}">
-                        ${isCompleted ? '✓' : ''}
-                    </div>
-                    <div class="habit-streak">
-                        🔥 ${habit.streak || 0} ${habit.frequency === 'daily' ? 'dias' : 'semanas'}
-                    </div>
-                </div>
-            `;
-            return element;
-        }
-
-        function toggleHabitCompletion(habitId, frequency) {
-            const today = formatDate(new Date());
-            const habit = appState.habits.find(h => h.id === habitId);
-            
-            if (!habit) return;
-            
-            if (!appState.completed[today]) {
-                appState.completed[today] = { daily: [], weekly: [] };
-            }
-            
-            const completedArray = frequency === 'weekly' ? 
-                appState.completed[today].weekly : 
-                appState.completed[today].daily;
-            
-            const index = completedArray.indexOf(habitId);
-            
-            if (index === -1) {
-                completedArray.push(habitId);
-                habit.streak = (habit.streak || 0) + 1;
-                showNotification(`✅ ${habit.title} completado!`);
-            } else {
-                completedArray.splice(index, 1);
-                habit.streak = Math.max(0, (habit.streak || 1) - 1);
-                showNotification(`↩️ ${habit.title} removido`, 'info');
-            }
-            
-            saveToLocalStorage();
-            renderHabits();
-            renderCalendar();
-        }
-
-        // ============================================
-        // FUNÇÕES DE RENDERIZAÇÃO (CALENDÁRIO, TRILHAS)
-        // ============================================
-        function renderCalendar() {
-            const title = document.getElementById('calendarTitle');
-            const container = document.getElementById('calendarDays');
-            
-            if (!title || !container) {
-                console.error('Elementos do calendário não encontrados');
-                return;
-            }
-            
-            const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            
-            title.textContent = `${monthNames[appState.currentMonth]} ${appState.currentYear}`;
-            
-            const firstDay = new Date(appState.currentYear, appState.currentMonth, 1);
-            const lastDay = new Date(appState.currentYear, appState.currentMonth + 1, 0);
-            
-            container.innerHTML = '';
-            
-            // Dias da semana
-            dayNames.forEach(day => {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day-name';
-                dayElement.textContent = day;
-                container.appendChild(dayElement);
-            });
-            
-            // Espaços vazios
-            const firstDayOfWeek = firstDay.getDay();
-            for (let i = 0; i < firstDayOfWeek; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day empty';
-                container.appendChild(emptyDay);
-            }
-            
-            // Dias do mês
-            const today = new Date();
-            const todayStr = formatDate(today);
-            
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-                const date = new Date(appState.currentYear, appState.currentMonth, day);
-                const dateStr = formatDate(date);
-                
-                const dayElement = document.createElement('div');
-                dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
-                dayElement.setAttribute('data-date', dateStr);
-                
-                if (dateStr === todayStr) {
-                    dayElement.classList.add('today');
-                }
-                
-                if (appState.completed[dateStr]) {
-                    const totalCompleted = 
-                        (appState.completed[dateStr].daily || []).length + 
-                        (appState.completed[dateStr].weekly || []).length;
-                    if (totalCompleted > 0) {
-                        dayElement.classList.add('completed');
-                        dayElement.title = `${totalCompleted} hábito(s) completado(s)`;
-                    }
-                }
-                
-                container.appendChild(dayElement);
-            }
-        }
-
-        function renderTrails() {
-            const container = document.getElementById('trailsList');
-            if (!container) {
-                console.error('Container de trilhas não encontrado');
-                return;
-            }
-            
-            container.innerHTML = '';
-            
-            TRAILS.forEach(trail => {
-                const trailElement = document.createElement('div');
-                trailElement.className = 'trail-item';
-                trailElement.setAttribute('data-trail-id', trail.id);
-                
-                const trailHabits = [];
-                trail.habits.forEach(habitId => {
-                    const habit = appState.habits.find(h => h.id === habitId);
-                    if (habit) {
-                        trailHabits.push(habit);
-                    }
-                });
-                
-                const completedHabits = trailHabits.filter(habit => habit && habit.streak > 0).length;
-                const progressPercent = Math.round((completedHabits / trail.habits.length) * 100);
-                
-                // Ordenar os números dos hábitos
-                const habitNumbers = [...trail.habits].sort((a, b) => a - b);
-                
-                trailElement.innerHTML = `
-                    <div class="trail-header">
-                        <div class="trail-icon" style="background: ${trail.color}">${trail.id}</div>
-                        <div class="trail-info">
-                            <h4>${trail.title}</h4>
-                            <div class="trail-progress">${completedHabits}/${trail.habits.length} hábitos</div>
-                            <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">${trail.description}</div>
-                            <div style="margin-top: 8px;">
-                                <div style="font-size: 11px; color: var(--dark); font-weight: 600; margin-bottom: 4px;">Hábitos relacionados:</div>
-                                <div class="habit-numbers">
-                                    ${habitNumbers.map(num => `
-                                        <span class="habit-number-badge" style="background: ${trail.color}20; color: ${trail.color}; border-color: ${trail.color}40;">
-                                            ${num}
-                                        </span>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progressPercent}%; background: ${trail.color}"></div>
-                    </div>
-                `;
-                
-                container.appendChild(trailElement);
-            });
-        }
-
-        // ============================================
-        // NAVEGAÇÃO ENTRE TABS
-        // ============================================
-        function switchTab(tabName) {
-            // Esconder todas as tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.main-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Mostrar tab selecionada
-            const selectedTab = document.getElementById(`${tabName}Tab`);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            }
-            
-            const selectedMainTab = document.querySelector(`.main-tab[data-tab="${tabName}"]`);
-            if (selectedMainTab) {
-                selectedMainTab.classList.add('active');
-            }
-            
-            // Atualizar conteúdo específico da tab
-            switch(tabName) {
-                case 'challenge':
-                    renderDesafioMensal();
-                    break;
-                case 'social':
-                    renderSocialTermometro();
-                    break;
-                case 'finances':
-                    renderFinances();
-                    break;
-                case 'reminders':
-                    renderReminders();
-                    break;
-                case 'mood':
-                    renderEmociometro();
-                    break;
-                case 'habits':
-                default:
-                    // Já renderizado por padrão
-                    break;
-            }
-        }
-
-        // ============================================
-        // INICIALIZAÇÃO DO USUÁRIO
-        // ============================================
-        function setupUser(name, pin) {
-            appState.user = {
-                name: name,
-                pin: pin,
-                joinedDate: new Date().toISOString()
-            };
-            
-            appState.habits = ALL_HABITS.map(habit => ({
-                ...habit,
-                streak: 0
-            }));
-            
-            const displayName = document.getElementById('displayName');
-            if (displayName) {
-                displayName.textContent = name;
-            }
-            
-            document.getElementById('createAccountModal').style.display = 'none';
-            document.getElementById('appContent').classList.remove('hidden');
-            
-            saveToLocalStorage();
-            initializeApp();
-            
-            showNotification(`Conta criada! Seu PIN é: ${pin} - Anote em um lugar seguro.`);
-            
-            if (isIOS() && !isStandalone()) {
-                setTimeout(() => {
-                    showNotification('📱 Para instalar: Safari → Compartilhar → "Adicionar à Tela de Início"');
-                }, 2000);
-            }
-        }
-
-        function verifyPIN(pin) {
-            return appState.user && appState.user.pin === pin;
-        }
-
-        function initializeApp() {
-            renderVerbosDiario();
-            renderHabits();
-            renderCalendar();
-            renderDesafioMensal();
-            renderSocialTermometro();
-            renderFinances();
-            renderReminders();
-            renderEmociometro();
-            setupEventListeners();
-        }
-
-        function logout() {
-            if (confirm('Deseja sair da sua conta?')) {
-                document.getElementById('appContent').classList.add('hidden');
-                document.getElementById('pinModal').style.display = 'flex';
-                
-                document.querySelectorAll('.pin-input').forEach(input => {
-                    input.value = '';
-                    input.classList.remove('filled');
-                });
-                const firstPinInput = document.querySelector('.pin-input[data-index="0"]');
-                if (firstPinInput) firstPinInput.focus();
-            }
-        }
-
-        // ============================================
-        // CONFIGURAÇÃO DE EVENT LISTENERS
-        // ============================================
-        function setupEventListeners() {
-            // Delegation de eventos para toda a aplicação
-            document.addEventListener('click', function(e) {
-                // Cliques em hábitos
-                if (e.target.classList.contains('habit-check')) {
-                    const habitId = parseInt(e.target.getAttribute('data-habit-id'));
-                    const frequency = e.target.getAttribute('data-frequency');
-                    toggleHabitCompletion(habitId, frequency);
-                    return;
-                }
-                
-                // Cliques em tabs de hábitos
-                if (e.target.closest('[data-tab-type]')) {
-                    const tabButton = e.target.closest('[data-tab-type]');
-                    const tabType = tabButton.getAttribute('data-tab-type');
-                    
-                    document.querySelectorAll('[data-tab-type]').forEach(t => t.classList.remove('active'));
-                    tabButton.classList.add('active');
-                    
-                    document.getElementById('dailyHabitsGrid').classList.toggle('hidden', tabType !== 'daily');
-                    document.getElementById('weeklyHabitsGrid').classList.toggle('hidden', tabType !== 'weekly');
-                    return;
-                }
-                
-                // Cliques em tabs principais
-                if (e.target.closest('.main-tab')) {
-                    const mainTab = e.target.closest('.main-tab');
-                    const tabName = mainTab.getAttribute('data-tab');
-                    switchTab(tabName);
-                    return;
-                }
-                
-                // Cliques em opções de humor
-                if (e.target.closest('.mood-option')) {
-                    const moodOption = e.target.closest('.mood-option');
-                    document.querySelectorAll('.mood-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    moodOption.classList.add('selected');
-                    return;
-                }
-                
-                // Cliques em botão de deletar despesa
-                if (e.target.classList.contains('btn-delete')) {
-                    const expenseId = parseInt(e.target.getAttribute('data-expense-id'));
-                    deleteExpense(expenseId);
-                    return;
-                }
-                
-                // Cliques em check de lembretes
-                if (e.target.classList.contains('reminder-check')) {
-                    const reminderId = parseInt(e.target.getAttribute('data-reminder-id'));
-                    toggleReminder(reminderId);
-                    return;
-                }
-                
-                // Cliques em check de eventos sociais
-                if (e.target.classList.contains('event-check')) {
-                    const eventId = parseInt(e.target.getAttribute('data-event-id'));
-                    toggleSocialEvent(eventId);
-                    return;
-                }
-            });
-            
-            // Event listeners diretos
-            const prevMonth = document.getElementById('prevMonth');
-            const nextMonth = document.getElementById('nextMonth');
-            
-            if (prevMonth) {
-                prevMonth.addEventListener('click', () => {
-                    if (appState.currentMonth === 0) {
-                        appState.currentMonth = 11;
-                        appState.currentYear--;
-                    } else {
-                        appState.currentMonth--;
-                    }
-                    renderCalendar();
-                });
-            }
-            
-            if (nextMonth) {
-                nextMonth.addEventListener('click', () => {
-                    if (appState.currentMonth === 11) {
-                        appState.currentMonth = 0;
-                        appState.currentYear++;
-                    } else {
-                        appState.currentMonth++;
-                    }
-                    renderCalendar();
-                });
-            }
-            
-            // Botões principais
-            const btnSaveVerbos = document.getElementById('btnSaveVerbos');
-            const btnSaveChallenge = document.getElementById('btnSaveChallenge');
-            const btnAddSocial = document.getElementById('btnAddSocial');
-            const btnAddExpense = document.getElementById('btnAddExpense');
-            const btnAddReminder = document.getElementById('btnAddReminder');
-            const btnSaveMood = document.getElementById('btnSaveMood');
-            
-            if (btnSaveVerbos) btnSaveVerbos.addEventListener('click', saveVerbosDiario);
-            if (btnSaveChallenge) btnSaveChallenge.addEventListener('click', saveDesafioMensal);
-            if (btnAddSocial) btnAddSocial.addEventListener('click', addSocialEvent);
-            if (btnAddExpense) btnAddExpense.addEventListener('click', addExpense);
-            const expenseDescEl = document.getElementById('expenseDescription');
-            const expenseAmountEl = document.getElementById('expenseAmount');
-            if (expenseDescEl) expenseDescEl.addEventListener('keydown', handleExpenseQuickSave);
-            if (expenseAmountEl) {
-                expenseAmountEl.addEventListener('keydown', handleExpenseQuickSave);
-                // Máscara leve: ao sair do campo, formata como moeda (sem atrapalhar a digitação)
-                expenseAmountEl.addEventListener('blur', () => {
-                    const n = parseBRLAmount(expenseAmountEl.value);
-                    if (Number.isFinite(n) && n > 0) expenseAmountEl.value = formatCurrency(n).replace('R$', 'R$ ').trim();
-                });
-            }
-            if (btnAddReminder) btnAddReminder.addEventListener('click', addReminder);
-            if (btnSaveMood) btnSaveMood.addEventListener('click', saveMood);
-        }
-
-        // ============================================
-        // PWA - INSTALAÇÃO
-        // ============================================
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            if (!isIOS() && installBtn) {
-                installBtn.style.display = 'block';
-                
-                installBtn.addEventListener('click', () => {
-                    installBtn.style.display = 'none';
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            showNotification('App instalado com sucesso!');
-                        }
-                        deferredPrompt = null;
-                    });
-                });
-            }
+    // =========================
+    // Service Worker inline (cache do app)
+    // =========================
+    (function registerInlineSW() {
+      if (!("serviceWorker" in navigator)) return;
+      const swCode = `
+        const CACHE_NAME = "gastos-singlefile-stable-v3";
+        const CORE = ["./"];
+        self.addEventListener("install", (event) => {
+          event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE)));
+          self.skipWaiting();
         });
-
-        // ============================================
-        // INICIALIZAÇÃO DO SISTEMA
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Dica de instalação no iPhone (Safari)
-            showIOSInstallHint();
-            const hasData = loadFromLocalStorage();
-            
-            if (hasData && appState.user) {
-                document.getElementById('pinModal').style.display = 'flex';
-                const loginPin1 = document.querySelector('#loginPin1');
-                if (loginPin1) loginPin1.focus();
-            } else {
-                document.getElementById('createAccountModal').style.display = 'flex';
-                const userName = document.getElementById('userName');
-                if (userName) userName.focus();
-            }
-            
-            // Event listeners para criação de conta
-            const createPinInputs = ['#pin1', '#pin2', '#pin3', '#pin4'].map(sel => document.querySelector(sel));
-            
-            createPinInputs.forEach((input, index) => {
-                if (!input) return;
-                
-                input.addEventListener('input', function() {
-                    if (this.value.length === 1) {
-                        this.classList.add('filled');
-                        if (index < 3) {
-                            const nextInput = createPinInputs[index + 1];
-                            if (nextInput) nextInput.focus();
-                        }
-                    } else {
-                        this.classList.remove('filled');
-                    }
-                });
-                
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && !this.value && index > 0) {
-                        const prevInput = createPinInputs[index - 1];
-                        if (prevInput) prevInput.focus();
-                    }
-                    if (e.key === 'Enter' && index === 3) {
-                        const btnCreateAccount = document.getElementById('btnCreateAccount');
-                        if (btnCreateAccount) btnCreateAccount.click();
-                    }
-                });
-            });
-            
-            const btnCreateAccount = document.getElementById('btnCreateAccount');
-            if (btnCreateAccount) {
-                btnCreateAccount.addEventListener('click', function() {
-                    const userName = document.getElementById('userName')?.value.trim();
-                    const pin = createPinInputs.map(input => input?.value).join('');
-                    
-                    if (!userName) {
-                        showNotification('Por favor, digite seu nome!', 'error');
-                        const userNameInput = document.getElementById('userName');
-                        if (userNameInput) userNameInput.focus();
-                        return;
-                    }
-                    
-                    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-                        showNotification('Digite um PIN válido de 4 dígitos!', 'error');
-                        if (createPinInputs[0]) createPinInputs[0].focus();
-                        return;
-                    }
-                    
-                    setupUser(userName, pin);
-                });
-            }
-            
-            const userNameInput = document.getElementById('userName');
-            if (userNameInput) {
-                userNameInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        if (createPinInputs[0]) createPinInputs[0].focus();
-                    }
-                });
-            }
-            
-            // Event listeners para login
-            const loginPinInputs = ['#loginPin1', '#loginPin2', '#loginPin3', '#loginPin4'].map(sel => document.querySelector(sel));
-            
-            loginPinInputs.forEach((input, index) => {
-                if (!input) return;
-                
-                input.addEventListener('input', function() {
-                    if (this.value.length === 1) {
-                        this.classList.add('filled');
-                        if (index < 3) {
-                            const nextInput = loginPinInputs[index + 1];
-                            if (nextInput) nextInput.focus();
-                        }
-                    } else {
-                        this.classList.remove('filled');
-                    }
-                });
-                
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && !this.value && index > 0) {
-                        const prevInput = loginPinInputs[index - 1];
-                        if (prevInput) prevInput.focus();
-                    }
-                    if (e.key === 'Enter' && index === 3) {
-                        const btnEnterPin = document.getElementById('btnEnterPin');
-                        if (btnEnterPin) btnEnterPin.click();
-                    }
-                });
-            });
-            
-            const btnEnterPin = document.getElementById('btnEnterPin');
-            if (btnEnterPin) {
-                btnEnterPin.addEventListener('click', function() {
-                    const pin = loginPinInputs.map(input => input?.value).join('');
-                    
-                    if (pin.length !== 4) {
-                        showNotification('Digite um PIN de 4 dígitos', 'error');
-                        return;
-                    }
-                    
-                    if (verifyPIN(pin)) {
-                        document.getElementById('pinModal').style.display = 'none';
-                        document.getElementById('appContent').classList.remove('hidden');
-                        const displayName = document.getElementById('displayName');
-                        if (displayName) displayName.textContent = appState.user.name;
-                        initializeApp();
-                        showNotification('Bem-vindo de volta ao LongeViver FQ5C!');
-                    } else {
-                        showNotification('PIN incorreto! Tente novamente.', 'error');
-                        loginPinInputs.forEach(input => {
-                            if (input) {
-                                input.value = '';
-                                input.classList.remove('filled');
-                            }
-                        });
-                        if (loginPinInputs[0]) loginPinInputs[0].focus();
-                    }
-                });
-            }
-            
-            const btnForgotPin = document.getElementById('btnForgotPin');
-            if (btnForgotPin) {
-                btnForgotPin.addEventListener('click', function() {
-                    if (confirm('⚠️ Isso irá apagar todos os seus dados e criar uma nova conta. Tem certeza?')) {
-                        localStorage.removeItem(STORAGE_KEY);
-                        showNotification('Conta resetada. Crie uma nova conta.', 'info');
-                        setTimeout(() => location.reload(), 1000);
-                    }
-                });
-            }
-            
-            // Logout
-            const btnLogout = document.getElementById('btnLogout');
-            if (btnLogout) {
-                btnLogout.addEventListener('click', logout);
-            }
-            
-            // Auto-save
-            window.addEventListener('beforeunload', function() {
-                saveVerbosDiario();
-            });
-            
-            console.log('🚀 LongeViver FQ5C - Sistema Completo Pronto!');
-            console.log('👨‍⚕️ Desenvolvido por Ricardo de Faria Barros - Psicólogo');
-            console.log('📚 Livro: https://a.co/d/g4s6fZ6');
-            console.log('🌐 Site: https://www.plenalongevidade.com.br/');
+        self.addEventListener("activate", (event) => {
+          event.waitUntil(
+            caches.keys().then((keys) => Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null))))
+          );
+          self.clients.claim();
         });
-    </script>
+        self.addEventListener("fetch", (event) => {
+          event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
+        });
+      `;
+      const blob = new Blob([swCode], { type: "text/javascript" });
+      const swUrl = URL.createObjectURL(blob);
+      window.addEventListener("load", () => { navigator.serviceWorker.register(swUrl).catch(() => {}); });
+    })();
+
+    // =========================
+    // Instalar (Android/Chrome)
+    // =========================
+    let deferredPrompt = null;
+    const installCard = document.getElementById("installCard");
+    const installBtn = document.getElementById("installBtn");
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installCard.style.display = "block";
+    });
+    installBtn?.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch {}
+      deferredPrompt = null;
+      installCard.style.display = "none";
+    });
+
+    // =========================
+    // Categorias
+    // =========================
+    const CATEGORIES = [
+      { id:"alimentacao", label:"🛒 Alimentação" },
+      { id:"feira", label:"🧺 Feira" },
+      { id:"padaria", label:"🥐 Padaria" },
+      { id:"bares", label:"🍷 Bares/Restaurantes" },
+      { id:"farmacia", label:"💊 Farmácia" },
+      { id:"gasolina", label:"⛽ Gasolina" },
+      { id:"uber", label:"🚕 Uber/Transporte" },
+      { id:"agua", label:"💧 Água" },
+      { id:"energia", label:"⚡ Energia" },
+      { id:"telefone", label:"📱 Telefone/Internet" },
+      { id:"condominio", label:"🏢 Condomínio" },
+      { id:"diarista", label:"🧹 Diarista" },
+      { id:"impostos", label:"🏛️ Impostos" },
+      { id:"prestacoes", label:"🏠 Prestações" },
+      { id:"manutencao", label:"🔧 Manutenção" },
+      { id:"lazer", label:"🎭 Lazer" },
+      { id:"contas", label:"📄 Contas Fixas" },
+      { id:"aluguel", label:"🏠 Aluguel" },
+      { id:"cartao", label:"💳 Fatura Cartão" },
+      { id:"dizimo", label:"❤️ Dízimo/Doação" },
+      { id:"online", label:"📦 Compras Online" },
+      { id:"diversos", label:"✨ Diversos" }
+    ];
+    function fillCategorySelect(selectEl) {
+      selectEl.innerHTML = "";
+      for (const c of CATEGORIES) {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.label;
+        selectEl.appendChild(opt);
+      }
+    }
+    fillCategorySelect(document.getElementById("category"));
+    fillCategorySelect(document.getElementById("editCategory"));
+
+    // =========================
+    // Utilitários
+    // =========================
+    function formatDateISO(date = new Date()) { return date.toISOString().split("T")[0]; }
+    function formatBR(dateStr) { const [y,m,d] = dateStr.split("-"); return `${d}/${m}/${y}`; }
+    function parseISO(dateStr){ const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10)); return new Date(y, m-1, d); }
+    function monthKey(year, monthIndex){ return `${year}-${String(monthIndex+1).padStart(2,"0")}`; }
+    function formatCurrency(v){ return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v); }
+    function safeNumber(n){ return (typeof n === "number" && isFinite(n)) ? n : 0; }
+
+    // =========================
+    // Máscara de dinheiro (BR)
+    // Digite 1250 => R$ 12,50
+    // =========================
+    function brlFromDigits(digits){
+      const clean = (digits || "").replace(/\D/g, "");
+      const cents = clean === "" ? 0 : parseInt(clean, 10);
+      const value = cents / 100;
+      return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+    }
+    function parseBRL(masked){
+      const clean = String(masked || "").replace(/\D/g, "");
+      if (!clean) return 0;
+      const cents = parseInt(clean, 10);
+      return cents / 100;
+    }
+    function applyMoneyMask(el){
+      const digits = el.value.replace(/\D/g, "");
+      el.value = brlFromDigits(digits);
+      try { el.setSelectionRange(el.value.length, el.value.length); } catch {}
+    }
+
+    // =========================
+    // Storage seguro (corrige "não salva")
+    // =========================
+    function canUseStorage(){
+      try{
+        const k="__test_ls__";
+        localStorage.setItem(k,"1");
+        localStorage.removeItem(k);
+        return true;
+      }catch(e){
+        return false;
+      }
+    }
+    const storageOk = canUseStorage();
+    if (!storageOk){
+      alert("Atenção: seu navegador bloqueou o armazenamento (localStorage). Abra no Chrome/Safari normal ou instale na tela inicial.");
+    }
+
+    function loadJSON(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch(e){
+        return fallback;
+      }
+    }
+    function saveJSON(key, value){
+      try{
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      }catch(e){
+        alert("Não consegui salvar. Seu navegador pode estar bloqueando armazenamento (modo anônimo/webview).");
+        return false;
+      }
+    }
+
+    // =========================
+    // Estado
+    // =========================
+    let expenses = loadJSON("expenses", {});
+    let archives = loadJSON("archives", {});
+    let monthlyGoal = parseFloat(localStorage.getItem("monthlyGoal") || "0") || 0;
+
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    const todayISO = formatDateISO(new Date());
+    let selectedDay = todayISO;
+
+    // =========================
+    // Preferências (modo escuro)
+    // =========================
+    const darkStored = localStorage.getItem("pref_dark");
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const darkOn = (darkStored === null) ? prefersDark : (darkStored === "1");
+    if (darkOn) document.body.classList.add("dark");
+
+    document.getElementById("darkToggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("pref_dark", document.body.classList.contains("dark") ? "1" : "0");
+      drawCategoryChart();
+    });
+
+    // =========================
+    // Ajuda
+    // =========================
+    const helpBackdrop = document.getElementById("helpBackdrop");
+    document.getElementById("helpBtn").addEventListener("click", () => helpBackdrop.style.display = "flex");
+    function closeHelp(){ helpBackdrop.style.display = "none"; }
+    window.closeHelp = closeHelp;
+
+    // =========================
+    // Inputs
+    // =========================
+    const dateInput = document.getElementById("date");
+    const amountInput = document.getElementById("amount");
+    const categoryInput = document.getElementById("category");
+    const noteInput = document.getElementById("note");
+
+    dateInput.value = todayISO;
+    setDateBRHint(todayISO);
+
+    function setDateBRHint(iso){ document.getElementById("dateBR").textContent = iso ? `Formato: ${formatBR(iso)}` : ""; }
+    dateInput.addEventListener("change", () => setDateBRHint(dateInput.value));
+
+    amountInput.value = "R$ 0,00";
+    amountInput.addEventListener("input", () => applyMoneyMask(amountInput));
+    amountInput.addEventListener("focus", () => {
+      if (!amountInput.value.trim()) amountInput.value = "R$ 0,00";
+      try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+    });
+
+    document.getElementById("monthlyGoal").value = monthlyGoal ? String(monthlyGoal) : "";
+    function saveGoal(){
+      const val = parseFloat(document.getElementById("monthlyGoal").value);
+      monthlyGoal = (isNaN(val) || val < 0) ? 0 : val;
+      localStorage.setItem("monthlyGoal", String(monthlyGoal));
+      renderAll();
+    }
+    window.saveGoal = saveGoal;
+
+    // TURBO: Enter navega e grava
+    amountInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); categoryInput.focus(); }
+    });
+    categoryInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); noteInput.focus(); }
+    });
+    noteInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); addExpense(true); }
+    });
+
+    function setToday(){
+      const today = formatDateISO(new Date());
+      dateInput.value = today;
+      setDateBRHint(today);
+      selectedDay = today;
+      currentYear = new Date().getFullYear();
+      currentMonth = new Date().getMonth();
+      amountInput.focus();
+      try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+      renderAll();
+    }
+    window.setToday = setToday;
+
+    // =========================
+    // CRUD
+    // =========================
+    function uuid(){ return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
+
+    function persist(){
+      // salva e confirma
+      const ok1 = saveJSON("expenses", expenses);
+      const ok2 = saveJSON("archives", archives);
+      if (!ok1 || !ok2) return false;
+      return true;
+    }
+
+    function addExpense(turbo=false){
+      const iso = dateInput.value;
+      const amount = parseBRL(amountInput.value);
+      const category = categoryInput.value;
+      const note = (noteInput.value || "").trim();
+
+      if (!iso) { alert("Selecione uma data."); return; }
+      if (!amount || amount <= 0) { alert("Digite um valor válido."); amountInput.focus(); return; }
+
+      if (!expenses[iso]) expenses[iso] = [];
+      expenses[iso].push({ id: uuid(), amount, category, note });
+
+      // garante salvar
+      if (!persist()) return;
+
+      // pronto pro próximo
+      amountInput.value = "R$ 0,00";
+      noteInput.value = "";
+
+      selectedDay = iso;
+      const d = parseISO(iso);
+      currentYear = d.getFullYear();
+      currentMonth = d.getMonth();
+
+      renderAll();
+
+      if (turbo){
+        amountInput.focus();
+        try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+      }
+    }
+    window.addExpense = () => addExpense(false);
+
+    function deleteExpense(dayISO, itemId){
+      const list = expenses[dayISO] || [];
+      const idx = list.findIndex(x => x.id === itemId);
+      if (idx < 0) return;
+      if (!confirm("Excluir esta despesa?")) return;
+      list.splice(idx,1);
+      if (list.length === 0) delete expenses[dayISO];
+      if (!persist()) return;
+      renderAll();
+    }
+    window.deleteExpense = deleteExpense;
+
+    // =========================
+    // Modal editar
+    // =========================
+    const editBackdrop = document.getElementById("editBackdrop");
+    const editInfo = document.getElementById("editInfo");
+    const editAmount = document.getElementById("editAmount");
+    const editCategory = document.getElementById("editCategory");
+    const editNote = document.getElementById("editNote");
+    let editing = { dayISO:null, id:null };
+
+    function openEdit(dayISO, itemId){
+      const item = (expenses[dayISO] || []).find(x => x.id === itemId);
+      if (!item) return;
+
+      editing = { dayISO, id: itemId };
+      editInfo.textContent = `Data: ${formatBR(dayISO)}`;
+      editAmount.value = String(item.amount ?? "");
+      editCategory.value = item.category ?? "diversos";
+      editNote.value = item.note ?? "";
+      editBackdrop.style.display = "flex";
+    }
+    window.openEdit = openEdit;
+
+    function closeEdit(){ editBackdrop.style.display = "none"; editing = { dayISO:null, id:null }; }
+    window.closeEdit = closeEdit;
+
+    function saveEdit(){
+      const { dayISO, id } = editing;
+      if (!dayISO || !id) return;
+
+      const item = (expenses[dayISO] || []).find(x => x.id === id);
+      if (!item) return;
+
+      const amount = parseFloat(editAmount.value);
+      if (isNaN(amount) || amount <= 0) { alert("Digite um valor válido."); return; }
+
+      item.amount = amount;
+      item.category = editCategory.value;
+      item.note = (editNote.value || "").trim();
+
+      closeEdit();
+      if (!persist()) return;
+      renderAll();
+    }
+    window.saveEdit = saveEdit;
+
+    // =========================
+    // Medalha
+    // =========================
+    function checkMedal(){
+      const t = new Date();
+      const y = new Date(); y.setDate(t.getDate()-1);
+      const today = formatDateISO(t);
+      const yest = formatDateISO(y);
+
+      const noToday = !expenses[today] || expenses[today].length === 0;
+      const noYest = !expenses[yest] || expenses[yest].length === 0;
+
+      document.getElementById("medal").textContent = (noToday && noYest)
+        ? "🏆 Parabéns! 2 dias sem despesas!"
+        : "";
+    }
+
+    // =========================
+    // Calendário
+    // =========================
+    function renderCalendar(){
+      const cal = document.getElementById("calendar");
+      const year = currentYear, month = currentMonth;
+
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month+1, 0);
+      const startDay = first.getDay();
+      const daysInMonth = last.getDate();
+
+      let html = "";
+      const wd = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+      for (const d of wd) html += `<div class="cal-day head">${d}</div>`;
+      for (let i=0;i<startDay;i++) html += `<div class="cal-day head"></div>`;
+
+      for (let day=1; day<=daysInMonth; day++){
+        const iso = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+        const hasData = expenses[iso] && expenses[iso].length > 0;
+        const isToday = iso === todayISO;
+        const isSel = iso === selectedDay;
+
+        let cls = "cal-day";
+        if (hasData) cls += " has-data";
+        if (isToday) cls += " today";
+        if (isSel) cls += " selected";
+
+        html += `<div class="${cls}" onclick="selectDay('${iso}')">${day}</div>`;
+      }
+      cal.innerHTML = html;
+    }
+
+    function selectDay(iso){
+      selectedDay = iso;
+      const d = parseISO(iso);
+      currentYear = d.getFullYear();
+      currentMonth = d.getMonth();
+      renderAll();
+    }
+    window.selectDay = selectDay;
+
+    // =========================
+    // Resumo/detalhe
+    // =========================
+    function dayTotal(iso){
+      const list = expenses[iso] || [];
+      return list.reduce((s,e) => s + safeNumber(e.amount), 0);
+    }
+
+    function renderSummaryTable(){
+      const tbody = document.getElementById("summaryBody");
+
+      const dates = Object.keys(expenses)
+        .filter(d => (expenses[d] || []).length > 0)
+        .sort((a,b) => new Date(b) - new Date(a))
+        .slice(0, 20);
+
+      if (dates.length === 0){
+        tbody.innerHTML = `<tr><td colspan="2" class="small" style="text-align:center;">Nenhuma despesa registrada</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = dates.map(d => `
+        <tr>
+          <td>${formatBR(d)}</td>
+          <td>${formatCurrency(dayTotal(d))}</td>
+        </tr>
+      `).join("");
+    }
+
+    function escapeHTML(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function renderDayDetail(){
+      const title = document.getElementById("selectedDayTitle");
+      const sub = document.getElementById("selectedDaySubtitle");
+      const listEl = document.getElementById("dayDetailList");
+
+      title.textContent = `🧾 Detalhe do dia: ${formatBR(selectedDay)}`;
+      const items = expenses[selectedDay] || [];
+      const total = items.reduce((s,e)=> s + safeNumber(e.amount), 0);
+
+      sub.textContent = items.length
+        ? `Total do dia: ${formatCurrency(total)} • Itens: ${items.length}`
+        : "Sem despesas neste dia.";
+
+      if (!items.length){ listEl.innerHTML = ""; return; }
+
+      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+      listEl.innerHTML = items.map(it => `
+        <div class="detail-item">
+          <div class="detail-left">
+            <div class="detail-main">${catMap[it.category] || it.category} • ${formatCurrency(safeNumber(it.amount))}</div>
+            ${it.note ? `<div class="detail-note">${escapeHTML(it.note)}</div>` : `<div class="detail-note">—</div>`}
+          </div>
+          <div class="detail-actions">
+            <button class="mini-btn btn-ghost" onclick="openEdit('${selectedDay}','${it.id}')">Editar</button>
+            <button class="mini-btn btn-danger" onclick="deleteExpense('${selectedDay}','${it.id}')">Excluir</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // =========================
+    // Mensal/meta
+    // =========================
+    function getMonthDates(year, month){
+      const start = new Date(year, month, 1);
+      const end = new Date(year, month+1, 0);
+      const out = [];
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) out.push(formatDateISO(new Date(d)));
+      return out;
+    }
+
+    function monthTotals(year, month){
+      const dates = getMonthDates(year, month);
+      const daysInMonth = dates.length;
+      const daysWith = dates.filter(d => expenses[d] && expenses[d].length > 0);
+      const total = daysWith.reduce((sum, d) => sum + dayTotal(d), 0);
+      return { total, daysInMonth, daysWithCount: daysWith.length, dates };
+    }
+
+    function renderMonthlySummary(){
+      const monthLabel = new Date(currentYear, currentMonth, 1).toLocaleDateString("pt-BR", { month:"long", year:"numeric" });
+      const { total, daysInMonth, daysWithCount } = monthTotals(currentYear, currentMonth);
+      const avg = daysInMonth ? total / daysInMonth : 0;
+
+      document.getElementById("currentMonth").textContent = monthLabel;
+      document.getElementById("monthlyStats").textContent =
+        `Total: ${formatCurrency(total)} | Dias com despesas: ${daysWithCount}/${daysInMonth} | Média/dia: ${formatCurrency(avg)}`;
+
+      const bar = document.getElementById("goalBar");
+      const goalText = document.getElementById("goalText");
+
+      if (monthlyGoal > 0){
+        const pct = Math.min(100, Math.round((total / monthlyGoal) * 100));
+        bar.style.width = pct + "%";
+        const rest = monthlyGoal - total;
+        goalText.textContent = rest >= 0
+          ? `Meta: ${formatCurrency(monthlyGoal)} • Falta: ${formatCurrency(rest)} (${pct}%)`
+          : `Meta: ${formatCurrency(monthlyGoal)} • Estourou: ${formatCurrency(Math.abs(rest))} (${pct}%)`;
+      } else {
+        bar.style.width = "0%";
+        goalText.textContent = "Defina uma meta para ver a barra de progresso.";
+      }
+    }
+
+    function changeMonth(delta){
+      currentMonth += delta;
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      renderAll();
+    }
+    window.changeMonth = changeMonth;
+
+    function rollMonth(){
+      const key = monthKey(currentYear, currentMonth);
+      const monthDates = getMonthDates(currentYear, currentMonth);
+      const monthExpenses = {};
+      monthDates.forEach(d => { if (expenses[d] && expenses[d].length) monthExpenses[d] = expenses[d]; });
+
+      if (Object.keys(monthExpenses).length === 0){ alert("Este mês não tem despesas para arquivar."); return; }
+      if (!confirm(`Arquivar o mês ${key} e limpar as despesas deste mês?`)) return;
+
+      archives[key] = { expenses: monthExpenses, goal: monthlyGoal, archivedAt: Date.now() };
+      monthDates.forEach(d => { if (expenses[d]) delete expenses[d]; });
+
+      if (!persist()) return;
+      alert("Mês arquivado com sucesso!");
+      renderAll();
+    }
+    window.rollMonth = rollMonth;
+
+    // =========================
+    // Gráfico por categoria
+    // =========================
+    function categoryTotalsThisMonth(){
+      const { dates } = monthTotals(currentYear, currentMonth);
+      const totals = {};
+      for (const c of CATEGORIES) totals[c.id] = 0;
+
+      for (const d of dates){
+        const list = expenses[d] || [];
+        for (const it of list){
+          if (!totals.hasOwnProperty(it.category)) totals[it.category] = 0;
+          totals[it.category] += safeNumber(it.amount);
+        }
+      }
+      return totals;
+    }
+
+    function drawCategoryChart(){
+      const canvas = document.getElementById("catChart");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      const totals = categoryTotalsThisMonth();
+      const entries = Object.entries(totals).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]).slice(0,8);
+      const hint = document.getElementById("chartHint");
+
+      if (!entries.length){ hint.textContent = "Sem dados no mês atual para montar o gráfico."; return; }
+      hint.textContent = "Mostrando as 8 categorias com maior gasto (mês atual).";
+
+      const w = canvas.width, padding = 20, barH = 22, gap = 10;
+      const maxVal = Math.max(...entries.map(e => e[1])) || 1;
+
+      const barColor = getComputedStyle(document.body).getPropertyValue("--primary").trim() || "#4CAF50";
+      const textColor = getComputedStyle(document.body).getPropertyValue("--text").trim() || "#222";
+      const muted = getComputedStyle(document.body).getPropertyValue("--muted").trim() || "#666";
+      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+
+      let y = padding;
+      entries.forEach(([cat, val]) => {
+        const label = (catMap[cat] || cat).replace(/^.+?\s/, "");
+        const barW = Math.round(((w - padding*2 - 220) * (val / maxVal)));
+
+        ctx.fillStyle = textColor;
+        ctx.font = "16px system-ui";
+        ctx.fillText(label, padding, y + 16);
+
+        ctx.fillStyle = muted;
+        ctx.font = "14px system-ui";
+        ctx.fillText(formatCurrency(val), w - padding - 140, y + 16);
+
+        ctx.fillStyle = barColor;
+        ctx.fillRect(w - padding - 130, y, Math.max(4, barW), barH);
+
+        y += barH + gap;
+      });
+    }
+
+    // =========================
+    // PDF
+    // =========================
+    async function generatePDF(){
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(18);
+      doc.text("Relatório de Despesas", 14, 18);
+
+      const monthLabel = new Date(currentYear, currentMonth, 1).toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+      doc.setFontSize(12);
+      doc.text(`Mês: ${monthLabel}`, 14, 26);
+
+      const sortedDates = Object.keys(expenses)
+        .filter(d => (expenses[d]||[]).length > 0)
+        .sort((a,b) => new Date(a) - new Date(b));
+
+      let y = 34;
+      if (!sortedDates.length){ doc.text("Nenhuma despesa registrada.", 14, y); doc.save("meu-controle-despesas.pdf"); return; }
+
+      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+      for (const date of sortedDates){
+        const total = dayTotal(date);
+        doc.setFontSize(12);
+        doc.text(`${formatBR(date)}  —  Total: ${formatCurrency(total)}`, 14, y);
+        y += 7;
+
+        for (const it of (expenses[date] || [])){
+          const catLabel = catMap[it.category] || it.category;
+          let line = `- ${catLabel}: ${formatCurrency(safeNumber(it.amount))}`;
+          if (it.note) line += ` (${it.note})`;
+
+          if (y > 280){ doc.addPage(); y = 18; }
+          doc.setFontSize(10);
+          doc.text(line, 16, y);
+          y += 6;
+        }
+
+        y += 4;
+        if (y > 280){ doc.addPage(); y = 18; }
+      }
+      doc.save("meu-controle-despesas.pdf");
+    }
+    window.generatePDF = generatePDF;
+
+    // =========================
+    // Render geral
+    // =========================
+    function renderBalance(){
+      const total = dayTotal(todayISO);
+      document.getElementById("balance").textContent = `Balanço de hoje (${formatBR(todayISO)}): ${formatCurrency(total)}`;
+    }
+
+    function renderAll(){
+      renderBalance();
+      checkMedal();
+      renderMonthlySummary();
+      renderCalendar();
+      renderSummaryTable();
+      renderDayDetail();
+      drawCategoryChart();
+    }
+
+    // fechar modais clicando fora
+    helpBackdrop.addEventListener("click", (e) => { if (e.target === helpBackdrop) closeHelp(); });
+    const editBackdropEl = document.getElementById("editBackdrop");
+    editBackdropEl.addEventListener("click", (e) => { if (e.target === editBackdropEl) closeEdit(); });
+
+    // =========================
+    // Start
+    // =========================
+    renderAll();
+    setToday();
+  </script>
 </body>
-</html
-        function handleExpenseQuickSave(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addExpense();
-            }
-        }
->
+</html>
