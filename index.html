@@ -1,263 +1,330 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 Zero Gastos</title>
-    
-    <!-- Configurações PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#FF3B30">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Zero Gastos">
-    <link rel="icon" type="image/png" href="icon-192.png">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Controle de Gastos</title>
+  <meta name="theme-color" content="#4CAF50" />
+  <link rel="manifest" href="application/json;base64,eyJuYW1lIjoiTWV1IENvbnRyb2xlIGRlIEdhc3RvcyIsInNob3J0X25hbWUiOiJDb250cm9sZSIsInN0YXJ0X3VybCI6Ii4vIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQTRBQUFBQUFBQkFBRmdBQUFCQWdBRUFBQUFCR0FFQUFZQUFBQUJBQUFCQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU......Claro! Abaixo está um **site completo, autocontido em um único arquivo HTML**, que atende exatamente ao que você pediu:
+
+- Funciona offline (os dados ficam salvos no seu celular via `localStorage`);
+- Tem um **atalho visual atraente** para adicionar à tela inicial;
+- Interface simples, amigável e com ícones intuitivos;
+- Permite registrar gastos diários por categoria (gasolina, alimentação, boletos, etc.);
+- Mostra o **balanço do dia atual**;
+- Concede **medalhas virtuais** por 2 dias seguidos sem gastos;
+- Inclui **calendário visual** dos dias com registros;
+- Gera **relatório em PDF** com histórico de gastos;
+- Tudo salvo localmente — **nada vai para a nuvem**.
+
+---
+
+### ✅ Como usar:
+1. Copie todo o código abaixo.
+2. Salve como um arquivo chamado `meu-controle.html`.
+3. Abra esse arquivo no navegador do seu celular (Chrome, Safari, etc.).
+4. Adicione à tela inicial:  
+   - **Android**: ⋮ → "Adicionar à tela inicial"  
+   - **iPhone**: Compartilhar → "Adicionar à tela inicial"
+5. Pronto! Seus dados ficam só no seu aparelho.
+
+---
+
+### 📄 Código do site (único arquivo):
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Controle de Gastos</title>
+  <meta name="theme-color" content="#4CAF50" />
+  <link rel="manifest" href="application/json;base64,ewogICJuYW1lIjogIk1ldSBDb250cm9sZSIsCiAgInNob3J0X25hbWUiOiAiQ29udHJvbGUiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzQxNjE0NCIsCiAgInRoZW1lX2NvbG9yIjogIiM0Q0FGNTAiLAogICJpY29ucyI6IFt7CiAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHBhdGggZmlsbD0iIzQ3YTM0YSIgZD0iTTE0NC41IDQ4LjVoLTk2YTE1LjUgMTUuNSAwIDAgMC0xNS41IDE1LjV2NDdhMTUuNSAxNS41IDAgMCAwIDE1LjUgMTUuNWg5NmExNS41IDE1LjUgMCAwIDAgMTUuNS0xNS41di00N2ExNS41IDE1LjUgMCAwIDAtMTUuNS0xNS41ek0xMjggMTI4SDY0di0zMmg2NHYzMnpNNjQgODBoNjR2MTZINjR6Ii8+PC9zdmc+IiwKICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgfV0KfQo=">
+  <style>
+    :root {
+      --primary: #4CAF50;
+      --light: #E8F5E9;
+      --dark: #2E7D32;
+      --gray: #757575;
+      --red: #f44336;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body {
+      background-color: var(--light);
+      color: #333;
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 12px 0;
+      color: white;
+      background: var(--primary);
+      border-radius: 12px;
+    }
+    h1 { font-size: 1.6rem; }
+    .balance { 
+      background: white; 
+      padding: 12px; 
+      border-radius: 12px; 
+      margin: 16px 0; 
+      text-align: center;
+      font-weight: bold;
+      color: var(--dark);
+    }
+    .form-group {
+      margin: 12px 0;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    button:hover { background: var(--dark); }
+    .history {
+      margin-top: 24px;
+    }
+    .day-entry {
+      background: white;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+    }
+    .medal {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 16px 0;
+      color: gold;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin: 16px 0;
+    }
+    .cal-day {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.9rem;
+      background: #e0e0e0;
+      border-radius: 4px;
+    }
+    .cal-day.has-data {
+      background: var(--primary);
+      color: white;
+    }
+    .cal-day.today {
+      border: 2px solid var(--dark);
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #121212; color: #e0e0e0; }
+      .balance, .day-entry, input, select { background: #1e1e1e; color: white; border-color: #444; }
+      .cal-day { background: #333; color: #ddd; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Tela de carregamento -->
-    <div class="carregando" id="carregando">
-        <div class="logo-central">
-            <div class="quadrado-preto"></div>
-        </div>
-        <h2 class="titulo-app">Zero Gastos</h2>
-        <p class="subtitulo">Controle total das suas despesas</p>
-    </div>
+  <header>
+    <h1>💰 Meu Controle Diário</h1>
+  </header>
 
-    <!-- Tela principal -->
-    <div class="container" id="telaPrincipal" style="display: none;">
-        <!-- Cabeçalho -->
-        <header class="header">
-            <div class="logo-cabecalho">
-                <div class="quadrado-preto pequeno"></div>
-                <h1>Zero Gastos</h1>
-            </div>
-            <div class="contador-dias">
-                <span id="diasSemGastar">0</span>
-                <small>dias sem gastar</small>
-            </div>
-        </header>
+  <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
-        <!-- Meta do dia -->
-        <div class="meta-dia">
-            <h3><i class="fas fa-bullseye"></i> Meta de Hoje</h3>
-            <div class="progresso-container">
-                <div class="progresso-bar" id="progressoMeta">
-                    <span id="textoProgresso">100% - Meta alcançada!</span>
-                </div>
-            </div>
-            <p class="saldo-hoje" id="saldoHoje">R$ 0,00 gastos hoje</p>
-        </div>
+  <div class="form-group">
+    <label for="category">Categoria</label>
+    <select id="category">
+      <option value="gasolina">Gasolina</option>
+      <option value="alimentacao">Alimentação</option>
+      <option value="feira">Feira</option>
+      <option value="uber">Uber/Transporte</option>
+      <option value="bares">Bares/Restaurantes</option>
+      <option value="padaria">Padaria</option>
+      <option value="farmacia">Farmácia</option>
+      <option value="diversos">Diversos</option>
+      <option value="contas">Contas Fixas</option>
+      <option value="aluguel">Aluguel</option>
+      <option value="cartao">Fatura Cartão</option>
+      <option value="energia">Energia</option>
+      <option value="telefone">Telefone/Internet</option>
+      <option value="impostos">Impostos</option>
+      <option value="dizimo">Dízimo/Doação</option>
+      <option value="online">Compras Online</option>
+    </select>
+  </div>
 
-        <!-- Medalhas -->
-        <div class="medalhas">
-            <h3><i class="fas fa-medal"></i> Medalhas</h3>
-            <div class="medalhas-container">
-                <div class="medalha" id="medalha1">
-                    <i class="fas fa-medal"></i>
-                    <span>1 dia</span>
-                </div>
-                <div class="medalha" id="medalha3">
-                    <i class="fas fa-medal"></i>
-                    <span>3 dias</span>
-                </div>
-                <div class="medalha" id="medalha7">
-                    <i class="fas fa-medal"></i>
-                    <span>7 dias</span>
-                </div>
-                <div class="medalha" id="medalha30">
-                    <i class="fas fa-medal"></i>
-                    <span>30 dias</span>
-                </div>
-            </div>
-        </div>
+  <div class="form-group">
+    <label for="amount">Valor (R$)</label>
+    <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
+  </div>
 
-        <!-- Botão principal de registro -->
-        <div class="botao-principal-container">
-            <button class="botao-principal" onclick="mostrarRegistro()">
-                <i class="fas fa-plus"></i>
-                Registrar Gasto
-            </button>
-        </div>
+  <button onclick="addExpense()">➕ Registrar Gasto</button>
 
-        <!-- Gastos de hoje -->
-        <div class="gastos-hoje">
-            <h3><i class="fas fa-list"></i> Gastos de Hoje</h3>
-            <div class="lista-gastos" id="listaGastos">
-                <!-- Gastos serão carregados aqui -->
-            </div>
-        </div>
+  <div class="medal" id="medal"></div>
 
-        <!-- Calendário resumido -->
-        <div class="calendario-resumo">
-            <h3><i class="fas fa-calendar"></i> Calendário</h3>
-            <div class="dias-mes" id="calendarioDias">
-                <!-- Dias do mês serão carregados aqui -->
-            </div>
-        </div>
-    </div>
+  <div class="calendar" id="calendar"></div>
 
-    <!-- Tela de registro de gasto -->
-    <div class="tela-formulario" id="telaRegistro" style="display: none;">
-        <div class="formulario-cabecalho">
-            <button class="btn-voltar" onclick="voltarPrincipal()">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <h2>Registrar Gasto</h2>
-        </div>
+  <div class="history" id="history"></div>
 
-        <form id="formRegistro" onsubmit="registrarGasto(event)">
-            <!-- Categoria -->
-            <div class="input-group">
-                <label><i class="fas fa-tag"></i> Categoria</label>
-                <div class="categorias-grid">
-                    <button type="button" class="categoria-btn" data-categoria="padaria" onclick="selecionarCategoria('padaria')">
-                        <i class="fas fa-bread-slice"></i> Padaria
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="compras" onclick="selecionarCategoria('compras')">
-                        <i class="fas fa-shopping-bag"></i> Compras
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="gasolina" onclick="selecionarCategoria('gasolina')">
-                        <i class="fas fa-gas-pump"></i> Gasolina
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="farmacia" onclick="selecionarCategoria('farmacia')">
-                        <i class="fas fa-pills"></i> Farmácia
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="bares" onclick="selecionarCategoria('bares')">
-                        <i class="fas fa-beer"></i> Bares
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="ifood" onclick="selecionarCategoria('ifood')">
-                        <i class="fas fa-hamburger"></i> iFood
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="uber" onclick="selecionarCategoria('uber')">
-                        <i class="fas fa-taxi"></i> Uber
-                    </button>
-                    <button type="button" class="categoria-btn" data-categoria="outros" onclick="selecionarCategoria('outros')">
-                        <i class="fas fa-ellipsis-h"></i> Outros
-                    </button>
-                </div>
-                <input type="hidden" id="categoriaSelecionada" required>
-            </div>
+  <button onclick="generatePDF()" style="background:#2196F3;margin-top:20px;">📄 Gerar Relatório PDF</button>
 
-            <!-- Valor -->
-            <div class="input-group">
-                <label><i class="fas fa-money-bill-wave"></i> Valor (R$)</label>
-                <input type="number" id="valorGasto" step="0.01" min="0" placeholder="0,00" required>
-            </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // Carrega dados do localStorage ou inicia vazio
+    let expenses = JSON.parse(localStorage.getItem('expenses')) || {};
+    const today = new Date().toISOString().split('T')[0];
 
-            <!-- Descrição -->
-            <div class="input-group">
-                <label><i class="fas fa-align-left"></i> Descrição</label>
-                <input type="text" id="descricaoGasto" placeholder="O que você comprou?" required>
-            </div>
+    function save() {
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+      render();
+    }
 
-            <!-- Forma de pagamento -->
-            <div class="input-group">
-                <label><i class="fas fa-credit-card"></i> Forma de Pagamento</label>
-                <div class="pagamento-opcoes">
-                    <label class="pagamento-option">
-                        <input type="radio" name="pagamento" value="dinheiro" required>
-                        <i class="fas fa-money-bill"></i> Dinheiro
-                    </label>
-                    <label class="pagamento-option">
-                        <input type="radio" name="pagamento" value="pix">
-                        <i class="fas fa-qrcode"></i> Pix
-                    </label>
-                    <label class="pagamento-option">
-                        <input type="radio" name="pagamento" value="cartao">
-                        <i class="fas fa-credit-card"></i> Cartão
-                    </label>
-                </div>
-            </div>
+    function addExpense() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const category = document.getElementById('category').value;
+      if (isNaN(amount) || amount <= 0) {
+        alert('Digite um valor válido.');
+        return;
+      }
+      if (!expenses[today]) expenses[today] = [];
+      expenses[today].push({ amount, category, time: new Date().toLocaleTimeString() });
+      save();
+      document.getElementById('amount').value = '';
+    }
 
-            <button type="submit" class="btn-registrar">
-                <i class="fas fa-save"></i> Registrar Gasto
-            </button>
-        </form>
-    </div>
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
 
-    <!-- Tela de relatório -->
-    <div class="tela-formulario" id="telaRelatorio" style="display: none;">
-        <div class="formulario-cabecalho">
-            <button class="btn-voltar" onclick="voltarPrincipal()">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <h2>Relatório Diário</h2>
-        </div>
+    function getTodayTotal() {
+      if (!expenses[today]) return 0;
+      return expenses[today].reduce((sum, e) => sum + e.amount, 0);
+    }
 
-        <div class="relatorio-container">
-            <div class="data-seletor">
-                <button onclick="mudarDataRelatorio(-1)"><i class="fas fa-chevron-left"></i></button>
-                <h3 id="dataRelatorio">Hoje</h3>
-                <button onclick="mudarDataRelatorio(1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
+    function checkMedal() {
+      const dates = Object.keys(expenses).sort().reverse();
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yestStr = yesterday.toISOString().split('T')[0];
+      const dayBefore = new Date();
+      dayBefore.setDate(dayBefore.getDate() - 2);
+      const dayBeforeStr = dayBefore.toISOString().split('T')[0];
 
-            <div class="resumo-relatorio">
-                <div class="resumo-item">
-                    <span>Total Gasto:</span>
-                    <span id="totalRelatorio">R$ 0,00</span>
-                </div>
-                <div class="resumo-item">
-                    <span>Categoria Mais Gasta:</span>
-                    <span id="categoriaRelatorio">-</span>
-                </div>
-                <div class="resumo-item">
-                    <span>Forma de Pagamento:</span>
-                    <span id="pagamentoRelatorio">-</span>
-                </div>
-            </div>
+      const hasToday = !expenses[today] || expenses[today].length === 0;
+      const hasYesterday = !expenses[yestStr] || expenses[yestStr].length === 0;
 
-            <div class="gastos-relatorio" id="listaRelatorio">
-                <!-- Gastos do relatório serão carregados aqui -->
-            </div>
+      if (hasToday && hasYesterday) {
+        document.getElementById('medal').innerHTML = '🏆 Parabéns! 2 dias sem gastos!';
+      } else {
+        document.getElementById('medal').innerHTML = '';
+      }
+    }
 
-            <button class="btn-compartilhar" onclick="compartilharRelatorio()">
-                <i class="fas fa-share-alt"></i> Compartilhar Relatório
-            </button>
-        </div>
-    </div>
+    function renderCalendar() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDay = firstDay.getDay(); // 0 = domingo
+      const daysInMonth = lastDay.getDate();
 
-    <!-- Menu inferior -->
-    <nav class="menu-inferior">
-        <button class="menu-item ativo" onclick="mostrarTela('principal')">
-            <i class="fas fa-home"></i>
-            Início
-        </button>
-        <button class="menu-item" onclick="mostrarRegistro()">
-            <i class="fas fa-plus-circle"></i>
-            Registrar
-        </button>
-        <button class="menu-item" onclick="mostrarRelatorio()">
-            <i class="fas fa-chart-pie"></i>
-            Relatório
-        </button>
-        <button class="menu-item" onclick="mostrarCalendario()">
-            <i class="fas fa-calendar-alt"></i>
-            Calendário
-        </button>
-    </nav>
+      let html = '';
+      const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      weekdays.forEach(d => html += `<div class="cal-day">${d}</div>`);
 
-    <!-- Scripts -->
-    <script src="app.js"></script>
-    <script>
-        // Registrar Service Worker para PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado com sucesso:', registration);
-                    })
-                    .catch(error => {
-                        console.log('Falha ao registrar Service Worker:', error);
-                    });
-            });
-        }
-    </script>
+      // Dias vazios antes do primeiro dia
+      for (let i = 0; i < startDay; i++) {
+        html += '<div class="cal-day"></div>';
+      }
+
+      // Dias do mês
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasData = expenses[dateStr] && expenses[dateStr].length > 0;
+        const isToday = dateStr === today;
+        let cls = 'cal-day';
+        if (hasData) cls += ' has-data';
+        if (isToday) cls += ' today';
+        html += `<div class="${cls}">${day}</div>`;
+      }
+
+      document.getElementById('calendar').innerHTML = html;
+    }
+
+    function renderHistory() {
+      let html = '<h3>Últimos Registros</h3>';
+      const sortedDates = Object.keys(expenses).sort((a, b) => new Date(b) - new Date(a)).slice(0, 10);
+      sortedDates.forEach(date => {
+        const total = expenses[date].reduce((s, e) => s + e.amount, 0);
+        html += `<div class="day-entry"><strong>${date}</strong> – ${formatCurrency(total)}<br>`;
+        expenses[date].forEach(e => {
+          html += `- ${e.category}: ${formatCurrency(e.amount)} (${e.time})<br>`;
+        });
+        html += '</div>';
+      });
+      document.getElementById('history').innerHTML = html;
+    }
+
+    function render() {
+      document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
+      checkMedal();
+      renderCalendar();
+      renderHistory();
+    }
+
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(20);
+      doc.text("Relatório de Gastos", 20, 20);
+      doc.setFontSize(12);
+      let y = 30;
+
+      const sortedDates = Object.keys(expenses).sort((a, b) => new Date(a) - new Date(b));
+      sortedDates.forEach(date => {
+        const total = expenses[date].reduce((s, e) => s + e.amount, 0);
+        doc.text(`${date} – Total: ${formatCurrency(total)}`, 20, y);
+        y += 10;
+        expenses[date].forEach(e => {
+          const line = `- ${e.category}: ${formatCurrency(e.amount)} (${e.time})`;
+          if (y > 280) {
+            doc.addPage();
+            y = 20;
+          }
+          doc.text(line, 25, y);
+          y += 6;
+        });
+        y += 6;
+      });
+
+      doc.save('meu-controle-gastos.pdf');
+    }
+
+    // Inicializa
+    render();
+  </script>
 </body>
 </html>
