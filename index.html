@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Meu Controle de Gastos</title>
 
-  <!-- PWA / App-like -->
+  <!-- App-like (PWA) -->
   <meta name="theme-color" content="#4CAF50" />
   <meta name="mobile-web-app-capable" content="yes" />
 
-  <!-- iOS (Safari) -->
+  <!-- iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Gastos" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Ícone inline (em iOS pode variar) -->
+  <!-- Ícone inline -->
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
-
   <link rel="apple-touch-icon"
     href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
 
@@ -36,7 +35,6 @@
       --info:#2196F3;
       --bg: var(--light);
     }
-
     body.dark{
       --bg:#0f1411;
       --card:#151b17;
@@ -53,7 +51,7 @@
       padding: 16px;
       max-width: 720px;
       margin: 0 auto;
-      font-size: 18px; /* mais confortável */
+      font-size: 18px;
       line-height: 1.35;
     }
 
@@ -61,7 +59,7 @@
       background: var(--primary);
       color:#fff;
       border-radius: 14px;
-      padding: 14px 14px;
+      padding: 14px;
       box-shadow: var(--shadow);
       display:flex;
       align-items:center;
@@ -103,7 +101,7 @@
     .col{ flex:1; min-width: 220px; }
 
     label{ display:block; font-weight: 700; margin-bottom: 6px; }
-    input, select, textarea{
+    input, select{
       width:100%;
       padding: 12px;
       border: 1px solid var(--border);
@@ -113,7 +111,6 @@
       font-size: 1rem;
       outline: none;
     }
-    textarea{ min-height: 86px; resize: vertical; }
 
     button{
       width: 100%;
@@ -126,7 +123,6 @@
       color:#fff;
     }
     button:hover{ filter: brightness(0.95); }
-    .btn-secondary{ background: #3b3b3b; }
     .btn-info{ background: var(--info); }
     .btn-warn{ background: var(--warn); color:#1f1f1f; font-weight: 800; }
     .btn-danger{ background: var(--danger); }
@@ -141,6 +137,7 @@
     .install-row{ display:flex; gap: 12px; align-items:center; justify-content: space-between; }
     .install-row button{ width: auto; padding: 10px 14px; font-size: 1rem; }
 
+    .small{ color: var(--muted); font-size: 0.95rem; }
     .medal{
       text-align:center;
       font-size: 1.05rem;
@@ -171,11 +168,6 @@
     .cal-day.today{ border-color: var(--dark); }
     body.dark .cal-day.today{ border-color: #a7ffb0; }
     .cal-day.selected{ outline: 3px solid rgba(33,150,243,0.45); }
-
-    .small{
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
 
     .progress{
       height: 14px;
@@ -223,46 +215,22 @@
     }
     .detail-item:last-child{ border-bottom:none; }
     .detail-left{ min-width: 0; }
-    .detail-main{
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
-    .detail-note{
-      color: var(--muted);
-      font-size: 0.95rem;
-      word-break: break-word;
-    }
-    .detail-actions{
-      display:flex;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-    .mini-btn{
-      width: auto;
-      padding: 10px 10px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 800;
-    }
+    .detail-main{ font-weight: 800; margin-bottom: 2px; }
+    .detail-note{ color: var(--muted); font-size: 0.95rem; word-break: break-word; }
+    .detail-actions{ display:flex; gap: 8px; flex-shrink: 0; }
+    .mini-btn{ width: auto; padding: 10px 10px; border-radius: 10px; font-size: 0.95rem; font-weight: 800; }
 
     .modal-backdrop{
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 16px;
-      z-index: 999;
+      display:none; align-items:center; justify-content:center;
+      padding: 16px; z-index: 999;
     }
     .modal{
-      width: 100%;
-      max-width: 520px;
-      background: var(--card);
-      color: var(--text);
+      width: 100%; max-width: 520px;
+      background: var(--card); color: var(--text);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: 16px; padding: 14px;
       box-shadow: var(--shadow);
     }
     .modal h3{ margin-bottom: 10px; }
@@ -302,7 +270,7 @@
 
   <div class="card balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
-  <!-- Card de instalação (Android/Chrome) -->
+  <!-- Instalar (Android/Chrome) -->
   <div class="card install-card" id="installCard">
     <div class="install-row">
       <div>
@@ -313,11 +281,11 @@
     </div>
   </div>
 
-  <!-- Mensagem inicial -->
+  <!-- Boas-vindas -->
   <div class="card" id="welcomeCard" style="display:none;">
     <div style="font-weight:900; font-size:1.05rem;">Bem-vindo! 👋</div>
     <div class="small" style="margin-top:6px;">
-      Dica rápida: registre os gastos do dia e clique no calendário para ver/editar o dia desejado.
+      Turbo: digite o valor (já vira R$ 12,50), Enter vai avançando e Enter na Observação registra.
     </div>
     <div style="margin-top:10px;">
       <button class="btn-ghost" id="closeWelcome">Entendi</button>
@@ -332,9 +300,12 @@
         <input type="date" id="date">
         <div class="small" id="dateBR" style="margin-top:6px;"></div>
       </div>
+
       <div class="col">
         <label for="amount">Valor (R$)</label>
-        <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
+        <!-- MÁSCARA BR -->
+        <input type="text" id="amount" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00">
+        <div class="small" style="margin-top:6px;">Dica: digite “1250” → R$ 12,50</div>
       </div>
     </div>
 
@@ -349,11 +320,20 @@
       </div>
     </div>
 
-    <button style="margin-top:12px;" onclick="addExpense()">➕ Registrar gasto</button>
+    <div class="row" style="margin-top:12px;">
+      <button class="btn-ghost" type="button" onclick="setToday()">📌 Registrar gasto de hoje</button>
+    </div>
+
+    <!-- REGISTRAR + TOQUE + -->
+    <div class="row" style="margin-top:10px;">
+      <button id="addBtn" onclick="addExpense()">➕ Registrar gasto</button>
+      <button id="quickPlusBtn" class="btn-ghost" type="button" onclick="quickPlus()">➕ Toque +</button>
+    </div>
+
     <div class="medal" id="medal"></div>
   </div>
 
-  <!-- Meta mensal + mês -->
+  <!-- Meta mensal -->
   <div class="card">
     <div class="row">
       <div class="col">
@@ -392,14 +372,14 @@
     <div class="calendar" id="calendar"></div>
   </div>
 
-  <!-- Detalhe do dia selecionado -->
+  <!-- Detalhe -->
   <div class="card">
     <div style="font-weight:900;" id="selectedDayTitle">🧾 Detalhe do dia</div>
     <div class="small" id="selectedDaySubtitle">Selecione um dia no calendário.</div>
     <div id="dayDetailList" style="margin-top:10px;"></div>
   </div>
 
-  <!-- Tabela resumo -->
+  <!-- Resumo -->
   <div class="card">
     <div style="font-weight:900;">📋 Resumo por dia (últimos lançamentos)</div>
     <table class="summary-table">
@@ -413,7 +393,7 @@
     </table>
   </div>
 
-  <!-- Gráfico por categoria -->
+  <!-- Gráfico -->
   <div class="card">
     <div style="font-weight:900;">📊 Categorias do mês</div>
     <div class="small">Visão simples: quanto foi em cada categoria no mês atual.</div>
@@ -467,11 +447,10 @@
     <div class="modal">
       <h3>❔ Ajuda rápida</h3>
       <div class="small">
-        • Registre um gasto e ele fica guardado no seu aparelho (localStorage).<br>
-        • Clique em um dia no calendário para ver os gastos daquele dia.<br>
-        • No detalhe do dia você pode <strong>Editar</strong> ou <strong>Excluir</strong> um gasto.<br>
-        • Meta mensal mostra sua barra de progresso no mês atual.<br>
-        • No iPhone, instale pelo Safari: Compartilhar → “Adicionar à Tela de Início”.
+        • Valor tem máscara: digite “1250” → R$ 12,50.<br>
+        • Enter no Valor → Categoria → Observação → registra.<br>
+        • “Toque +” repete o último gasto (mesma categoria/obs/valor) com a data de hoje.<br>
+        • iPhone: Safari → Compartilhar → “Adicionar à Tela de Início”.
       </div>
       <div class="modal-actions" style="margin-top:12px;">
         <button onclick="closeHelp()">Fechar</button>
@@ -482,13 +461,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     // =========================
-    // 1) Manifest embutido (arquivo único)
+    // Manifest embutido (arquivo único)
     // =========================
     (function injectManifest() {
       const manifest = {
         name: "Meu Controle de Gastos",
         short_name: "Gastos",
-        description: "Controle simples e rápido de gastos diários.",
         start_url: "./",
         scope: "./",
         display: "standalone",
@@ -496,34 +474,26 @@
         theme_color: "#4CAF50",
         lang: "pt-BR",
         orientation: "portrait",
-        icons: [
-          {
-            src: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E",
-            sizes: "512x512",
-            type: "image/svg+xml",
-            purpose: "any maskable"
-          }
-        ]
+        icons: [{
+          src: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E",
+          sizes: "512x512",
+          type: "image/svg+xml",
+          purpose: "any maskable"
+        }]
       };
-      const json = JSON.stringify(manifest);
-      const href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(json);
-
+      const href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
       let link = document.querySelector('link[rel="manifest"]');
-      if (!link) {
-        link = document.createElement("link");
-        link.rel = "manifest";
-        document.head.appendChild(link);
-      }
+      if (!link) { link = document.createElement("link"); link.rel = "manifest"; document.head.appendChild(link); }
       link.href = href;
     })();
 
     // =========================
-    // 2) Service Worker embutido (Blob)
+    // Service Worker inline
     // =========================
     (function registerInlineSW() {
       if (!("serviceWorker" in navigator)) return;
       const swCode = `
-        const CACHE_NAME = "gastos-singlefile-v2";
+        const CACHE_NAME = "gastos-singlefile-turbo-v2";
         const CORE = ["./"];
         self.addEventListener("install", (event) => {
           event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE)));
@@ -541,24 +511,20 @@
       `;
       const blob = new Blob([swCode], { type: "text/javascript" });
       const swUrl = URL.createObjectURL(blob);
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register(swUrl).catch(() => {});
-      });
+      window.addEventListener("load", () => { navigator.serviceWorker.register(swUrl).catch(() => {}); });
     })();
 
     // =========================
-    // 3) Botão "Instalar" (Android/Chrome)
+    // Instalar (Android/Chrome)
     // =========================
     let deferredPrompt = null;
     const installCard = document.getElementById("installCard");
     const installBtn = document.getElementById("installBtn");
-
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
       installCard.style.display = "block";
     });
-
     installBtn?.addEventListener("click", async () => {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
@@ -568,7 +534,7 @@
     });
 
     // =========================
-    // Dados + categorias
+    // Categorias
     // =========================
     const CATEGORIES = [
       { id:"alimentacao", label:"🛒 Alimentação" },
@@ -594,7 +560,6 @@
       { id:"online", label:"📦 Compras Online" },
       { id:"diversos", label:"✨ Diversos" }
     ];
-
     function fillCategorySelect(selectEl) {
       selectEl.innerHTML = "";
       for (const c of CATEGORIES) {
@@ -608,33 +573,41 @@
     fillCategorySelect(document.getElementById("editCategory"));
 
     // =========================
-    // Utilitários de data/moeda
+    // Utilitários
     // =========================
-    function formatDateISO(date = new Date()) {
-      return date.toISOString().split("T")[0];
-    }
-    function formatBR(dateStr) {
-      const [y,m,d] = dateStr.split("-");
-      return `${d}/${m}/${y}`;
-    }
-    function parseISO(dateStr){
-      const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10));
-      return new Date(y, m-1, d);
-    }
-    function monthKey(year, monthIndex){
-      return `${year}-${String(monthIndex+1).padStart(2,"0")}`;
-    }
-    function formatCurrency(v){
-      return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v);
-    }
+    function formatDateISO(date = new Date()) { return date.toISOString().split("T")[0]; }
+    function formatBR(dateStr) { const [y,m,d] = dateStr.split("-"); return `${d}/${m}/${y}`; }
+    function parseISO(dateStr){ const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10)); return new Date(y, m-1, d); }
+    function monthKey(year, monthIndex){ return `${year}-${String(monthIndex+1).padStart(2,"0")}`; }
+    function formatCurrency(v){ return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v); }
     function safeNumber(n){ return (typeof n === "number" && isFinite(n)) ? n : 0; }
+
+    // =========================
+    // Máscara de dinheiro (BRL)
+    // =========================
+    function brlFromDigits(digits){
+      const clean = (digits || "").replace(/\D/g, "");
+      const cents = clean === "" ? 0 : parseInt(clean, 10);
+      const value = cents / 100;
+      return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+    }
+    function parseBRL(masked){
+      const clean = String(masked || "").replace(/\D/g, "");
+      if (!clean) return 0;
+      const cents = parseInt(clean, 10);
+      return cents / 100;
+    }
+    function applyMoneyMask(el){
+      const digits = el.value.replace(/\D/g, "");
+      el.value = brlFromDigits(digits);
+      try { el.setSelectionRange(el.value.length, el.value.length); } catch {}
+    }
 
     // =========================
     // Estado (armazenamento)
     // =========================
-    // expenses: { "YYYY-MM-DD": [ {amount,category,note,id} ] }
     let expenses = JSON.parse(localStorage.getItem("expenses") || "{}");
-    let archives = JSON.parse(localStorage.getItem("archives") || "{}"); // { "YYYY-MM": {expenses:{}, goal:number} }
+    let archives = JSON.parse(localStorage.getItem("archives") || "{}");
     let monthlyGoal = parseFloat(localStorage.getItem("monthlyGoal") || "0") || 0;
 
     let currentMonth = new Date().getMonth();
@@ -665,27 +638,35 @@
     window.closeHelp = closeHelp;
 
     const welcomeCard = document.getElementById("welcomeCard");
-    const firstRun = localStorage.getItem("firstRunDone") !== "1";
-    if (firstRun) {
+    if (localStorage.getItem("firstRunDone") !== "1") {
       welcomeCard.style.display = "block";
       localStorage.setItem("firstRunDone", "1");
     }
     document.getElementById("closeWelcome").addEventListener("click", () => welcomeCard.style.display = "none");
 
     // =========================
-    // Inputs iniciais
+    // Inputs
     // =========================
     const dateInput = document.getElementById("date");
+    const amountInput = document.getElementById("amount");
+    const categoryInput = document.getElementById("category");
+    const noteInput = document.getElementById("note");
+
     dateInput.value = todayISO;
     setDateBRHint(todayISO);
 
-    dateInput.addEventListener("change", () => {
-      setDateBRHint(dateInput.value);
-    });
+    function setDateBRHint(iso){ document.getElementById("dateBR").textContent = iso ? `Formato: ${formatBR(iso)}` : ""; }
+    dateInput.addEventListener("change", () => setDateBRHint(dateInput.value));
 
-    function setDateBRHint(iso){
-      document.getElementById("dateBR").textContent = iso ? `Formato: ${formatBR(iso)}` : "";
-    }
+    // valor inicia em 0
+    amountInput.value = "R$ 0,00";
+
+    // máscara ao digitar
+    amountInput.addEventListener("input", () => applyMoneyMask(amountInput));
+    amountInput.addEventListener("focus", () => {
+      if (!amountInput.value.trim()) amountInput.value = "R$ 0,00";
+      try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+    });
 
     document.getElementById("monthlyGoal").value = monthlyGoal ? String(monthlyGoal) : "";
 
@@ -698,11 +679,50 @@
     window.saveGoal = saveGoal;
 
     // =========================
-    // CRUD de gastos
+    // TURBO: Enter navega e registra
     // =========================
-    function uuid(){
-      return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+    amountInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        categoryInput.focus();
+      }
+    });
+    categoryInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        noteInput.focus();
+      }
+    });
+    noteInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addExpense(true);
+      }
+    });
+
+    // =========================
+    // Registrar gasto de hoje
+    // =========================
+    function setToday(){
+      const today = formatDateISO(new Date());
+      dateInput.value = today;
+      setDateBRHint(today);
+
+      selectedDay = today;
+      currentYear = new Date().getFullYear();
+      currentMonth = new Date().getMonth();
+
+      if (!amountInput.value.trim()) amountInput.value = "R$ 0,00";
+      amountInput.focus();
+      try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+      renderAll();
     }
+    window.setToday = setToday;
+
+    // =========================
+    // CRUD
+    // =========================
+    function uuid(){ return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
 
     function save(){
       localStorage.setItem("expenses", JSON.stringify(expenses));
@@ -710,31 +730,66 @@
       renderAll();
     }
 
-    function addExpense(){
+    function addExpense(turbo=false){
       const iso = dateInput.value;
-      const amount = parseFloat(document.getElementById("amount").value);
-      const category = document.getElementById("category").value;
-      const note = (document.getElementById("note").value || "").trim();
+      const amount = parseBRL(amountInput.value);
+      const category = categoryInput.value;
+      const note = (noteInput.value || "").trim();
 
       if (!iso) { alert("Selecione uma data."); return; }
-      if (isNaN(amount) || amount <= 0) { alert("Digite um valor válido."); return; }
+      if (!amount || amount <= 0) { alert("Digite um valor válido."); amountInput.focus(); return; }
 
       if (!expenses[iso]) expenses[iso] = [];
       expenses[iso].push({ id: uuid(), amount, category, note });
 
-      document.getElementById("amount").value = "";
-      document.getElementById("note").value = "";
+      // salva último gasto (para o Toque +)
+      localStorage.setItem("lastExpense", JSON.stringify({ amount, category, note }));
 
-      // após registrar, seleciona o dia para facilitar edição
+      // turbo: já deixa pronto pro próximo
+      amountInput.value = "R$ 0,00";
+      noteInput.value = "";
+
       selectedDay = iso;
-      // garante que estamos olhando o mês do gasto
       const d = parseISO(iso);
       currentYear = d.getFullYear();
       currentMonth = d.getMonth();
 
       save();
+
+      if (turbo) {
+        amountInput.focus();
+        try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+      }
     }
-    window.addExpense = addExpense;
+    window.addExpense = () => addExpense(false);
+
+    // TOQUE + (repete o último gasto em HOJE)
+    function quickPlus(){
+      const raw = localStorage.getItem("lastExpense");
+      if (!raw) { alert("Ainda não existe um último gasto para repetir."); return; }
+
+      let last = null;
+      try { last = JSON.parse(raw); } catch {}
+      if (!last || !last.amount) { alert("Último gasto inválido."); return; }
+
+      const today = formatDateISO(new Date());
+      dateInput.value = today;
+      setDateBRHint(today);
+
+      selectedDay = today;
+      currentYear = new Date().getFullYear();
+      currentMonth = new Date().getMonth();
+
+      categoryInput.value = last.category || "diversos";
+      noteInput.value = last.note || "";
+
+      // monta máscara a partir de centavos
+      const cents = Math.round((last.amount || 0) * 100);
+      amountInput.value = brlFromDigits(String(cents));
+
+      addExpense(true);
+    }
+    window.quickPlus = quickPlus;
 
     function deleteExpense(dayISO, itemId){
       const list = expenses[dayISO] || [];
@@ -747,13 +802,14 @@
     }
     window.deleteExpense = deleteExpense;
 
-    // Modal edição
+    // =========================
+    // Modal editar
+    // =========================
     const editBackdrop = document.getElementById("editBackdrop");
     const editInfo = document.getElementById("editInfo");
     const editAmount = document.getElementById("editAmount");
     const editCategory = document.getElementById("editCategory");
     const editNote = document.getElementById("editNote");
-
     let editing = { dayISO:null, id:null };
 
     function openEdit(dayISO, itemId){
@@ -762,19 +818,14 @@
 
       editing = { dayISO, id: itemId };
       editInfo.textContent = `Data: ${formatBR(dayISO)}`;
-
       editAmount.value = String(item.amount ?? "");
       editCategory.value = item.category ?? "diversos";
       editNote.value = item.note ?? "";
-
       editBackdrop.style.display = "flex";
     }
     window.openEdit = openEdit;
 
-    function closeEdit(){
-      editBackdrop.style.display = "none";
-      editing = { dayISO:null, id:null };
-    }
+    function closeEdit(){ editBackdrop.style.display = "none"; editing = { dayISO:null, id:null }; }
     window.closeEdit = closeEdit;
 
     function saveEdit(){
@@ -797,7 +848,7 @@
     window.saveEdit = saveEdit;
 
     // =========================
-    // Medalha 2 dias sem gastos
+    // Medalha
     // =========================
     function checkMedal(){
       const t = new Date();
@@ -814,22 +865,20 @@
     }
 
     // =========================
-    // Calendário + seleção de dia
+    // Calendário
     // =========================
     function renderCalendar(){
       const cal = document.getElementById("calendar");
-      const year = currentYear;
-      const month = currentMonth;
+      const year = currentYear, month = currentMonth;
 
       const first = new Date(year, month, 1);
       const last = new Date(year, month+1, 0);
-      const startDay = first.getDay(); // 0=Dom
+      const startDay = first.getDay();
       const daysInMonth = last.getDate();
 
       let html = "";
       const wd = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
       for (const d of wd) html += `<div class="cal-day head">${d}</div>`;
-
       for (let i=0;i<startDay;i++) html += `<div class="cal-day head"></div>`;
 
       for (let day=1; day<=daysInMonth; day++){
@@ -851,7 +900,6 @@
 
     function selectDay(iso){
       selectedDay = iso;
-      // se o usuário clica um dia fora do mês visível (raro), ajusta mês
       const d = parseISO(iso);
       currentYear = d.getFullYear();
       currentMonth = d.getMonth();
@@ -860,7 +908,7 @@
     window.selectDay = selectDay;
 
     // =========================
-    // Resumo diário e detalhe
+    // Resumo/detalhe
     // =========================
     function dayTotal(iso){
       const list = expenses[iso] || [];
@@ -873,68 +921,19 @@
       const dates = Object.keys(expenses)
         .filter(d => (expenses[d] || []).length > 0)
         .sort((a,b) => new Date(b) - new Date(a))
-        .slice(0, 20); // últimos 20 dias com gastos
+        .slice(0, 20);
 
       if (dates.length === 0){
         tbody.innerHTML = `<tr><td colspan="2" class="small" style="text-align:center;">Nenhum gasto registrado</td></tr>`;
         return;
       }
 
-      let html = "";
-      for (const d of dates){
-        html += `
-          <tr>
-            <td>${formatBR(d)}</td>
-            <td>${formatCurrency(dayTotal(d))}</td>
-          </tr>
-        `;
-      }
-      tbody.innerHTML = html;
-    }
-
-    function renderDayDetail(){
-      const title = document.getElementById("selectedDayTitle");
-      const sub = document.getElementById("selectedDaySubtitle");
-      const listEl = document.getElementById("dayDetailList");
-
-      if (!selectedDay){
-        title.textContent = "🧾 Detalhe do dia";
-        sub.textContent = "Selecione um dia no calendário.";
-        listEl.innerHTML = "";
-        return;
-      }
-
-      title.textContent = `🧾 Detalhe do dia: ${formatBR(selectedDay)}`;
-      const items = expenses[selectedDay] || [];
-      const total = items.reduce((s,e)=> s + safeNumber(e.amount), 0);
-
-      sub.textContent = items.length
-        ? `Total do dia: ${formatCurrency(total)} • Itens: ${items.length}`
-        : "Sem gastos neste dia.";
-
-      if (!items.length){
-        listEl.innerHTML = "";
-        return;
-      }
-
-      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
-      let html = "";
-      items.forEach((it) => {
-        const catLabel = catMap[it.category] || it.category;
-        html += `
-          <div class="detail-item">
-            <div class="detail-left">
-              <div class="detail-main">${catLabel} • ${formatCurrency(safeNumber(it.amount))}</div>
-              ${it.note ? `<div class="detail-note">${escapeHTML(it.note)}</div>` : `<div class="detail-note">—</div>`}
-            </div>
-            <div class="detail-actions">
-              <button class="mini-btn btn-ghost" onclick="openEdit('${selectedDay}','${it.id}')">Editar</button>
-              <button class="mini-btn btn-danger" onclick="deleteExpense('${selectedDay}','${it.id}')">Excluir</button>
-            </div>
-          </div>
-        `;
-      });
-      listEl.innerHTML = html;
+      tbody.innerHTML = dates.map(d => `
+        <tr>
+          <td>${formatBR(d)}</td>
+          <td>${formatCurrency(dayTotal(d))}</td>
+        </tr>
+      `).join("");
     }
 
     function escapeHTML(str){
@@ -946,16 +945,44 @@
         .replaceAll("'","&#039;");
     }
 
+    function renderDayDetail(){
+      const title = document.getElementById("selectedDayTitle");
+      const sub = document.getElementById("selectedDaySubtitle");
+      const listEl = document.getElementById("dayDetailList");
+
+      title.textContent = `🧾 Detalhe do dia: ${formatBR(selectedDay)}`;
+      const items = expenses[selectedDay] || [];
+      const total = items.reduce((s,e)=> s + safeNumber(e.amount), 0);
+
+      sub.textContent = items.length
+        ? `Total do dia: ${formatCurrency(total)} • Itens: ${items.length}`
+        : "Sem gastos neste dia.";
+
+      if (!items.length){ listEl.innerHTML = ""; return; }
+
+      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+      listEl.innerHTML = items.map(it => `
+        <div class="detail-item">
+          <div class="detail-left">
+            <div class="detail-main">${catMap[it.category] || it.category} • ${formatCurrency(safeNumber(it.amount))}</div>
+            ${it.note ? `<div class="detail-note">${escapeHTML(it.note)}</div>` : `<div class="detail-note">—</div>`}
+          </div>
+          <div class="detail-actions">
+            <button class="mini-btn btn-ghost" onclick="openEdit('${selectedDay}','${it.id}')">Editar</button>
+            <button class="mini-btn btn-danger" onclick="deleteExpense('${selectedDay}','${it.id}')">Excluir</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
     // =========================
-    // Resumo mensal + meta + mês
+    // Mensal/meta
     // =========================
     function getMonthDates(year, month){
       const start = new Date(year, month, 1);
       const end = new Date(year, month+1, 0);
       const out = [];
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
-        out.push(formatDateISO(new Date(d)));
-      }
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) out.push(formatDateISO(new Date(d)));
       return out;
     }
 
@@ -968,9 +995,7 @@
     }
 
     function renderMonthlySummary(){
-      const monthLabel = new Date(currentYear, currentMonth, 1)
-        .toLocaleDateString("pt-BR", { month:"long", year:"numeric" });
-
+      const monthLabel = new Date(currentYear, currentMonth, 1).toLocaleDateString("pt-BR", { month:"long", year:"numeric" });
       const { total, daysInMonth, daysWithCount } = monthTotals(currentYear, currentMonth);
       const avg = daysInMonth ? total / daysInMonth : 0;
 
@@ -978,9 +1003,9 @@
       document.getElementById("monthlyStats").textContent =
         `Total: ${formatCurrency(total)} | Dias com gastos: ${daysWithCount}/${daysInMonth} | Média/dia: ${formatCurrency(avg)}`;
 
-      // barra meta
       const bar = document.getElementById("goalBar");
       const goalText = document.getElementById("goalText");
+
       if (monthlyGoal > 0){
         const pct = Math.min(100, Math.round((total / monthlyGoal) * 100));
         bar.style.width = pct + "%";
@@ -998,49 +1023,28 @@
       currentMonth += delta;
       if (currentMonth < 0) { currentMonth = 11; currentYear--; }
       if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-
-      // ajusta selectedDay para um dia do mês atual (mantém o dia se possível)
-      const d = parseISO(selectedDay || todayISO);
-      const day = Math.min(d.getDate(), new Date(currentYear, currentMonth+1, 0).getDate());
-      selectedDay = `${currentYear}-${String(currentMonth+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-
       renderAll();
     }
     window.changeMonth = changeMonth;
 
-    // =========================
-    // Virar o mês (arquivar)
-    // =========================
     function rollMonth(){
       const key = monthKey(currentYear, currentMonth);
       const monthDates = getMonthDates(currentYear, currentMonth);
       const monthExpenses = {};
+      monthDates.forEach(d => { if (expenses[d] && expenses[d].length) monthExpenses[d] = expenses[d]; });
 
-      monthDates.forEach(d => {
-        if (expenses[d] && expenses[d].length) monthExpenses[d] = expenses[d];
-      });
-
-      if (Object.keys(monthExpenses).length === 0){
-        alert("Este mês não tem gastos para arquivar.");
-        return;
-      }
-
+      if (Object.keys(monthExpenses).length === 0){ alert("Este mês não tem gastos para arquivar."); return; }
       if (!confirm(`Arquivar o mês ${key} e limpar os gastos deste mês?`)) return;
 
       archives[key] = { expenses: monthExpenses, goal: monthlyGoal, archivedAt: Date.now() };
-
-      // remove do mês atual
-      monthDates.forEach(d => {
-        if (expenses[d]) delete expenses[d];
-      });
-
+      monthDates.forEach(d => { if (expenses[d]) delete expenses[d]; });
       save();
       alert("Mês arquivado com sucesso!");
     }
     window.rollMonth = rollMonth;
 
     // =========================
-    // Gráfico por categoria (mês atual)
+    // Gráfico por categoria
     // =========================
     function categoryTotalsThisMonth(){
       const { dates } = monthTotals(currentYear, currentMonth);
@@ -1060,56 +1064,36 @@
     function drawCategoryChart(){
       const canvas = document.getElementById("catChart");
       const ctx = canvas.getContext("2d");
-
-      // limpa
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
       const totals = categoryTotalsThisMonth();
-      const entries = Object.entries(totals)
-        .filter(([,v]) => v > 0)
-        .sort((a,b) => b[1]-a[1])
-        .slice(0, 8); // top 8 para ficar legível
-
+      const entries = Object.entries(totals).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]).slice(0,8);
       const hint = document.getElementById("chartHint");
-      if (entries.length === 0){
-        hint.textContent = "Sem dados no mês atual para montar o gráfico.";
-        return;
-      }
 
+      if (!entries.length){ hint.textContent = "Sem dados no mês atual para montar o gráfico."; return; }
       hint.textContent = "Mostrando as 8 categorias com maior gasto (mês atual).";
 
-      const w = canvas.width, h = canvas.height;
-      const padding = 20;
-      const barH = 22;
-      const gap = 10;
+      const w = canvas.width, padding = 20, barH = 22, gap = 10;
       const maxVal = Math.max(...entries.map(e => e[1])) || 1;
 
-      // cores neutras (sem definir paleta sofisticada, mas visível em ambos os modos)
       const barColor = getComputedStyle(document.body).getPropertyValue("--primary").trim() || "#4CAF50";
       const textColor = getComputedStyle(document.body).getPropertyValue("--text").trim() || "#222";
       const muted = getComputedStyle(document.body).getPropertyValue("--muted").trim() || "#666";
-
-      ctx.fillStyle = muted;
-      ctx.font = "16px system-ui";
-
       const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+
       let y = padding;
+      entries.forEach(([cat, val]) => {
+        const label = (catMap[cat] || cat).replace(/^.+?\s/, "");
+        const barW = Math.round(((w - padding*2 - 220) * (val / maxVal)));
 
-      entries.forEach(([cat, val], idx) => {
-        const label = (catMap[cat] || cat).replace(/^.+?\s/, ""); // tira emoji no label longo do eixo
-        const barW = Math.round(((w - padding*2 - 220) * (val / maxVal))); // espaço para texto
-
-        // label
         ctx.fillStyle = textColor;
         ctx.font = "16px system-ui";
         ctx.fillText(label, padding, y + 16);
 
-        // valor
         ctx.fillStyle = muted;
         ctx.font = "14px system-ui";
         ctx.fillText(formatCurrency(val), w - padding - 140, y + 16);
 
-        // barra
         ctx.fillStyle = barColor;
         ctx.fillRect(w - padding - 130, y, Math.max(4, barW), barH);
 
@@ -1136,15 +1120,9 @@
         .sort((a,b) => new Date(a) - new Date(b));
 
       let y = 34;
-
-      if (!sortedDates.length){
-        doc.text("Nenhum gasto registrado.", 14, y);
-        doc.save("meu-controle-gastos.pdf");
-        return;
-      }
+      if (!sortedDates.length){ doc.text("Nenhum gasto registrado.", 14, y); doc.save("meu-controle-gastos.pdf"); return; }
 
       const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
-
       for (const date of sortedDates){
         const total = dayTotal(date);
         doc.setFontSize(12);
@@ -1173,13 +1151,9 @@
     // =========================
     // Render geral
     // =========================
-    function getTodayTotal(){
-      return dayTotal(todayISO);
-    }
-
     function renderBalance(){
-      document.getElementById("balance").textContent =
-        `Balanço de hoje (${formatBR(todayISO)}): ${formatCurrency(getTodayTotal())}`;
+      const total = dayTotal(todayISO);
+      document.getElementById("balance").textContent = `Balanço de hoje (${formatBR(todayISO)}): ${formatCurrency(total)}`;
     }
 
     function renderAll(){
@@ -1192,16 +1166,15 @@
       drawCategoryChart();
     }
 
-    // =========================
-    // Inicialização
-    // =========================
-    // começa selecionando hoje (facilita)
-    selectedDay = todayISO;
-    renderAll();
-
-    // fechar modais clicando fora (opcional)
+    // fechar modais clicando fora
     helpBackdrop.addEventListener("click", (e) => { if (e.target === helpBackdrop) closeHelp(); });
     editBackdrop.addEventListener("click", (e) => { if (e.target === editBackdrop) closeEdit(); });
+
+    // =========================
+    // Start
+    // =========================
+    renderAll();
+    setToday();
   </script>
 </body>
 </html>
