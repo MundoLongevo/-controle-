@@ -3,18 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Meu Controle de Gastos</title>
+  <title>Meu Controle de Despesas</title>
 
-  <!-- App-like (PWA) -->
   <meta name="theme-color" content="#4CAF50" />
   <meta name="mobile-web-app-capable" content="yes" />
-
-  <!-- iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Gastos" />
+  <meta name="apple-mobile-web-app-title" content="Despesas" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Ícone inline -->
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon"
@@ -22,237 +18,93 @@
 
   <style>
     :root{
-      --primary:#4CAF50;
-      --dark:#2E7D32;
-      --light:#E8F5E9;
-      --card:#FFFFFF;
-      --text:#222;
-      --muted:#666;
-      --border:#d9d9d9;
+      --primary:#4CAF50; --dark:#2E7D32; --light:#E8F5E9;
+      --card:#FFFFFF; --text:#222; --muted:#666; --border:#d9d9d9;
       --shadow: 0 1px 3px rgba(0,0,0,0.10);
-      --danger:#d32f2f;
-      --warn:#FF9800;
-      --info:#2196F3;
-      --bg: var(--light);
+      --danger:#d32f2f; --info:#2196F3; --bg: var(--light);
     }
     body.dark{
-      --bg:#0f1411;
-      --card:#151b17;
-      --text:#f1f1f1;
-      --muted:#b9b9b9;
-      --border:#2a332d;
-      --shadow: 0 1px 3px rgba(0,0,0,0.45);
+      --bg:#0f1411; --card:#151b17; --text:#f1f1f1; --muted:#b9b9b9;
+      --border:#2a332d; --shadow: 0 1px 3px rgba(0,0,0,0.45);
     }
     *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, sans-serif;}
-    body{
-      background: var(--bg);
-      color: var(--text);
-      padding: 16px;
-      max-width: 720px;
-      margin: 0 auto;
-      font-size: 18px;
-      line-height: 1.35;
-    }
+    body{ background: var(--bg); color: var(--text); padding: 16px; max-width: 760px; margin: 0 auto; font-size: 18px; line-height: 1.35; }
     header{
-      background: var(--primary);
-      color:#fff;
-      border-radius: 14px;
-      padding: 14px;
-      box-shadow: var(--shadow);
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 12px;
+      background: var(--primary); color:#fff; border-radius: 14px; padding: 14px; box-shadow: var(--shadow);
+      display:flex; align-items:center; justify-content: space-between; gap: 12px;
     }
-    header h1{ font-size: 1.35rem; }
+    header h1{ font-size: 1.25rem; }
     .top-actions{ display:flex; gap: 10px; align-items:center; }
     .chip{
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.25);
-      color:#fff;
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 0.95rem;
-      cursor:pointer;
-      user-select:none;
-      white-space: nowrap;
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25); color:#fff;
+      padding: 8px 10px; border-radius: 999px; font-size: 0.95rem; cursor:pointer; user-select:none; white-space: nowrap;
     }
-    .card{
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      margin-top: 14px;
-      box-shadow: var(--shadow);
-    }
-    .balance{
-      text-align:center;
-      font-weight: 800;
-      color: var(--dark);
-      font-size: 1.15rem;
-    }
-    body.dark .balance{ color: #a7ffb0; }
+    .card{ background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-top: 14px; box-shadow: var(--shadow); }
     .row{ display:flex; gap: 12px; flex-wrap: wrap; }
     .col{ flex:1; min-width: 220px; }
-    label{ display:block; font-weight: 700; margin-bottom: 6px; }
+    label{ display:block; font-weight: 800; margin-bottom: 6px; }
     input, select{
-      width:100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      border-radius: 12px;
-      font-size: 1rem;
-      outline: none;
+      width:100%; padding: 12px; border: 1px solid var(--border); background: transparent; color: var(--text);
+      border-radius: 12px; font-size: 1rem; outline: none;
     }
     button{
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      font-size: 1.05rem;
-      cursor:pointer;
-      background: var(--primary);
-      color:#fff;
+      width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 1.05rem; cursor:pointer;
+      background: var(--primary); color:#fff; font-weight: 900;
     }
-    button:hover{ filter: brightness(0.95); }
-    .btn-info{ background: var(--info); }
-    .btn-warn{ background: var(--warn); color:#1f1f1f; font-weight: 800; }
+    .btn-ghost{ background: transparent; border: 1px solid var(--border); color: var(--text); font-weight: 900; }
     .btn-danger{ background: var(--danger); }
-    .btn-ghost{
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-weight: 700;
-    }
-    .install-card{ display:none; }
-    .install-row{ display:flex; gap: 12px; align-items:center; justify-content: space-between; }
-    .install-row button{ width: auto; padding: 10px 14px; font-size: 1rem; }
     .small{ color: var(--muted); font-size: 0.95rem; }
-    .medal{
-      text-align:center;
-      font-size: 1.05rem;
-      color: #b8860b;
-      margin-top: 8px;
-      font-weight: 700;
-    }
+    .balance{ text-align:center; font-weight: 900; color: var(--dark); font-size: 1.12rem; }
+    body.dark .balance{ color: #a7ffb0; }
 
-    .calendar{
-      display:grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      margin-top: 10px;
-    }
+    .calendar{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
     .cal-day{
-      text-align:center;
-      padding: 10px 6px;
-      background: rgba(0,0,0,0.06);
-      border-radius: 10px;
-      font-size: 0.95rem;
-      border: 1px solid transparent;
-      cursor: pointer;
-      user-select:none;
+      text-align:center; padding: 10px 6px; background: rgba(0,0,0,0.06); border-radius: 10px;
+      font-size: 0.95rem; border: 1px solid transparent; cursor: pointer; user-select:none;
     }
     body.dark .cal-day{ background: rgba(255,255,255,0.08); }
-    .cal-day.head{ background: transparent; border:none; cursor: default; font-weight:800; color: var(--muted); }
+    .cal-day.head{ background: transparent; border:none; cursor: default; font-weight:900; color: var(--muted); }
     .cal-day.has-data{ background: var(--primary); color:#fff; }
     .cal-day.today{ border-color: var(--dark); }
     body.dark .cal-day.today{ border-color: #a7ffb0; }
     .cal-day.selected{ outline: 3px solid rgba(33,150,243,0.45); }
 
-    .progress{
-      height: 14px;
-      background: rgba(0,0,0,0.08);
-      border-radius: 999px;
-      overflow:hidden;
-      margin-top: 10px;
-      border: 1px solid var(--border);
-    }
-    body.dark .progress{ background: rgba(255,255,255,0.10); }
-    .progress > div{
-      height: 100%;
-      width: 0%;
-      background: var(--primary);
-      transition: width .25s ease;
-    }
-
-    .summary-table{
-      width:100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      overflow:hidden;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-    }
-    .summary-table th, .summary-table td{
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--border);
-      text-align:left;
-      font-size: 0.98rem;
-    }
-    .summary-table th{
-      background: rgba(76,175,80,0.18);
-      font-weight: 900;
-    }
-    .summary-table tr:last-child td{ border-bottom:none; }
-
     .detail-item{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
+      display:flex; gap: 10px; align-items:flex-start; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
     }
     .detail-item:last-child{ border-bottom:none; }
-    .detail-left{ min-width: 0; }
-    .detail-main{ font-weight: 800; margin-bottom: 2px; }
+    .detail-main{ font-weight: 900; margin-bottom: 2px; }
     .detail-note{ color: var(--muted); font-size: 0.95rem; word-break: break-word; }
     .detail-actions{ display:flex; gap: 8px; flex-shrink: 0; }
-    .mini-btn{ width: auto; padding: 10px 10px; border-radius: 10px; font-size: 0.95rem; font-weight: 800; }
+    .mini-btn{ width: auto; padding: 10px 10px; border-radius: 10px; font-size: 0.95rem; font-weight: 900; }
 
     .modal-backdrop{
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.55);
-      display:none; align-items:center; justify-content:center;
-      padding: 16px; z-index: 999;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+      display:none; align-items:center; justify-content:center; padding: 16px; z-index: 999;
     }
     .modal{
-      width: 100%; max-width: 520px;
-      background: var(--card); color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 14px;
-      box-shadow: var(--shadow);
+      width: 100%; max-width: 520px; background: var(--card); color: var(--text);
+      border: 1px solid var(--border); border-radius: 16px; padding: 14px; box-shadow: var(--shadow);
     }
     .modal h3{ margin-bottom: 10px; }
     .modal .row{ margin-top: 10px; }
     .modal .modal-actions{ display:flex; gap: 10px; margin-top: 12px; }
     .modal .modal-actions button{ flex:1; }
 
-    canvas{
-      width: 100%;
-      height: 230px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(0,0,0,0.02);
+    .pill{
+      display:inline-block; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--border); font-weight: 900; font-size: 0.92rem;
+      background: rgba(0,0,0,0.03);
     }
-    body.dark canvas{ background: rgba(255,255,255,0.04); }
-
-    footer{
-      margin-top: 18px;
-      text-align:center;
-      color: var(--muted);
-      font-size: 0.9rem;
-      padding-bottom: 10px;
-    }
-    footer a{ color: var(--primary); text-decoration:none; }
-    footer a:hover{ text-decoration: underline; }
+    body.dark .pill{ background: rgba(255,255,255,0.06); }
+    footer{ margin-top: 18px; text-align:center; color: var(--muted); font-size: 0.9rem; padding-bottom: 10px; }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>💰 Meu Controle Diário</h1>
+    <h1>💰 Controle de Despesas</h1>
     <div class="top-actions">
       <div class="chip" id="darkToggle">🌙 Modo</div>
       <div class="chip" id="helpBtn">❔ Ajuda</div>
@@ -261,22 +113,15 @@
 
   <div class="card balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
-  <!-- Instalar (Android/Chrome) -->
-  <div class="card install-card" id="installCard">
-    <div class="install-row">
-      <div>
-        <div style="font-weight:900;">Instalar como app</div>
-        <div class="small">Fica na tela inicial e abre sem barra do navegador.</div>
-      </div>
-      <button id="installBtn">Instalar</button>
-    </div>
-  </div>
-
-  <!-- Lançamento -->
   <div class="card">
-    <div class="row">
+    <div class="row" style="align-items:center; justify-content: space-between;">
+      <div class="pill" id="statusPill">Carregando...</div>
+      <div class="small" id="originHint"></div>
+    </div>
+
+    <div class="row" style="margin-top:12px;">
       <div class="col">
-        <label for="date">Data do gasto</label>
+        <label for="date">Data</label>
         <input type="date" id="date">
         <div class="small" id="dateBR" style="margin-top:6px;"></div>
       </div>
@@ -295,95 +140,31 @@
       </div>
       <div class="col">
         <label for="note">Observação (opcional)</label>
-        <input type="text" id="note" placeholder="Ex: almoço com Sofia">
+        <input type="text" id="note" placeholder="Ex: almoço, farmácia...">
       </div>
     </div>
 
     <div class="row" style="margin-top:12px;">
-      <button class="btn-ghost" type="button" onclick="setToday()">📌 Registrar gasto de hoje</button>
+      <button class="btn-ghost" type="button" onclick="setToday()">📌 Hoje</button>
     </div>
 
-    <button id="saveBtn" style="margin-top:10px;" onclick="addExpense()">💾 Gravar despesa</button>
-    <div class="medal" id="medal"></div>
+    <button style="margin-top:10px;" onclick="addExpense()">💾 Gravar despesa</button>
+    <div class="small" id="saveStatus" style="margin-top:10px;"></div>
   </div>
 
-  <!-- Meta mensal -->
-  <div class="card">
-    <div class="row">
-      <div class="col">
-        <div style="font-weight:900;">📌 Meta do mês</div>
-        <div class="small">Defina um teto mensal para acompanhar o ritmo do gasto.</div>
-      </div>
-      <div class="col">
-        <label for="monthlyGoal">Meta (R$)</label>
-        <input type="number" id="monthlyGoal" step="1" min="0" placeholder="Ex: 2500">
-        <button class="btn-ghost" style="margin-top:10px;" onclick="saveGoal()">Salvar meta</button>
-      </div>
-    </div>
-
-    <div style="margin-top:12px; font-weight:900;" id="currentMonth">Mês/Ano</div>
-    <div class="small" id="monthlyStats">Total: R$ 0,00 | Dias com gastos: 0/0 | Média/dia: R$ 0,00</div>
-    <div class="progress"><div id="goalBar"></div></div>
-    <div class="small" id="goalText" style="margin-top:8px;"></div>
-
-    <div class="row" style="margin-top:12px;">
-      <button class="btn-ghost" onclick="changeMonth(-1)">◀ Mês anterior</button>
-      <button class="btn-ghost" onclick="changeMonth(1)">Mês seguinte ▶</button>
-    </div>
-
-    <div class="row" style="margin-top:12px;">
-      <button class="btn-warn" onclick="rollMonth()">🗓️ Virar o mês (arquivar)</button>
-    </div>
-    <div class="small" style="margin-top:8px;">
-      “Virar o mês” guarda o mês atual no histórico e limpa o mês em andamento (sem apagar meses antigos).
-    </div>
-  </div>
-
-  <!-- Calendário -->
   <div class="card">
     <div style="font-weight:900;">📅 Calendário</div>
-    <div class="small">Clique em um dia para ver, editar ou excluir gastos daquele dia.</div>
+    <div class="small">Clique em um dia para ver, editar ou excluir.</div>
     <div class="calendar" id="calendar"></div>
   </div>
 
-  <!-- Detalhe -->
   <div class="card">
     <div style="font-weight:900;" id="selectedDayTitle">🧾 Detalhe do dia</div>
     <div class="small" id="selectedDaySubtitle">Selecione um dia no calendário.</div>
     <div id="dayDetailList" style="margin-top:10px;"></div>
   </div>
 
-  <!-- Resumo -->
-  <div class="card">
-    <div style="font-weight:900;">📋 Resumo por dia (últimos lançamentos)</div>
-    <table class="summary-table">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody id="summaryBody"></tbody>
-    </table>
-  </div>
-
-  <!-- Gráfico -->
-  <div class="card">
-    <div style="font-weight:900;">📊 Categorias do mês</div>
-    <div class="small">Visão simples: quanto foi em cada categoria no mês atual.</div>
-    <canvas id="catChart" width="700" height="260"></canvas>
-    <div class="small" id="chartHint" style="margin-top:10px;"></div>
-  </div>
-
-  <div class="card">
-    <button class="btn-info" onclick="generatePDF()">📄 Gerar relatório PDF</button>
-  </div>
-
-  <footer>
-    © 2026 Ricardo de Faria Barros. Todos os direitos reservados.<br>
-    Inspire-se na longelescência:
-    <a href="https://www.plenalongevidade.com.br" target="_blank" rel="noopener">www.plenalongevidade.com.br</a>
-  </footer>
+  <footer>© 2026 Ricardo de Faria Barros</footer>
 
   <!-- Modal Editar -->
   <div class="modal-backdrop" id="editBackdrop" role="dialog" aria-modal="true">
@@ -421,9 +202,9 @@
     <div class="modal">
       <h3>❔ Ajuda rápida</h3>
       <div class="small">
-        • Valor tem máscara: digite “1250” → R$ 12,50.<br>
-        • Enter no Valor → Categoria → Observação → grava.<br>
-        • Clique no calendário para ver/editar/excluir.<br>
+        • Este app salva LOCALMENTE no seu navegador (no mesmo celular e mesma URL).<br>
+        • Não use modo anônimo.<br>
+        • Evite abrir dentro do Instagram/Facebook: abra no Chrome/Safari.<br>
         • iPhone: Safari → Compartilhar → “Adicionar à Tela de Início”.
       </div>
       <div class="modal-actions" style="margin-top:12px;">
@@ -432,709 +213,405 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    // =========================
-    // Manifest embutido (arquivo único)
-    // =========================
-    (function injectManifest() {
-      const manifest = {
-        name: "Meu Controle de Gastos",
-        short_name: "Gastos",
-        start_url: "./",
-        scope: "./",
-        display: "standalone",
-        background_color: "#E8F5E9",
-        theme_color: "#4CAF50",
-        lang: "pt-BR",
-        orientation: "portrait",
-        icons: [{
-          src: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E",
-          sizes: "512x512",
-          type: "image/svg+xml",
-          purpose: "any maskable"
-        }]
-      };
-      const href = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
-      let link = document.querySelector('link[rel="manifest"]');
-      if (!link) { link = document.createElement("link"); link.rel = "manifest"; document.head.appendChild(link); }
-      link.href = href;
-    })();
-
-    // =========================
-    // Service Worker inline (cache do app)
-    // =========================
-    (function registerInlineSW() {
-      if (!("serviceWorker" in navigator)) return;
-      const swCode = `
-        const CACHE_NAME = "gastos-singlefile-stable-v3";
-        const CORE = ["./"];
-        self.addEventListener("install", (event) => {
-          event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE)));
-          self.skipWaiting();
-        });
-        self.addEventListener("activate", (event) => {
-          event.waitUntil(
-            caches.keys().then((keys) => Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null))))
-          );
-          self.clients.claim();
-        });
-        self.addEventListener("fetch", (event) => {
-          event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
-        });
-      `;
-      const blob = new Blob([swCode], { type: "text/javascript" });
-      const swUrl = URL.createObjectURL(blob);
-      window.addEventListener("load", () => { navigator.serviceWorker.register(swUrl).catch(() => {}); });
-    })();
-
-    // =========================
-    // Instalar (Android/Chrome)
-    // =========================
-    let deferredPrompt = null;
-    const installCard = document.getElementById("installCard");
-    const installBtn = document.getElementById("installBtn");
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installCard.style.display = "block";
-    });
-    installBtn?.addEventListener("click", async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      try { await deferredPrompt.userChoice; } catch {}
-      deferredPrompt = null;
-      installCard.style.display = "none";
-    });
-
-    // =========================
-    // Categorias
-    // =========================
-    const CATEGORIES = [
-      { id:"alimentacao", label:"🛒 Alimentação" },
-      { id:"feira", label:"🧺 Feira" },
-      { id:"padaria", label:"🥐 Padaria" },
-      { id:"bares", label:"🍷 Bares/Restaurantes" },
-      { id:"farmacia", label:"💊 Farmácia" },
-      { id:"gasolina", label:"⛽ Gasolina" },
-      { id:"uber", label:"🚕 Uber/Transporte" },
-      { id:"agua", label:"💧 Água" },
-      { id:"energia", label:"⚡ Energia" },
-      { id:"telefone", label:"📱 Telefone/Internet" },
-      { id:"condominio", label:"🏢 Condomínio" },
-      { id:"diarista", label:"🧹 Diarista" },
-      { id:"impostos", label:"🏛️ Impostos" },
-      { id:"prestacoes", label:"🏠 Prestações" },
-      { id:"manutencao", label:"🔧 Manutenção" },
-      { id:"lazer", label:"🎭 Lazer" },
-      { id:"contas", label:"📄 Contas Fixas" },
-      { id:"aluguel", label:"🏠 Aluguel" },
-      { id:"cartao", label:"💳 Fatura Cartão" },
-      { id:"dizimo", label:"❤️ Dízimo/Doação" },
-      { id:"online", label:"📦 Compras Online" },
-      { id:"diversos", label:"✨ Diversos" }
-    ];
-    function fillCategorySelect(selectEl) {
-      selectEl.innerHTML = "";
-      for (const c of CATEGORIES) {
-        const opt = document.createElement("option");
-        opt.value = c.id;
-        opt.textContent = c.label;
-        selectEl.appendChild(opt);
-      }
-    }
-    fillCategorySelect(document.getElementById("category"));
-    fillCategorySelect(document.getElementById("editCategory"));
-
-    // =========================
-    // Utilitários
-    // =========================
-    function formatDateISO(date = new Date()) { return date.toISOString().split("T")[0]; }
-    function formatBR(dateStr) { const [y,m,d] = dateStr.split("-"); return `${d}/${m}/${y}`; }
-    function parseISO(dateStr){ const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10)); return new Date(y, m-1, d); }
-    function monthKey(year, monthIndex){ return `${year}-${String(monthIndex+1).padStart(2,"0")}`; }
-    function formatCurrency(v){ return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v); }
-    function safeNumber(n){ return (typeof n === "number" && isFinite(n)) ? n : 0; }
-
-    // =========================
-    // Máscara de dinheiro (BR)
-    // Digite 1250 => R$ 12,50
-    // =========================
-    function brlFromDigits(digits){
-      const clean = (digits || "").replace(/\D/g, "");
-      const cents = clean === "" ? 0 : parseInt(clean, 10);
-      const value = cents / 100;
-      return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
-    }
-    function parseBRL(masked){
-      const clean = String(masked || "").replace(/\D/g, "");
-      if (!clean) return 0;
-      const cents = parseInt(clean, 10);
-      return cents / 100;
-    }
-    function applyMoneyMask(el){
-      const digits = el.value.replace(/\D/g, "");
-      el.value = brlFromDigits(digits);
-      try { el.setSelectionRange(el.value.length, el.value.length); } catch {}
-    }
-
-    // =========================
-    // Storage seguro (corrige "não salva")
-    // =========================
-    function canUseStorage(){
-      try{
-        const k="__test_ls__";
-        localStorage.setItem(k,"1");
-        localStorage.removeItem(k);
-        return true;
-      }catch(e){
-        return false;
-      }
-    }
-    const storageOk = canUseStorage();
-    if (!storageOk){
-      alert("Atenção: seu navegador bloqueou o armazenamento (localStorage). Abra no Chrome/Safari normal ou instale na tela inicial.");
-    }
-
-    function loadJSON(key, fallback){
-      try{
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      }catch(e){
-        return fallback;
-      }
-    }
-    function saveJSON(key, value){
-      try{
-        localStorage.setItem(key, JSON.stringify(value));
-        return true;
-      }catch(e){
-        alert("Não consegui salvar. Seu navegador pode estar bloqueando armazenamento (modo anônimo/webview).");
-        return false;
-      }
-    }
-
-    // =========================
-    // Estado
-    // =========================
-    let expenses = loadJSON("expenses", {});
-    let archives = loadJSON("archives", {});
-    let monthlyGoal = parseFloat(localStorage.getItem("monthlyGoal") || "0") || 0;
-
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    const todayISO = formatDateISO(new Date());
-    let selectedDay = todayISO;
-
-    // =========================
-    // Preferências (modo escuro)
-    // =========================
-    const darkStored = localStorage.getItem("pref_dark");
-    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const darkOn = (darkStored === null) ? prefersDark : (darkStored === "1");
-    if (darkOn) document.body.classList.add("dark");
-
-    document.getElementById("darkToggle").addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("pref_dark", document.body.classList.contains("dark") ? "1" : "0");
-      drawCategoryChart();
-    });
-
-    // =========================
-    // Ajuda
-    // =========================
-    const helpBackdrop = document.getElementById("helpBackdrop");
-    document.getElementById("helpBtn").addEventListener("click", () => helpBackdrop.style.display = "flex");
-    function closeHelp(){ helpBackdrop.style.display = "none"; }
-    window.closeHelp = closeHelp;
-
-    // =========================
-    // Inputs
-    // =========================
-    const dateInput = document.getElementById("date");
-    const amountInput = document.getElementById("amount");
-    const categoryInput = document.getElementById("category");
-    const noteInput = document.getElementById("note");
-
-    dateInput.value = todayISO;
-    setDateBRHint(todayISO);
-
-    function setDateBRHint(iso){ document.getElementById("dateBR").textContent = iso ? `Formato: ${formatBR(iso)}` : ""; }
-    dateInput.addEventListener("change", () => setDateBRHint(dateInput.value));
-
-    amountInput.value = "R$ 0,00";
-    amountInput.addEventListener("input", () => applyMoneyMask(amountInput));
-    amountInput.addEventListener("focus", () => {
-      if (!amountInput.value.trim()) amountInput.value = "R$ 0,00";
-      try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
-    });
-
-    document.getElementById("monthlyGoal").value = monthlyGoal ? String(monthlyGoal) : "";
-    function saveGoal(){
-      const val = parseFloat(document.getElementById("monthlyGoal").value);
-      monthlyGoal = (isNaN(val) || val < 0) ? 0 : val;
-      localStorage.setItem("monthlyGoal", String(monthlyGoal));
-      renderAll();
-    }
-    window.saveGoal = saveGoal;
-
-    // TURBO: Enter navega e grava
-    amountInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); categoryInput.focus(); }
-    });
-    categoryInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); noteInput.focus(); }
-    });
-    noteInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); addExpense(true); }
-    });
-
-    function setToday(){
-      const today = formatDateISO(new Date());
-      dateInput.value = today;
-      setDateBRHint(today);
-      selectedDay = today;
-      currentYear = new Date().getFullYear();
-      currentMonth = new Date().getMonth();
-      amountInput.focus();
-      try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
-      renderAll();
-    }
-    window.setToday = setToday;
-
-    // =========================
-    // CRUD
-    // =========================
-    function uuid(){ return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
-
-    function persist(){
-      // salva e confirma
-      const ok1 = saveJSON("expenses", expenses);
-      const ok2 = saveJSON("archives", archives);
-      if (!ok1 || !ok2) return false;
-      return true;
-    }
-
-    function addExpense(turbo=false){
-      const iso = dateInput.value;
-      const amount = parseBRL(amountInput.value);
-      const category = categoryInput.value;
-      const note = (noteInput.value || "").trim();
-
-      if (!iso) { alert("Selecione uma data."); return; }
-      if (!amount || amount <= 0) { alert("Digite um valor válido."); amountInput.focus(); return; }
-
-      if (!expenses[iso]) expenses[iso] = [];
-      expenses[iso].push({ id: uuid(), amount, category, note });
-
-      // garante salvar
-      if (!persist()) return;
-
-      // pronto pro próximo
-      amountInput.value = "R$ 0,00";
-      noteInput.value = "";
-
-      selectedDay = iso;
-      const d = parseISO(iso);
-      currentYear = d.getFullYear();
-      currentMonth = d.getMonth();
-
-      renderAll();
-
-      if (turbo){
-        amountInput.focus();
-        try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
-      }
-    }
-    window.addExpense = () => addExpense(false);
-
-    function deleteExpense(dayISO, itemId){
-      const list = expenses[dayISO] || [];
-      const idx = list.findIndex(x => x.id === itemId);
-      if (idx < 0) return;
-      if (!confirm("Excluir esta despesa?")) return;
-      list.splice(idx,1);
-      if (list.length === 0) delete expenses[dayISO];
-      if (!persist()) return;
-      renderAll();
-    }
-    window.deleteExpense = deleteExpense;
-
-    // =========================
-    // Modal editar
-    // =========================
-    const editBackdrop = document.getElementById("editBackdrop");
-    const editInfo = document.getElementById("editInfo");
-    const editAmount = document.getElementById("editAmount");
-    const editCategory = document.getElementById("editCategory");
-    const editNote = document.getElementById("editNote");
-    let editing = { dayISO:null, id:null };
-
-    function openEdit(dayISO, itemId){
-      const item = (expenses[dayISO] || []).find(x => x.id === itemId);
-      if (!item) return;
-
-      editing = { dayISO, id: itemId };
-      editInfo.textContent = `Data: ${formatBR(dayISO)}`;
-      editAmount.value = String(item.amount ?? "");
-      editCategory.value = item.category ?? "diversos";
-      editNote.value = item.note ?? "";
-      editBackdrop.style.display = "flex";
-    }
-    window.openEdit = openEdit;
-
-    function closeEdit(){ editBackdrop.style.display = "none"; editing = { dayISO:null, id:null }; }
-    window.closeEdit = closeEdit;
-
-    function saveEdit(){
-      const { dayISO, id } = editing;
-      if (!dayISO || !id) return;
-
-      const item = (expenses[dayISO] || []).find(x => x.id === id);
-      if (!item) return;
-
-      const amount = parseFloat(editAmount.value);
-      if (isNaN(amount) || amount <= 0) { alert("Digite um valor válido."); return; }
-
-      item.amount = amount;
-      item.category = editCategory.value;
-      item.note = (editNote.value || "").trim();
-
-      closeEdit();
-      if (!persist()) return;
-      renderAll();
-    }
-    window.saveEdit = saveEdit;
-
-    // =========================
-    // Medalha
-    // =========================
-    function checkMedal(){
-      const t = new Date();
-      const y = new Date(); y.setDate(t.getDate()-1);
-      const today = formatDateISO(t);
-      const yest = formatDateISO(y);
-
-      const noToday = !expenses[today] || expenses[today].length === 0;
-      const noYest = !expenses[yest] || expenses[yest].length === 0;
-
-      document.getElementById("medal").textContent = (noToday && noYest)
-        ? "🏆 Parabéns! 2 dias sem despesas!"
-        : "";
-    }
-
-    // =========================
-    // Calendário
-    // =========================
-    function renderCalendar(){
-      const cal = document.getElementById("calendar");
-      const year = currentYear, month = currentMonth;
-
-      const first = new Date(year, month, 1);
-      const last = new Date(year, month+1, 0);
-      const startDay = first.getDay();
-      const daysInMonth = last.getDate();
-
-      let html = "";
-      const wd = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-      for (const d of wd) html += `<div class="cal-day head">${d}</div>`;
-      for (let i=0;i<startDay;i++) html += `<div class="cal-day head"></div>`;
-
-      for (let day=1; day<=daysInMonth; day++){
-        const iso = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-        const hasData = expenses[iso] && expenses[iso].length > 0;
-        const isToday = iso === todayISO;
-        const isSel = iso === selectedDay;
-
-        let cls = "cal-day";
-        if (hasData) cls += " has-data";
-        if (isToday) cls += " today";
-        if (isSel) cls += " selected";
-
-        html += `<div class="${cls}" onclick="selectDay('${iso}')">${day}</div>`;
-      }
-      cal.innerHTML = html;
-    }
-
-    function selectDay(iso){
-      selectedDay = iso;
-      const d = parseISO(iso);
-      currentYear = d.getFullYear();
-      currentMonth = d.getMonth();
-      renderAll();
-    }
-    window.selectDay = selectDay;
-
-    // =========================
-    // Resumo/detalhe
-    // =========================
-    function dayTotal(iso){
-      const list = expenses[iso] || [];
-      return list.reduce((s,e) => s + safeNumber(e.amount), 0);
-    }
-
-    function renderSummaryTable(){
-      const tbody = document.getElementById("summaryBody");
-
-      const dates = Object.keys(expenses)
-        .filter(d => (expenses[d] || []).length > 0)
-        .sort((a,b) => new Date(b) - new Date(a))
-        .slice(0, 20);
-
-      if (dates.length === 0){
-        tbody.innerHTML = `<tr><td colspan="2" class="small" style="text-align:center;">Nenhuma despesa registrada</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = dates.map(d => `
-        <tr>
-          <td>${formatBR(d)}</td>
-          <td>${formatCurrency(dayTotal(d))}</td>
-        </tr>
-      `).join("");
-    }
-
-    function escapeHTML(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    function renderDayDetail(){
-      const title = document.getElementById("selectedDayTitle");
-      const sub = document.getElementById("selectedDaySubtitle");
-      const listEl = document.getElementById("dayDetailList");
-
-      title.textContent = `🧾 Detalhe do dia: ${formatBR(selectedDay)}`;
-      const items = expenses[selectedDay] || [];
-      const total = items.reduce((s,e)=> s + safeNumber(e.amount), 0);
-
-      sub.textContent = items.length
-        ? `Total do dia: ${formatCurrency(total)} • Itens: ${items.length}`
-        : "Sem despesas neste dia.";
-
-      if (!items.length){ listEl.innerHTML = ""; return; }
-
-      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
-      listEl.innerHTML = items.map(it => `
-        <div class="detail-item">
-          <div class="detail-left">
-            <div class="detail-main">${catMap[it.category] || it.category} • ${formatCurrency(safeNumber(it.amount))}</div>
-            ${it.note ? `<div class="detail-note">${escapeHTML(it.note)}</div>` : `<div class="detail-note">—</div>`}
-          </div>
-          <div class="detail-actions">
-            <button class="mini-btn btn-ghost" onclick="openEdit('${selectedDay}','${it.id}')">Editar</button>
-            <button class="mini-btn btn-danger" onclick="deleteExpense('${selectedDay}','${it.id}')">Excluir</button>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    // =========================
-    // Mensal/meta
-    // =========================
-    function getMonthDates(year, month){
-      const start = new Date(year, month, 1);
-      const end = new Date(year, month+1, 0);
-      const out = [];
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) out.push(formatDateISO(new Date(d)));
-      return out;
-    }
-
-    function monthTotals(year, month){
-      const dates = getMonthDates(year, month);
-      const daysInMonth = dates.length;
-      const daysWith = dates.filter(d => expenses[d] && expenses[d].length > 0);
-      const total = daysWith.reduce((sum, d) => sum + dayTotal(d), 0);
-      return { total, daysInMonth, daysWithCount: daysWith.length, dates };
-    }
-
-    function renderMonthlySummary(){
-      const monthLabel = new Date(currentYear, currentMonth, 1).toLocaleDateString("pt-BR", { month:"long", year:"numeric" });
-      const { total, daysInMonth, daysWithCount } = monthTotals(currentYear, currentMonth);
-      const avg = daysInMonth ? total / daysInMonth : 0;
-
-      document.getElementById("currentMonth").textContent = monthLabel;
-      document.getElementById("monthlyStats").textContent =
-        `Total: ${formatCurrency(total)} | Dias com despesas: ${daysWithCount}/${daysInMonth} | Média/dia: ${formatCurrency(avg)}`;
-
-      const bar = document.getElementById("goalBar");
-      const goalText = document.getElementById("goalText");
-
-      if (monthlyGoal > 0){
-        const pct = Math.min(100, Math.round((total / monthlyGoal) * 100));
-        bar.style.width = pct + "%";
-        const rest = monthlyGoal - total;
-        goalText.textContent = rest >= 0
-          ? `Meta: ${formatCurrency(monthlyGoal)} • Falta: ${formatCurrency(rest)} (${pct}%)`
-          : `Meta: ${formatCurrency(monthlyGoal)} • Estourou: ${formatCurrency(Math.abs(rest))} (${pct}%)`;
-      } else {
-        bar.style.width = "0%";
-        goalText.textContent = "Defina uma meta para ver a barra de progresso.";
-      }
-    }
-
-    function changeMonth(delta){
-      currentMonth += delta;
-      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-      renderAll();
-    }
-    window.changeMonth = changeMonth;
-
-    function rollMonth(){
-      const key = monthKey(currentYear, currentMonth);
-      const monthDates = getMonthDates(currentYear, currentMonth);
-      const monthExpenses = {};
-      monthDates.forEach(d => { if (expenses[d] && expenses[d].length) monthExpenses[d] = expenses[d]; });
-
-      if (Object.keys(monthExpenses).length === 0){ alert("Este mês não tem despesas para arquivar."); return; }
-      if (!confirm(`Arquivar o mês ${key} e limpar as despesas deste mês?`)) return;
-
-      archives[key] = { expenses: monthExpenses, goal: monthlyGoal, archivedAt: Date.now() };
-      monthDates.forEach(d => { if (expenses[d]) delete expenses[d]; });
-
-      if (!persist()) return;
-      alert("Mês arquivado com sucesso!");
-      renderAll();
-    }
-    window.rollMonth = rollMonth;
-
-    // =========================
-    // Gráfico por categoria
-    // =========================
-    function categoryTotalsThisMonth(){
-      const { dates } = monthTotals(currentYear, currentMonth);
-      const totals = {};
-      for (const c of CATEGORIES) totals[c.id] = 0;
-
-      for (const d of dates){
-        const list = expenses[d] || [];
-        for (const it of list){
-          if (!totals.hasOwnProperty(it.category)) totals[it.category] = 0;
-          totals[it.category] += safeNumber(it.amount);
-        }
-      }
-      return totals;
-    }
-
-    function drawCategoryChart(){
-      const canvas = document.getElementById("catChart");
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      const totals = categoryTotalsThisMonth();
-      const entries = Object.entries(totals).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]).slice(0,8);
-      const hint = document.getElementById("chartHint");
-
-      if (!entries.length){ hint.textContent = "Sem dados no mês atual para montar o gráfico."; return; }
-      hint.textContent = "Mostrando as 8 categorias com maior gasto (mês atual).";
-
-      const w = canvas.width, padding = 20, barH = 22, gap = 10;
-      const maxVal = Math.max(...entries.map(e => e[1])) || 1;
-
-      const barColor = getComputedStyle(document.body).getPropertyValue("--primary").trim() || "#4CAF50";
-      const textColor = getComputedStyle(document.body).getPropertyValue("--text").trim() || "#222";
-      const muted = getComputedStyle(document.body).getPropertyValue("--muted").trim() || "#666";
-      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
-
-      let y = padding;
-      entries.forEach(([cat, val]) => {
-        const label = (catMap[cat] || cat).replace(/^.+?\s/, "");
-        const barW = Math.round(((w - padding*2 - 220) * (val / maxVal)));
-
-        ctx.fillStyle = textColor;
-        ctx.font = "16px system-ui";
-        ctx.fillText(label, padding, y + 16);
-
-        ctx.fillStyle = muted;
-        ctx.font = "14px system-ui";
-        ctx.fillText(formatCurrency(val), w - padding - 140, y + 16);
-
-        ctx.fillStyle = barColor;
-        ctx.fillRect(w - padding - 130, y, Math.max(4, barW), barH);
-
-        y += barH + gap;
-      });
-    }
-
-    // =========================
-    // PDF
-    // =========================
-    async function generatePDF(){
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      doc.setFontSize(18);
-      doc.text("Relatório de Despesas", 14, 18);
-
-      const monthLabel = new Date(currentYear, currentMonth, 1).toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
-      doc.setFontSize(12);
-      doc.text(`Mês: ${monthLabel}`, 14, 26);
-
-      const sortedDates = Object.keys(expenses)
-        .filter(d => (expenses[d]||[]).length > 0)
-        .sort((a,b) => new Date(a) - new Date(b));
-
-      let y = 34;
-      if (!sortedDates.length){ doc.text("Nenhuma despesa registrada.", 14, y); doc.save("meu-controle-despesas.pdf"); return; }
-
-      const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
-      for (const date of sortedDates){
-        const total = dayTotal(date);
-        doc.setFontSize(12);
-        doc.text(`${formatBR(date)}  —  Total: ${formatCurrency(total)}`, 14, y);
-        y += 7;
-
-        for (const it of (expenses[date] || [])){
-          const catLabel = catMap[it.category] || it.category;
-          let line = `- ${catLabel}: ${formatCurrency(safeNumber(it.amount))}`;
-          if (it.note) line += ` (${it.note})`;
-
-          if (y > 280){ doc.addPage(); y = 18; }
-          doc.setFontSize(10);
-          doc.text(line, 16, y);
-          y += 6;
-        }
-
-        y += 4;
-        if (y > 280){ doc.addPage(); y = 18; }
-      }
-      doc.save("meu-controle-despesas.pdf");
-    }
-    window.generatePDF = generatePDF;
-
-    // =========================
-    // Render geral
-    // =========================
-    function renderBalance(){
-      const total = dayTotal(todayISO);
-      document.getElementById("balance").textContent = `Balanço de hoje (${formatBR(todayISO)}): ${formatCurrency(total)}`;
-    }
-
-    function renderAll(){
-      renderBalance();
-      checkMedal();
-      renderMonthlySummary();
-      renderCalendar();
-      renderSummaryTable();
-      renderDayDetail();
-      drawCategoryChart();
-    }
-
-    // fechar modais clicando fora
-    helpBackdrop.addEventListener("click", (e) => { if (e.target === helpBackdrop) closeHelp(); });
-    const editBackdropEl = document.getElementById("editBackdrop");
-    editBackdropEl.addEventListener("click", (e) => { if (e.target === editBackdropEl) closeEdit(); });
-
-    // =========================
-    // Start
-    // =========================
-    renderAll();
-    setToday();
-  </script>
+<script>
+/* =========================
+   IndexedDB (local, robusto)
+   ========================= */
+const DB_NAME = "despesas_local_db_v1";
+const DB_VER  = 1;
+const STORE   = "kv";
+
+function openDB(){
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function idbGet(key){
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, "readonly");
+    const st = tx.objectStore(STORE);
+    const r = st.get(key);
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+}
+async function idbSet(key, val){
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, "readwrite");
+    const st = tx.objectStore(STORE);
+    const r = st.put(val, key);
+    r.onsuccess = () => resolve(true);
+    r.onerror = () => reject(r.error);
+  });
+}
+
+/* =========================
+   Dados + UI
+   ========================= */
+const CATEGORIES = [
+  { id:"alimentacao", label:"🛒 Alimentação" },
+  { id:"feira", label:"🧺 Feira" },
+  { id:"padaria", label:"🥐 Padaria" },
+  { id:"bares", label:"🍷 Bares/Restaurantes" },
+  { id:"farmacia", label:"💊 Farmácia" },
+  { id:"gasolina", label:"⛽ Gasolina" },
+  { id:"uber", label:"🚕 Uber/Transporte" },
+  { id:"agua", label:"💧 Água" },
+  { id:"energia", label:"⚡ Energia" },
+  { id:"telefone", label:"📱 Telefone/Internet" },
+  { id:"condominio", label:"🏢 Condomínio" },
+  { id:"diarista", label:"🧹 Diarista" },
+  { id:"impostos", label:"🏛️ Impostos" },
+  { id:"manutencao", label:"🔧 Manutenção" },
+  { id:"lazer", label:"🎭 Lazer" },
+  { id:"contas", label:"📄 Contas Fixas" },
+  { id:"cartao", label:"💳 Fatura Cartão" },
+  { id:"dizimo", label:"❤️ Dízimo/Doação" },
+  { id:"online", label:"📦 Compras Online" },
+  { id:"diversos", label:"✨ Diversos" }
+];
+
+function fillCategorySelect(el){
+  el.innerHTML = "";
+  for (const c of CATEGORIES){
+    const o = document.createElement("option");
+    o.value = c.id;
+    o.textContent = c.label;
+    el.appendChild(o);
+  }
+}
+fillCategorySelect(document.getElementById("category"));
+fillCategorySelect(document.getElementById("editCategory"));
+
+function formatDateISO(date = new Date()) { return date.toISOString().split("T")[0]; }
+function formatBR(dateStr) { const [y,m,d] = dateStr.split("-"); return `${d}/${m}/${y}`; }
+function parseISO(dateStr){ const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10)); return new Date(y, m-1, d); }
+function formatCurrency(v){ return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v); }
+function safeNumber(n){ return (typeof n === "number" && isFinite(n)) ? n : 0; }
+
+function brlFromDigits(digits){
+  const clean = (digits || "").replace(/\D/g, "");
+  const cents = clean === "" ? 0 : parseInt(clean, 10);
+  const value = cents / 100;
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+}
+function parseBRL(masked){
+  const clean = String(masked || "").replace(/\D/g, "");
+  if (!clean) return 0;
+  const cents = parseInt(clean, 10);
+  return cents / 100;
+}
+function applyMoneyMask(el){
+  const digits = el.value.replace(/\D/g, "");
+  el.value = brlFromDigits(digits);
+  try { el.setSelectionRange(el.value.length, el.value.length); } catch {}
+}
+
+function uuid(){ return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
+function escapeHTML(str){
+  return String(str)
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+/* =========================
+   Estado (local)
+   ========================= */
+let expenses = {};
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+const todayISO = formatDateISO(new Date());
+let selectedDay = todayISO;
+
+const statusPill = document.getElementById("statusPill");
+const originHint = document.getElementById("originHint");
+originHint.textContent = `Origem: ${location.origin}`;
+
+/* =========================
+   Preferências
+   ========================= */
+const darkStored = localStorage.getItem("pref_dark");
+const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+const darkOn = (darkStored === null) ? prefersDark : (darkStored === "1");
+if (darkOn) document.body.classList.add("dark");
+document.getElementById("darkToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("pref_dark", document.body.classList.contains("dark") ? "1" : "0");
+});
+
+/* =========================
+   Ajuda
+   ========================= */
+const helpBackdrop = document.getElementById("helpBackdrop");
+document.getElementById("helpBtn").addEventListener("click", () => helpBackdrop.style.display = "flex");
+function closeHelp(){ helpBackdrop.style.display = "none"; }
+window.closeHelp = closeHelp;
+helpBackdrop.addEventListener("click", (e) => { if (e.target === helpBackdrop) closeHelp(); });
+
+/* =========================
+   Inputs
+   ========================= */
+const dateInput = document.getElementById("date");
+const amountInput = document.getElementById("amount");
+const categoryInput = document.getElementById("category");
+const noteInput = document.getElementById("note");
+const saveStatus = document.getElementById("saveStatus");
+
+dateInput.value = todayISO;
+setDateBRHint(todayISO);
+function setDateBRHint(iso){ document.getElementById("dateBR").textContent = iso ? `Formato: ${formatBR(iso)}` : ""; }
+dateInput.addEventListener("change", () => setDateBRHint(dateInput.value));
+
+amountInput.value = "R$ 0,00";
+amountInput.addEventListener("input", () => applyMoneyMask(amountInput));
+amountInput.addEventListener("focus", () => {
+  if (!amountInput.value.trim()) amountInput.value = "R$ 0,00";
+  try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
+});
+
+amountInput.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); categoryInput.focus(); }});
+categoryInput.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); noteInput.focus(); }});
+noteInput.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); addExpense(); }});
+
+function setToday(){
+  const today = formatDateISO(new Date());
+  dateInput.value = today;
+  setDateBRHint(today);
+  selectedDay = today;
+  currentYear = new Date().getFullYear();
+  currentMonth = new Date().getMonth();
+  renderAll();
+  amountInput.focus();
+}
+window.setToday = setToday;
+
+/* =========================
+   Persistência (IndexedDB)
+   ========================= */
+async function loadAll(){
+  try{
+    const data = await idbGet("expenses");
+    expenses = data && typeof data === "object" ? data : {};
+    statusPill.textContent = "✅ Salvamento local ativo";
+    saveStatus.textContent = "Histórico carregado do armazenamento local deste aparelho.";
+  }catch(e){
+    statusPill.textContent = "⚠️ Falha no salvamento local";
+    saveStatus.textContent = "Seu navegador bloqueou o armazenamento local. Abra no Chrome/Safari normal (não anônimo).";
+    expenses = {};
+  }
+}
+async function saveAll(){
+  try{
+    await idbSet("expenses", expenses);
+    statusPill.textContent = "✅ Salvou localmente";
+    return true;
+  }catch(e){
+    statusPill.textContent = "⚠️ Não conseguiu salvar";
+    return false;
+  }
+}
+
+/* =========================
+   CRUD
+   ========================= */
+function dayTotal(iso){
+  const list = expenses[iso] || [];
+  return list.reduce((s,e) => s + safeNumber(e.amount), 0);
+}
+
+async function addExpense(){
+  const iso = dateInput.value;
+  const amount = parseBRL(amountInput.value);
+  const category = categoryInput.value;
+  const note = (noteInput.value || "").trim();
+
+  if (!iso) { alert("Selecione uma data."); return; }
+  if (!amount || amount <= 0) { alert("Digite um valor válido."); amountInput.focus(); return; }
+
+  if (!expenses[iso]) expenses[iso] = [];
+  expenses[iso].push({ id: uuid(), amount, category, note });
+
+  const ok = await saveAll();
+  if (!ok){
+    alert("Não consegui salvar localmente. Abra no Chrome/Safari normal (não anônimo) e tente novamente.");
+    return;
+  }
+
+  amountInput.value = "R$ 0,00";
+  noteInput.value = "";
+
+  selectedDay = iso;
+  const d = parseISO(iso);
+  currentYear = d.getFullYear();
+  currentMonth = d.getMonth();
+
+  saveStatus.textContent = `✅ Despesa gravada em ${formatBR(iso)}.`;
+  renderAll();
+  amountInput.focus();
+}
+window.addExpense = addExpense;
+
+async function deleteExpense(dayISO, itemId){
+  const list = expenses[dayISO] || [];
+  const idx = list.findIndex(x => x.id === itemId);
+  if (idx < 0) return;
+  if (!confirm("Excluir esta despesa?")) return;
+  list.splice(idx,1);
+  if (list.length === 0) delete expenses[dayISO];
+
+  const ok = await saveAll();
+  if (!ok) return;
+
+  renderAll();
+}
+window.deleteExpense = deleteExpense;
+
+/* =========================
+   Editar
+   ========================= */
+const editBackdrop = document.getElementById("editBackdrop");
+const editInfo = document.getElementById("editInfo");
+const editAmount = document.getElementById("editAmount");
+const editCategory = document.getElementById("editCategory");
+const editNote = document.getElementById("editNote");
+let editing = { dayISO:null, id:null };
+
+function openEdit(dayISO, itemId){
+  const item = (expenses[dayISO] || []).find(x => x.id === itemId);
+  if (!item) return;
+  editing = { dayISO, id: itemId };
+  editInfo.textContent = `Data: ${formatBR(dayISO)}`;
+  editAmount.value = String(item.amount ?? "");
+  editCategory.value = item.category ?? "diversos";
+  editNote.value = item.note ?? "";
+  editBackdrop.style.display = "flex";
+}
+window.openEdit = openEdit;
+
+function closeEdit(){ editBackdrop.style.display = "none"; editing = { dayISO:null, id:null }; }
+window.closeEdit = closeEdit;
+
+async function saveEdit(){
+  const { dayISO, id } = editing;
+  if (!dayISO || !id) return;
+
+  const item = (expenses[dayISO] || []).find(x => x.id === id);
+  if (!item) return;
+
+  const amount = parseFloat(editAmount.value);
+  if (isNaN(amount) || amount <= 0) { alert("Digite um valor válido."); return; }
+
+  item.amount = amount;
+  item.category = editCategory.value;
+  item.note = (editNote.value || "").trim();
+
+  closeEdit();
+  const ok = await saveAll();
+  if (!ok) return;
+  renderAll();
+}
+window.saveEdit = saveEdit;
+
+editBackdrop.addEventListener("click", (e) => { if (e.target === editBackdrop) closeEdit(); });
+
+/* =========================
+   Calendário + detalhe
+   ========================= */
+function selectDay(iso){
+  selectedDay = iso;
+  const d = parseISO(iso);
+  currentYear = d.getFullYear();
+  currentMonth = d.getMonth();
+  renderAll();
+}
+window.selectDay = selectDay;
+
+function renderCalendar(){
+  const cal = document.getElementById("calendar");
+  const year = currentYear, month = currentMonth;
+
+  const first = new Date(year, month, 1);
+  const last = new Date(year, month+1, 0);
+  const startDay = first.getDay();
+  const daysInMonth = last.getDate();
+
+  let html = "";
+  const wd = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  for (const d of wd) html += `<div class="cal-day head">${d}</div>`;
+  for (let i=0;i<startDay;i++) html += `<div class="cal-day head"></div>`;
+
+  for (let day=1; day<=daysInMonth; day++){
+    const iso = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+    const hasData = expenses[iso] && expenses[iso].length > 0;
+    const isToday = iso === todayISO;
+    const isSel = iso === selectedDay;
+
+    let cls = "cal-day";
+    if (hasData) cls += " has-data";
+    if (isToday) cls += " today";
+    if (isSel) cls += " selected";
+
+    html += `<div class="${cls}" onclick="selectDay('${iso}')">${day}</div>`;
+  }
+  cal.innerHTML = html;
+}
+
+function renderDayDetail(){
+  const title = document.getElementById("selectedDayTitle");
+  const sub = document.getElementById("selectedDaySubtitle");
+  const listEl = document.getElementById("dayDetailList");
+
+  title.textContent = `🧾 Detalhe do dia: ${formatBR(selectedDay)}`;
+  const items = expenses[selectedDay] || [];
+  const total = items.reduce((s,e)=> s + safeNumber(e.amount), 0);
+
+  sub.textContent = items.length
+    ? `Total do dia: ${formatCurrency(total)} • Itens: ${items.length}`
+    : "Sem despesas neste dia.";
+
+  if (!items.length){ listEl.innerHTML = ""; return; }
+
+  const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+  listEl.innerHTML = items.map(it => `
+    <div class="detail-item">
+      <div style="min-width:0;">
+        <div class="detail-main">${catMap[it.category] || it.category} • ${formatCurrency(safeNumber(it.amount))}</div>
+        ${it.note ? `<div class="detail-note">${escapeHTML(it.note)}</div>` : `<div class="detail-note">—</div>`}
+      </div>
+      <div class="detail-actions">
+        <button class="mini-btn btn-ghost" onclick="openEdit('${selectedDay}','${it.id}')">Editar</button>
+        <button class="mini-btn btn-danger" onclick="deleteExpense('${selectedDay}','${it.id}')">Excluir</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderBalance(){
+  const total = dayTotal(todayISO);
+  document.getElementById("balance").textContent = `Balanço de hoje (${formatBR(todayISO)}): ${formatCurrency(total)}`;
+}
+
+function renderAll(){
+  renderBalance();
+  renderCalendar();
+  renderDayDetail();
+}
+
+/* =========================
+   Start
+   ========================= */
+(async function init(){
+  await loadAll();
+  renderAll();
+})();
+</script>
 </body>
 </html>
