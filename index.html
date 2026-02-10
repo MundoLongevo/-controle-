@@ -22,10 +22,12 @@
       --card:#FFFFFF; --text:#222; --muted:#666; --border:#d9d9d9;
       --shadow: 0 1px 3px rgba(0,0,0,0.10);
       --danger:#d32f2f; --info:#2196F3; --bg: var(--light);
+      --ghostbg: rgba(0,0,0,0.03);
     }
     body.dark{
       --bg:#0f1411; --card:#151b17; --text:#f1f1f1; --muted:#b9b9b9;
       --border:#2a332d; --shadow: 0 1px 3px rgba(0,0,0,0.45);
+      --ghostbg: rgba(255,255,255,0.06);
     }
     *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, sans-serif;}
     body{ background: var(--bg); color: var(--text); padding: 16px; max-width: 760px; margin: 0 auto; font-size: 18px; line-height: 1.35; }
@@ -51,11 +53,19 @@
       width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 1.05rem; cursor:pointer;
       background: var(--primary); color:#fff; font-weight: 900;
     }
+    button:hover{ filter: brightness(0.96); }
     .btn-ghost{ background: transparent; border: 1px solid var(--border); color: var(--text); font-weight: 900; }
     .btn-danger{ background: var(--danger); }
+    .btn-info{ background: var(--info); }
     .small{ color: var(--muted); font-size: 0.95rem; }
     .balance{ text-align:center; font-weight: 900; color: var(--dark); font-size: 1.12rem; }
     body.dark .balance{ color: #a7ffb0; }
+
+    .pill{
+      display:inline-block; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--border); font-weight: 900; font-size: 0.92rem;
+      background: var(--ghostbg);
+    }
 
     .calendar{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
     .cal-day{
@@ -92,12 +102,6 @@
     .modal .modal-actions{ display:flex; gap: 10px; margin-top: 12px; }
     .modal .modal-actions button{ flex:1; }
 
-    .pill{
-      display:inline-block; padding: 6px 10px; border-radius: 999px;
-      border: 1px solid var(--border); font-weight: 900; font-size: 0.92rem;
-      background: rgba(0,0,0,0.03);
-    }
-    body.dark .pill{ background: rgba(255,255,255,0.06); }
     footer{ margin-top: 18px; text-align:center; color: var(--muted); font-size: 0.9rem; padding-bottom: 10px; }
   </style>
 </head>
@@ -113,13 +117,22 @@
 
   <div class="card balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
+  <!-- ✅ RESUMO SEMANAL / MENSAL + PDF -->
   <div class="card">
-    <div class="row" style="align-items:center; justify-content: space-between;">
-      <div class="pill" id="statusPill">Carregando...</div>
-      <div class="small" id="originHint"></div>
+    <div style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+      <div style="font-weight:900;">📊 Resumo</div>
+      <div class="pill" id="statusPill">Carregando…</div>
     </div>
 
-    <div class="row" style="margin-top:12px;">
+    <div class="small" id="weekLine" style="margin-top:10px;"></div>
+    <div class="small" id="monthLine" style="margin-top:6px;"></div>
+
+    <button class="btn-info" style="margin-top:12px;" onclick="generatePDF()">📄 Gerar relatório em PDF</button>
+    <div class="small" id="pdfHint" style="margin-top:8px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="row">
       <div class="col">
         <label for="date">Data</label>
         <input type="date" id="date">
@@ -202,16 +215,19 @@
     <div class="modal">
       <h3>❔ Ajuda rápida</h3>
       <div class="small">
-        • Este app salva LOCALMENTE no seu navegador (no mesmo celular e mesma URL).<br>
+        • Este app salva LOCALMENTE no navegador (no mesmo celular e mesma URL).<br>
         • Não use modo anônimo.<br>
-        • Evite abrir dentro do Instagram/Facebook: abra no Chrome/Safari.<br>
-        • iPhone: Safari → Compartilhar → “Adicionar à Tela de Início”.
+        • No iPhone: Safari → Compartilhar → “Adicionar à Tela de Início”.<br>
+        • No Android: Chrome → “Instalar app/Adicionar à tela inicial”.
       </div>
       <div class="modal-actions" style="margin-top:12px;">
         <button onclick="closeHelp()">Fechar</button>
       </div>
     </div>
   </div>
+
+  <!-- ✅ PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
 /* =========================
@@ -332,8 +348,9 @@ const todayISO = formatDateISO(new Date());
 let selectedDay = todayISO;
 
 const statusPill = document.getElementById("statusPill");
-const originHint = document.getElementById("originHint");
-originHint.textContent = `Origem: ${location.origin}`;
+const weekLine = document.getElementById("weekLine");
+const monthLine = document.getElementById("monthLine");
+const pdfHint = document.getElementById("pdfHint");
 
 /* =========================
    Preferências
@@ -420,13 +437,184 @@ async function saveAll(){
 }
 
 /* =========================
-   CRUD
+   Totais por período
+   (semana = domingo a hoje)
    ========================= */
+function startOfWeekSunday(date){
+  const d = new Date(date);
+  d.setHours(0,0,0,0);
+  const day = d.getDay(); // 0=dom
+  d.setDate(d.getDate() - day);
+  return d;
+}
+function startOfMonth(date){
+  const d = new Date(date.getFullYear(), date.getMonth(), 1);
+  d.setHours(0,0,0,0);
+  return d;
+}
+function endOfDay(date){
+  const d = new Date(date);
+  d.setHours(23,59,59,999);
+  return d;
+}
 function dayTotal(iso){
   const list = expenses[iso] || [];
   return list.reduce((s,e) => s + safeNumber(e.amount), 0);
 }
+function sumBetween(start, end){
+  let total = 0;
+  for (const iso in expenses){
+    const d = parseISO(iso);
+    if (d >= start && d <= end){
+      total += dayTotal(iso);
+    }
+  }
+  return total;
+}
+function getDatesBetween(start, end){
+  const out = [];
+  const d = new Date(start);
+  d.setHours(0,0,0,0);
+  const last = new Date(end);
+  last.setHours(0,0,0,0);
+  while (d <= last){
+    out.push(formatDateISO(d));
+    d.setDate(d.getDate()+1);
+  }
+  return out;
+}
+function updatePeriodTotals(){
+  const now = new Date();
+  const weekStart = startOfWeekSunday(now);
+  const monthStart = startOfMonth(now);
+  const endToday = endOfDay(now);
 
+  const w = sumBetween(weekStart, endToday);
+  const m = sumBetween(monthStart, endToday);
+
+  weekLine.textContent  = `🗓️ Semana (${formatBR(formatDateISO(weekStart))} → ${formatBR(formatDateISO(now))}):  ${formatCurrency(w)}`;
+  monthLine.textContent = `📅 Mês (${String(now.getMonth()+1).padStart(2,"0")}/${now.getFullYear()}):  ${formatCurrency(m)}`;
+
+  pdfHint.textContent = "O PDF sai com totais e detalhamento da semana e do mês.";
+}
+
+/* =========================
+   PDF
+   ========================= */
+function generatePDF(){
+  if (!window.jspdf || !window.jspdf.jsPDF){
+    alert("A biblioteca de PDF não carregou. Verifique sua internet e tente novamente.");
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const now = new Date();
+  const weekStart = startOfWeekSunday(now);
+  const monthStart = startOfMonth(now);
+  const endToday = endOfDay(now);
+
+  const weekTotal = sumBetween(weekStart, endToday);
+  const monthTotal = sumBetween(monthStart, endToday);
+
+  const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+
+  let y = 14;
+  doc.setFontSize(16);
+  doc.text("Relatório de Despesas", 14, y);
+  y += 8;
+
+  doc.setFontSize(11);
+  doc.text(`Gerado em: ${formatBR(formatDateISO(now))}`, 14, y);
+  y += 7;
+
+  doc.setFontSize(12);
+  doc.text(`Semana: ${formatBR(formatDateISO(weekStart))} a ${formatBR(formatDateISO(now))}`, 14, y);
+  y += 6;
+  doc.text(`Total da semana: ${formatCurrency(weekTotal)}`, 14, y);
+  y += 8;
+
+  doc.text(`Mês: ${String(now.getMonth()+1).padStart(2,"0")}/${now.getFullYear()}`, 14, y);
+  y += 6;
+  doc.text(`Total do mês: ${formatCurrency(monthTotal)}`, 14, y);
+  y += 10;
+
+  // Detalhe da Semana
+  doc.setFontSize(13);
+  doc.text("Detalhamento da Semana", 14, y);
+  y += 7;
+
+  doc.setFontSize(10);
+  const weekDates = getDatesBetween(weekStart, now);
+  for (const iso of weekDates){
+    const items = expenses[iso] || [];
+    if (!items.length) continue;
+    const totalDay = dayTotal(iso);
+
+    if (y > 280){ doc.addPage(); y = 14; }
+    doc.setFontSize(11);
+    doc.text(`${formatBR(iso)} — Total: ${formatCurrency(totalDay)}`, 14, y);
+    y += 6;
+
+    doc.setFontSize(10);
+    for (const it of items){
+      const cat = catMap[it.category] || it.category;
+      let line = `• ${cat} — ${formatCurrency(safeNumber(it.amount))}`;
+      if (it.note) line += ` (${it.note})`;
+
+      const split = doc.splitTextToSize(line, 180);
+      for (const part of split){
+        if (y > 280){ doc.addPage(); y = 14; }
+        doc.text(part, 16, y);
+        y += 5;
+      }
+    }
+    y += 3;
+  }
+
+  y += 4;
+  if (y > 280){ doc.addPage(); y = 14; }
+
+  // Detalhe do Mês
+  doc.setFontSize(13);
+  doc.text("Detalhamento do Mês", 14, y);
+  y += 7;
+
+  doc.setFontSize(10);
+  const monthDates = getDatesBetween(monthStart, now);
+  for (const iso of monthDates){
+    const items = expenses[iso] || [];
+    if (!items.length) continue;
+    const totalDay = dayTotal(iso);
+
+    if (y > 280){ doc.addPage(); y = 14; }
+    doc.setFontSize(11);
+    doc.text(`${formatBR(iso)} — Total: ${formatCurrency(totalDay)}`, 14, y);
+    y += 6;
+
+    doc.setFontSize(10);
+    for (const it of items){
+      const cat = catMap[it.category] || it.category;
+      let line = `• ${cat} — ${formatCurrency(safeNumber(it.amount))}`;
+      if (it.note) line += ` (${it.note})`;
+
+      const split = doc.splitTextToSize(line, 180);
+      for (const part of split){
+        if (y > 280){ doc.addPage(); y = 14; }
+        doc.text(part, 16, y);
+        y += 5;
+      }
+    }
+    y += 3;
+  }
+
+  doc.save("relatorio-despesas.pdf");
+}
+window.generatePDF = generatePDF;
+
+/* =========================
+   CRUD
+   ========================= */
 async function addExpense(){
   const iso = dateInput.value;
   const amount = parseBRL(amountInput.value);
@@ -601,6 +789,7 @@ function renderBalance(){
 
 function renderAll(){
   renderBalance();
+  updatePeriodTotals();
   renderCalendar();
   renderDayDetail();
 }
