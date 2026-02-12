@@ -21,6 +21,7 @@
       --light: #E8F5E9;
       --dark: #2E7D32;
       --gray: #9E9E9E;
+      --red: #f44336;
     }
     * {
       margin: 0;
@@ -180,7 +181,25 @@
       font-size: 1.1rem;
     }
 
-    /* Restante do app — mantido limpo */
+    /* Botão principal — agora no topo e vermelho */
+    .btn-register {
+      background: var(--red);
+      color: black !important;
+      font-weight: bold;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      width: 100%;
+      font-size: 1.2rem;
+      margin: 16px 0;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .btn-register:hover {
+      background: #d32f2f;
+    }
+
+    /* Restante do app */
     header {
       text-align: center;
       margin-bottom: 20px;
@@ -357,6 +376,66 @@
       <h1>💰 Meu Controle Diário</h1>
     </header>
 
+    <!-- BOTÃO PRINCIPAL NO TOPO -->
+    <button class="btn-register" onclick="toggleForm()">➕ Registrar Gasto</button>
+
+    <!-- Formulário oculto por padrão -->
+    <div id="expenseForm" style="display:none; background:white; padding:16px; border-radius:16px; margin:16px 0;">
+      <div class="form-group">
+        <label for="date">Data do gasto</label>
+        <input type="date" id="date">
+      </div>
+
+      <div class="form-group">
+        <label for="category">Categoria</label>
+        <select id="category">
+          <option value="alimentacao">🛒 Alimentação</option>
+          <option value="feira">🧺 Feira</option>
+          <option value="padaria">🥐 Padaria</option>
+          <option value="bares">🍷 Bares/Restaurantes</option>
+          <option value="farmacia">💊 Farmácia</option>
+          <option value="gasolina">⛽ Gasolina</option>
+          <option value="uber">🚕 Uber/Transporte</option>
+          <option value="agua">💧 Água</option>
+          <option value="energia">⚡ Energia</option>
+          <option value="telefone">📱 Telefone/Internet</option>
+          <option value="condominio">🏢 Condomínio</option>
+          <option value="diarista">🧹 Diarista</option>
+          <option value="impostos">🏛️ Impostos</option>
+          <option value="prestacoes">🏠 Prestações (casa/carro)</option>
+          <option value="manutencao">🔧 Manutenção (casa/carro)</option>
+          <option value="lazer">🎭 Lazer</option>
+          <option value="contas">📄 Contas Fixas</option>
+          <option value="aluguel">🏠 Aluguel</option>
+          <option value="cartao">💳 Fatura Cartão</option>
+          <option value="dizimo">❤️ Dízimo/Doação</option>
+          <option value="online">📦 Compras Online</option>
+          <option value="mensalidade">🏋️‍♂️ Mensalidade (academia/clube)</option>
+          <option value="educacao">🎓 Educação</option>
+          <option value="ajuda_familia">👨‍👩‍👧‍👦 Ajuda a filhos/netos</option>
+          <option value="saque">🏧 Saques (Dinheiro Vivo)</option>
+          <option value="economia">💰 Economia / Poupança</option>
+          <option value="diversos">✨ Diversos</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Valor (R$)</label>
+        <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="note">Observação (opcional)</label>
+        <textarea id="note" placeholder="Ex: Economizei R$ 50 para emergências"></textarea>
+      </div>
+
+      <button class="app-btn" onclick="addExpense()">✅ Confirmar Gasto</button>
+      <button style="margin-top:10px;background:#f1f8e9;color:#2E7D32;border:1px solid #4CAF50;" 
+              onclick="document.getElementById('expenseForm').style.display='none';">
+        Cancelar
+      </button>
+    </div>
+
     <!-- Meta de hoje (discreta) -->
     <div class="meta-box" id="metaBox">
       <div class="meta-title">META DE HOJE</div>
@@ -371,56 +450,6 @@
     </div>
 
     <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
-
-    <div class="form-group">
-      <label for="date">Data do gasto</label>
-      <input type="date" id="date">
-    </div>
-
-    <div class="form-group">
-      <label for="category">Categoria</label>
-      <select id="category">
-        <option value="alimentacao">🛒 Alimentação</option>
-        <option value="feira">🧺 Feira</option>
-        <option value="padaria">🥐 Padaria</option>
-        <option value="bares">🍷 Bares/Restaurantes</option>
-        <option value="farmacia">💊 Farmácia</option>
-        <option value="gasolina">⛽ Gasolina</option>
-        <option value="uber">🚕 Uber/Transporte</option>
-        <option value="agua">💧 Água</option>
-        <option value="energia">⚡ Energia</option>
-        <option value="telefone">📱 Telefone/Internet</option>
-        <option value="condominio">🏢 Condomínio</option>
-        <option value="diarista">🧹 Diarista</option>
-        <option value="impostos">🏛️ Impostos</option>
-        <option value="prestacoes">🏠 Prestações (casa/carro)</option>
-        <option value="manutencao">🔧 Manutenção (casa/carro)</option>
-        <option value="lazer">🎭 Lazer</option>
-        <option value="contas">📄 Contas Fixas</option>
-        <option value="aluguel">🏠 Aluguel</option>
-        <option value="cartao">💳 Fatura Cartão</option>
-        <option value="dizimo">❤️ Dízimo/Doação</option>
-        <option value="online">📦 Compras Online</option>
-        <option value="mensalidade">🏋️‍♂️ Mensalidade (academia/clube)</option>
-        <option value="educacao">🎓 Educação</option>
-        <option value="ajuda_familia">👨‍👩‍👧‍👦 Ajuda a filhos/netos</option>
-        <option value="saque">🏧 Saques (Dinheiro Vivo)</option>
-        <option value="economia">💰 Economia / Poupança</option>
-        <option value="diversos">✨ Diversos</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="amount">Valor (R$)</label>
-      <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
-    </div>
-
-    <div class="form-group">
-      <label for="note">Observação (opcional)</label>
-      <textarea id="note" placeholder="Ex: Economizei R$ 50 para emergências"></textarea>
-    </div>
-
-    <button class="app-btn" onclick="addExpense()">➕ Registrar Gasto</button>
 
     <div class="monthly-summary">
       <div class="month-nav">
@@ -472,6 +501,16 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
+    // --- Função para mostrar/ocultar formulário ---
+    function toggleForm() {
+      const form = document.getElementById('expenseForm');
+      if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'block';
+      } else {
+        form.style.display = 'none';
+      }
+    }
+
     // --- Meta de hoje ---
     let metaDiaria = parseFloat(localStorage.getItem('dailyMeta')) || 0;
 
@@ -671,6 +710,7 @@
       save();
       document.getElementById('amount').value = '';
       document.getElementById('note').value = '';
+      document.getElementById('expenseForm').style.display = 'none';
       updateMetaDisplay();
     }
 
@@ -706,10 +746,6 @@
         }
       });
       return total / 7;
-    }
-
-    function checkMedal() {
-      // Removido — foco neutro
     }
 
     function renderCalendar() {
@@ -922,7 +958,6 @@
 
     function renderAll() {
       document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
-      document.getElementById('weeklyAverage').textContent = `Média semanal: ${formatCurrency(getWeeklyAverage())}`;
       updateMetaDisplay();
       renderCalendar();
       renderSummaryTable();
