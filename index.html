@@ -20,7 +20,6 @@
       --primary: #4CAF50;
       --light: #E8F5E9;
       --dark: #2E7D32;
-      --gray: #9E9E9E;
       --red: #f44336;
     }
     * {
@@ -116,58 +115,6 @@
       background: var(--dark);
     }
     #mainApp { display: none; }
-
-    /* Meta de hoje — discreta */
-    .meta-box {
-      background: white;
-      border-radius: 16px;
-      padding: 16px;
-      margin: 16px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      position: relative;
-    }
-    .meta-box::before {
-      content: "🎯";
-      position: absolute;
-      top: 12px;
-      left: 16px;
-      font-size: 1.2rem;
-      color: var(--primary);
-    }
-    .meta-title {
-      font-weight: bold;
-      color: var(--dark);
-      margin-bottom: 8px;
-      padding-left: 32px;
-    }
-    .meta-value {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: var(--primary);
-      text-align: center;
-      padding-left: 32px;
-    }
-    .meta-progress {
-      height: 4px;
-      background: #e0e0e0;
-      border-radius: 2px;
-      margin-top: 12px;
-      overflow: hidden;
-    }
-    .meta-fill {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 2px;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-    .meta-info {
-      font-size: 0.9rem;
-      color: var(--gray);
-      text-align: center;
-      margin: 8px 0;
-      padding-left: 32px;
-    }
 
     /* Balanço principal */
     .balance {
@@ -436,19 +383,6 @@
       </button>
     </div>
 
-    <!-- Meta de hoje (discreta) -->
-    <div class="meta-box" id="metaBox">
-      <div class="meta-title">META DE HOJE</div>
-      <div class="meta-value" id="metaValue">R$ 0,00</div>
-      <div class="meta-info" id="metaInfo">Defina sua meta para acompanhar seu orçamento diário</div>
-      <div class="meta-progress">
-        <div class="meta-fill" id="metaFill"></div>
-      </div>
-      <button onclick="defineMeta()" style="margin-top:12px;background:#f1f8e9;color:#2E7D32;border:1px solid #4CAF50;padding:8px 16px;font-size:0.9rem;">
-        🎯 Definir meta
-      </button>
-    </div>
-
     <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
     <div class="monthly-summary">
@@ -511,29 +445,6 @@
       }
     }
 
-    // --- Meta de hoje ---
-    let metaDiaria = parseFloat(localStorage.getItem('dailyMeta')) || 0;
-
-    function updateMetaDisplay() {
-      const totalHoje = getTodayTotal();
-      const percent = metaDiaria > 0 ? Math.min(100, (totalHoje / metaDiaria) * 100) : 0;
-      document.getElementById('metaValue').textContent = formatCurrency(metaDiaria);
-      document.getElementById('metaFill').style.width = `${percent}%`;
-      document.getElementById('metaInfo').textContent = 
-        metaDiaria > 0 
-          ? `Gastou ${formatCurrency(totalHoje)} de ${formatCurrency(metaDiaria)}`
-          : "Defina sua meta para acompanhar seu orçamento diário";
-    }
-
-    function defineMeta() {
-      const newMeta = parseFloat(prompt("Digite sua meta diária (ex: 80)", metaDiaria || "80"));
-      if (newMeta !== null && !isNaN(newMeta) && newMeta >= 0) {
-        metaDiaria = newMeta;
-        localStorage.setItem('dailyMeta', metaDiaria.toString());
-        updateMetaDisplay();
-      }
-    }
-
     // --- Primeira vez ---
     if (!localStorage.getItem('appVisited')) {
       document.getElementById('welcomeModal').style.display = 'block';
@@ -588,14 +499,12 @@
         setTimeout(() => {
           document.getElementById('lockScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
-          updateMetaDisplay();
           render();
         }, 1000);
       } else {
         if (verifyPin(pin)) {
           document.getElementById('lockScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
-          updateMetaDisplay();
           render();
         } else {
           msg.textContent = "PIN incorreto. Tente novamente.";
@@ -609,12 +518,9 @@
       if (confirm("Isso apagará todos os seus dados de gastos. Deseja continuar?")) {
         localStorage.removeItem('appPinHash');
         localStorage.removeItem('expenses');
-        localStorage.removeItem('dailyMeta');
         document.getElementById('pinInput').value = '';
         document.getElementById('pinMessage').textContent = "Dados apagados. Defina um novo PIN.";
         document.getElementById('pinMessage').style.color = "#4CAF50";
-        metaDiaria = 0;
-        updateMetaDisplay();
       }
     }
 
@@ -711,7 +617,6 @@
       document.getElementById('amount').value = '';
       document.getElementById('note').value = '';
       document.getElementById('expenseForm').style.display = 'none';
-      updateMetaDisplay();
     }
 
     function formatCurrency(value) {
@@ -729,23 +634,6 @@
         }
       });
       return total;
-    }
-
-    function getWeeklyAverage() {
-      const last7 = getDatesLast7Days();
-      let total = 0;
-      last7.forEach(date => {
-        if (expenses[date]) {
-          expenses[date].forEach(item => {
-            if (item.category === "economia") {
-              total -= item.amount;
-            } else {
-              total += item.amount;
-            }
-          });
-        }
-      });
-      return total / 7;
     }
 
     function renderCalendar() {
@@ -958,7 +846,6 @@
 
     function renderAll() {
       document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
-      updateMetaDisplay();
       renderCalendar();
       renderSummaryTable();
       renderCategoryReport();
@@ -969,8 +856,7 @@
       renderAll();
     }
 
-    // Inicializa meta
-    updateMetaDisplay();
+    render();
   </script>
 </body>
 </html>
