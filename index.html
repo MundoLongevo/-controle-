@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Meu Controle de Gastos</title>
   
   <!-- Comportamento como app -->
@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-title" content="Controle" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <!-- Ícone -->
+  <!-- Ícone para iOS e Android -->
   <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
   <link rel="icon" type="image/png" sizes="192x192" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
 
@@ -21,14 +21,59 @@
       --light: #E8F5E9;
       --dark: #2E7D32;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      /* Fonte legível em mobile */
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
     body {
       background-color: var(--light);
       color: #333;
       padding: 16px;
       max-width: 600px;
       margin: 0 auto;
+      /* Evita zoom acidental ao tocar em campos */
+      touch-action: manipulation;
     }
+
+    /* Modal de boas-vindas */
+    #welcomeModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: white;
+      padding: 24px;
+      z-index: 2000;
+      overflow-y: auto;
+    }
+    #welcomeModal h2 {
+      color: var(--dark);
+      margin-bottom: 16px;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+    #welcomeModal p {
+      margin: 12px 0;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    #welcomeModal button {
+      display: block;
+      margin: 24px auto 0;
+      padding: 14px 32px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      min-height: 48px; /* Tamanho mínimo para toque */
+    }
+    #welcomeModal button:hover {
+      background: var(--dark);
+    }
+
     /* Tela de bloqueio */
     #lockScreen {
       position: fixed;
@@ -44,24 +89,29 @@
     #lockScreen h2 {
       margin-bottom: 20px;
       color: var(--dark);
+      font-size: 1.4rem;
     }
     #pinInput {
       width: 180px;
-      padding: 12px;
-      font-size: 1.5rem;
+      padding: 14px;
+      font-size: 1.6rem;
       text-align: center;
       border: 2px solid var(--primary);
-      border-radius: 8px;
+      border-radius: 12px;
       margin-bottom: 16px;
+      /* Evita zoom no iOS ao focar */
+      font-family: inherit;
     }
     #lockScreen button {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
+      padding: 12px 24px;
+      border-radius: 12px;
       cursor: pointer;
-      margin: 5px;
+      margin: 8px;
+      min-height: 48px;
+      font-size: 1.1rem;
     }
     #lockScreen button:hover {
       background: var(--dark);
@@ -72,55 +122,65 @@
     header {
       text-align: center;
       margin-bottom: 20px;
-      padding: 12px 0;
+      padding: 14px 0;
       color: white;
       background: var(--primary);
-      border-radius: 12px;
+      border-radius: 16px;
     }
-    h1 { font-size: 1.6rem; }
-    .balance { 
-      background: white; 
-      padding: 12px; 
-      border-radius: 12px; 
-      margin: 16px 0; 
+    h1 {
+      font-size: 1.5rem;
+    }
+    .balance,
+    .weekly-average {
+      background: white;
+      padding: 14px;
+      border-radius: 16px;
+      margin: 16px 0;
       text-align: center;
       font-weight: bold;
       color: var(--dark);
+      font-size: 1.1rem;
     }
     .weekly-average {
       background: #e3f2fd;
-      padding: 10px;
-      border-radius: 12px;
-      margin: 12px 0;
-      text-align: center;
       color: #1976d2;
-      font-weight: bold;
     }
-    .form-group { margin: 12px 0; }
+    .form-group {
+      margin: 14px 0;
+    }
     label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-weight: bold;
+      font-size: 1rem;
     }
     input, select, textarea {
       width: 100%;
-      padding: 10px;
+      padding: 14px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 1rem;
+      min-height: 48px; /* Altura mínima para toque */
+    }
+    textarea {
+      min-height: 80px;
+      resize: vertical;
     }
     button.app-btn {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 14px;
+      border-radius: 12px;
       width: 100%;
       font-size: 1.1rem;
-      margin-top: 10px;
+      margin-top: 12px;
       cursor: pointer;
+      min-height: 48px;
     }
-    button.app-btn:hover { background: var(--dark); }
+    button.app-btn:hover {
+      background: var(--dark);
+    }
     .medal {
       text-align: center;
       font-size: 1.2rem;
@@ -135,10 +195,14 @@
     }
     .cal-day {
       text-align: center;
-      padding: 6px;
+      padding: 8px 4px;
       font-size: 0.9rem;
       background: #e0e0e0;
-      border-radius: 4px;
+      border-radius: 8px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .cal-day.has-data {
       background: var(--primary);
@@ -148,22 +212,24 @@
       border: 2px solid var(--dark);
     }
 
+    /* Tabelas */
     .summary-table, .report-table {
       width: 100%;
       border-collapse: collapse;
       margin: 20px 0;
       background: white;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .summary-table th,
     .summary-table td,
     .report-table th,
     .report-table td {
-      padding: 12px 10px;
+      padding: 14px 10px;
       text-align: left;
       border-bottom: 1px solid #eee;
+      font-size: 1rem;
     }
     .summary-table th,
     .report-table th {
@@ -180,6 +246,31 @@
       background-color: #f9f9f9;
     }
 
+    /* Navegação mensal */
+    .monthly-summary {
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      margin: 24px 0;
+      text-align: center;
+    }
+    .month-nav {
+      display: flex;
+      justify-content: space-between;
+      max-width: 220px;
+      margin: 12px auto;
+    }
+    .month-nav button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      min-width: 44px;
+      min-height: 44px;
+    }
+
     footer {
       margin-top: 32px;
       padding-top: 16px;
@@ -187,17 +278,57 @@
       text-align: center;
       font-size: 0.85rem;
       color: #666;
+      line-height: 1.5;
     }
     footer a {
       color: var(--primary);
       text-decoration: none;
+      display: inline-block;
+      margin: 4px 0;
     }
     footer a:hover {
       text-decoration: underline;
     }
+
+    /* Garantir que não transborde em telas muito estreitas */
+    @media (max-width: 360px) {
+      body {
+        padding: 12px;
+      }
+      .cal-day {
+        font-size: 0.8rem;
+        padding: 6px 2px;
+      }
+      .summary-table th,
+      .summary-table td,
+      .report-table th,
+      .report-table td {
+        padding: 12px 6px;
+        font-size: 0.95rem;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Modal de boas-vindas -->
+  <div id="welcomeModal" style="display:none;">
+    <h2>🌿 Bem-vindo(a) ao seu Controle de Gastos!</h2>
+    
+    <p>Este aplicativo foi criado por <strong>Ricardo de Faria Barros</strong> no contexto do <strong>Projeto 70+ da ANABB</strong>, com o propósito de apoiar a autonomia financeira e o bem-estar na longevidade.</p>
+
+    <p>Sabemos que, na longevidade, pequenos gastos eventuais — como delivery, compras online por impulso ou assinaturas esquecidas — podem, aos poucos, "sangrar" suas economias. Não se trata de viver com miséria, mas de fazer escolhas conscientes: trocar um iFood por uma refeição caseira, por exemplo, pode representar uma economia significativa ao longo do mês.</p>
+
+    <p>Monitorar essas saídas não é controle rígido — é <strong>cuidado com o seu futuro</strong>.</p>
+
+    <p>🔒 <strong>Seus dados ficam apenas no seu celular</strong> — nada é enviado para a nuvem ou para servidores externos.</p>
+
+    <p>📱 Para usar como um app nativo, <strong>salve esta página no atalho da sua tela inicial</strong>:<br>
+    • No <strong>Android</strong>: abra no Chrome e toque nos <strong>três pontinhos</strong> → “Adicionar à tela inicial”<br>
+    • No <strong>iPhone</strong>: toque no botão de compartilhar → “Adicionar à Tela de Início”</p>
+
+    <button onclick="closeWelcome()">Começar</button>
+  </div>
+
   <!-- Tela de bloqueio -->
   <div id="lockScreen">
     <h2>🔒 Proteção por PIN</h2>
@@ -267,18 +398,18 @@
 
     <div class="medal" id="medal"></div>
 
-    <div class="monthly-summary" style="background:white;padding:16px;border-radius:12px;margin:24px 0;text-align:center;">
-      <div style="display:flex;justify-content:space-between;max-width:200px;margin:8px auto;">
-        <button class="app-btn" style="width:auto;padding:6px 12px;font-size:1rem;" onclick="changeMonth(-1)">◀</button>
+    <div class="monthly-summary">
+      <div class="month-nav">
+        <button onclick="changeMonth(-1)">◀</button>
         <span id="currentMonth">Fevereiro 2026</span>
-        <button class="app-btn" style="width:auto;padding:6px 12px;font-size:1rem;" onclick="changeMonth(1)">▶</button>
+        <button onclick="changeMonth(1)">▶</button>
       </div>
       <div id="monthlyStats">Total: R$ 0,00 | Dias: 0/29 | Média: R$ 0,00</div>
     </div>
 
     <div class="calendar" id="calendar"></div>
 
-    <h3 style="margin-top: 24px;">📅 Resumo Diário</h3>
+    <h3 style="margin-top: 24px; font-size: 1.2rem;">📅 Resumo Diário</h3>
     <table class="summary-table" id="summaryTable">
       <thead>
         <tr>
@@ -290,7 +421,7 @@
       </tbody>
     </table>
 
-    <h3>📊 Total por Categoria</h3>
+    <h3 style="margin-top: 24px; font-size: 1.2rem;">📊 Total por Categoria</h3>
     <table class="report-table" id="categoryReport">
       <thead>
         <tr>
@@ -318,6 +449,19 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
+    // --- Verifica primeira vez ---
+    if (!localStorage.getItem('appVisited')) {
+      document.getElementById('welcomeModal').style.display = 'block';
+      document.getElementById('lockScreen').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'none';
+    }
+
+    function closeWelcome() {
+      localStorage.setItem('appVisited', 'true');
+      document.getElementById('welcomeModal').style.display = 'none';
+      document.getElementById('lockScreen').style.display = 'flex';
+    }
+
     // --- Funções de segurança ---
     function hashPin(pin) {
       let hash = 0;
@@ -703,4 +847,4 @@
     }
   </script>
 </body>
-</html> 
+</html>
