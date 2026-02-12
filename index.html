@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-title" content="Controle" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <!-- Ícone PWA -->
+  <!-- Ícone -->
   <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
   <link rel="icon" type="image/png" sizes="192x192" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
 
@@ -20,6 +20,7 @@
       --primary: #4CAF50;
       --light: #E8F5E9;
       --dark: #2E7D32;
+      --gray: #9E9E9E;
     }
     * {
       margin: 0;
@@ -115,31 +116,60 @@
     }
     #mainApp { display: none; }
 
-    /* Mensagem motivacional */
-    .motivational-message {
-      background: #f1f8e9;
-      padding: 14px;
-      border-radius: 12px;
+    /* Meta de hoje — discreta */
+    .meta-box {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
       margin: 16px 0;
-      text-align: center;
-      font-style: italic;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .meta-box::before {
+      content: "🎯";
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+    .meta-title {
+      font-weight: bold;
       color: var(--dark);
-      font-size: 1.05rem;
-      line-height: 1.4;
+      margin-bottom: 8px;
+      padding-left: 32px;
+    }
+    .meta-value {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: var(--primary);
+      text-align: center;
+      padding-left: 32px;
+    }
+    .meta-progress {
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .meta-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .meta-info {
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-align: center;
+      margin: 8px 0;
+      padding-left: 32px;
     }
 
-    /* Estilos do app */
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-      padding: 14px 0;
-      color: white;
-      background: var(--primary);
-      border-radius: 16px;
-    }
-    h1 { font-size: 1.5rem; }
-    .balance,
-    .weekly-average {
+    /* Balanço principal */
+    .balance {
       background: white;
       padding: 14px;
       border-radius: 16px;
@@ -149,10 +179,17 @@
       color: var(--dark);
       font-size: 1.1rem;
     }
-    .weekly-average {
-      background: #e3f2fd;
-      color: #1976d2;
+
+    /* Restante do app — mantido limpo */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 14px 0;
+      color: white;
+      background: var(--primary);
+      border-radius: 16px;
     }
+    h1 { font-size: 1.5rem; }
     .form-group { margin: 14px 0; }
     label {
       display: block;
@@ -186,12 +223,6 @@
     }
     button.app-btn:hover {
       background: var(--dark);
-    }
-    .medal {
-      text-align: center;
-      font-size: 1.2rem;
-      margin: 16px 0;
-      color: gold;
     }
     .calendar {
       display: grid;
@@ -287,39 +318,26 @@
     footer a {
       color: var(--primary);
       text-decoration: none;
-      display: inline-block;
-      margin: 4px 0;
     }
     footer a:hover {
       text-decoration: underline;
-    }
-
-    @media (max-width: 360px) {
-      body { padding: 12px; }
-      .cal-day { font-size: 0.8rem; padding: 6px 2px; }
-      .summary-table th, .summary-table td, .report-table th, .report-table td {
-        padding: 12px 6px;
-        font-size: 0.95rem;
-      }
     }
   </style>
 </head>
 <body>
   <!-- Modal de boas-vindas -->
   <div id="welcomeModal" style="display:none;">
-    <h2>🌿 Bem-vindo(a) ao seu Controle de Gastos!</h2>
+    <h2>🌿 Bem-vindo(a) ao seu Controle de Gastos</h2>
     
     <p>Este aplicativo foi criado por <strong>Ricardo de Faria Barros</strong> no contexto do <strong>Projeto 70+ da ANABB</strong>, com o propósito de apoiar a autonomia financeira e o bem-estar na longevidade.</p>
 
-    <p>Sabemos que, na longevidade, pequenos gastos eventuais — como delivery, compras online por impulso ou assinaturas esquecidas — podem, aos poucos, "sangrar" suas economias. Não se trata de viver com miséria, mas de fazer escolhas conscientes: trocar um iFood por uma refeição caseira, por exemplo, pode representar uma economia significativa ao longo do mês.</p>
+    <p>Sabemos que, na longevidade, pequenos gastos eventuais — como delivery, compras online por impulso ou assinaturas esquecidas — podem, aos poucos, "sangrar" suas economias. Não se trata de viver com miséria, mas de fazer escolhas conscientes.</p>
 
-    <p>Monitorar essas saídas não é controle rígido — é <strong>cuidado com o seu futuro</strong>.</p>
+    <p>🔒 <strong>Seus dados ficam apenas no seu celular</strong> — nada é enviado para a nuvem.</p>
 
-    <p>🔒 <strong>Seus dados ficam apenas no seu celular</strong> — nada é enviado para a nuvem ou para servidores externos.</p>
-
-    <p>📱 Para usar como um app nativo, <strong>salve esta página no atalho da sua tela inicial</strong>:<br>
-    • No <strong>Android</strong>: abra no Chrome e toque nos <strong>três pontinhos</strong> → “Adicionar à tela inicial”<br>
-    • No <strong>iPhone</strong>: toque no botão de compartilhar → “Adicionar à Tela de Início”</p>
+    <p>📱 Para usar como app nativo:  
+    • Android: Chrome → três pontinhos → “Adicionar à tela inicial”  
+    • iPhone: Compartilhar → “Adicionar à Tela de Início”</p>
 
     <button onclick="closeWelcome()">Começar</button>
   </div>
@@ -339,13 +357,20 @@
       <h1>💰 Meu Controle Diário</h1>
     </header>
 
-    <div class="motivational-message" id="motivationalMessage">
-      <!-- Mensagem do dia será inserida aqui -->
+    <!-- Meta de hoje (discreta) -->
+    <div class="meta-box" id="metaBox">
+      <div class="meta-title">META DE HOJE</div>
+      <div class="meta-value" id="metaValue">R$ 0,00</div>
+      <div class="meta-info" id="metaInfo">Defina sua meta para acompanhar seu orçamento diário</div>
+      <div class="meta-progress">
+        <div class="meta-fill" id="metaFill"></div>
+      </div>
+      <button onclick="defineMeta()" style="margin-top:12px;background:#f1f8e9;color:#2E7D32;border:1px solid #4CAF50;padding:8px 16px;font-size:0.9rem;">
+        🎯 Definir meta
+      </button>
     </div>
 
     <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
-
-    <div class="weekly-average" id="weeklyAverage">Média semanal: R$ 0,00</div>
 
     <div class="form-group">
       <label for="date">Data do gasto</label>
@@ -397,8 +422,6 @@
 
     <button class="app-btn" onclick="addExpense()">➕ Registrar Gasto</button>
 
-    <div class="medal" id="medal"></div>
-
     <div class="monthly-summary">
       <div class="month-nav">
         <button onclick="changeMonth(-1)">◀</button>
@@ -443,27 +466,33 @@
 
     <footer>
       © 2026 Ricardo de Faria Barros. Todos os direitos reservados.<br>
-      Inspire-se na longelescência: <a href="https://www.plenalongevidade.com.br" target="_blank">www.plenalongevidade.com.br</a><br>
       <strong>Dúvidas ou sugestões?</strong> Escreva para: <a href="mailto:ricardo@animodh.com.br">ricardo@animodh.com.br</a>
     </footer>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // --- Mensagens motivacionais (domingo = 0)
-    const motivationalMessages = [
-      "Hoje é dia de recarregar a alma. Cuide de você como quem cuida de um jardim: com paciência, amor e tempo.",
-      "Nova semana, nova chance de escolher com consciência. Cada real gasto é um voto no tipo de vida que você quer viver.",
-      "Você não precisa de mais dinheiro — precisa de mais clareza. E clareza nasce da atenção plena aos pequenos gestos diários.",
-      "No meio da semana, lembre-se: autonomia financeira é liberdade emocional. Cada escolha consciente fortalece sua longevidade plena.",
-      "Sua maturidade é seu maior ativo. Use-a para transformar impulsos em intenções — e gastos em significado.",
-      "Celebre o que construiu até aqui. E siga com sabedoria: gastar com propósito é viver com legado.",
-      "Relaxe, mas não se descuide. A longevidade plena se alimenta de equilíbrio — entre prazer, cuidado e consciência."
-    ];
+    // --- Meta de hoje ---
+    let metaDiaria = parseFloat(localStorage.getItem('dailyMeta')) || 0;
 
-    function showMotivationalMessage() {
-      const todayIndex = new Date().getDay();
-      document.getElementById('motivationalMessage').textContent = motivationalMessages[todayIndex];
+    function updateMetaDisplay() {
+      const totalHoje = getTodayTotal();
+      const percent = metaDiaria > 0 ? Math.min(100, (totalHoje / metaDiaria) * 100) : 0;
+      document.getElementById('metaValue').textContent = formatCurrency(metaDiaria);
+      document.getElementById('metaFill').style.width = `${percent}%`;
+      document.getElementById('metaInfo').textContent = 
+        metaDiaria > 0 
+          ? `Gastou ${formatCurrency(totalHoje)} de ${formatCurrency(metaDiaria)}`
+          : "Defina sua meta para acompanhar seu orçamento diário";
+    }
+
+    function defineMeta() {
+      const newMeta = parseFloat(prompt("Digite sua meta diária (ex: 80)", metaDiaria || "80"));
+      if (newMeta !== null && !isNaN(newMeta) && newMeta >= 0) {
+        metaDiaria = newMeta;
+        localStorage.setItem('dailyMeta', metaDiaria.toString());
+        updateMetaDisplay();
+      }
     }
 
     // --- Primeira vez ---
@@ -520,14 +549,14 @@
         setTimeout(() => {
           document.getElementById('lockScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
-          showMotivationalMessage();
+          updateMetaDisplay();
           render();
         }, 1000);
       } else {
         if (verifyPin(pin)) {
           document.getElementById('lockScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
-          showMotivationalMessage();
+          updateMetaDisplay();
           render();
         } else {
           msg.textContent = "PIN incorreto. Tente novamente.";
@@ -541,9 +570,12 @@
       if (confirm("Isso apagará todos os seus dados de gastos. Deseja continuar?")) {
         localStorage.removeItem('appPinHash');
         localStorage.removeItem('expenses');
+        localStorage.removeItem('dailyMeta');
         document.getElementById('pinInput').value = '';
         document.getElementById('pinMessage').textContent = "Dados apagados. Defina um novo PIN.";
         document.getElementById('pinMessage').style.color = "#4CAF50";
+        metaDiaria = 0;
+        updateMetaDisplay();
       }
     }
 
@@ -639,6 +671,7 @@
       save();
       document.getElementById('amount').value = '';
       document.getElementById('note').value = '';
+      updateMetaDisplay();
     }
 
     function formatCurrency(value) {
@@ -676,18 +709,7 @@
     }
 
     function checkMedal() {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yestStr = formatDate(yesterday);
-
-      const hasToday = !expenses[today] || expenses[today].length === 0;
-      const hasYesterday = !expenses[yestStr] || expenses[yestStr].length === 0;
-
-      if (hasToday && hasYesterday) {
-        document.getElementById('medal').innerHTML = '🏆 Parabéns! 2 dias sem gastos!';
-      } else {
-        document.getElementById('medal').innerHTML = '';
-      }
+      // Removido — foco neutro
     }
 
     function renderCalendar() {
@@ -901,7 +923,7 @@
     function renderAll() {
       document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
       document.getElementById('weeklyAverage').textContent = `Média semanal: ${formatCurrency(getWeeklyAverage())}`;
-      checkMedal();
+      updateMetaDisplay();
       renderCalendar();
       renderSummaryTable();
       renderCategoryReport();
@@ -911,6 +933,9 @@
     function render() {
       renderAll();
     }
+
+    // Inicializa meta
+    updateMetaDisplay();
   </script>
 </body>
 </html>
