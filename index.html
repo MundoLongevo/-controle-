@@ -2,805 +2,705 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Meu Controle de Despesas</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Controle de Gastos</title>
+  
+  <!-- Comportamento como app -->
   <meta name="theme-color" content="#4CAF50" />
-  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Despesas" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Controle" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
-  <link rel="apple-touch-icon"
-    href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%234CAF50'/%3E%3Ctext%20x='50'%20y='67'%20font-size='58'%20text-anchor='middle'%20fill='white'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E" />
+  <!-- Ícone -->
+  <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
+  <link rel="icon" type="image/png" sizes="192x192" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
 
   <style>
-    :root{
-      --primary:#4CAF50; --dark:#2E7D32; --light:#E8F5E9;
-      --card:#FFFFFF; --text:#222; --muted:#666; --border:#d9d9d9;
-      --shadow: 0 1px 3px rgba(0,0,0,0.10);
-      --danger:#d32f2f; --info:#2196F3; --bg: var(--light);
-      --ghostbg: rgba(0,0,0,0.03);
+    :root {
+      --primary: #4CAF50;
+      --light: #E8F5E9;
+      --dark: #2E7D32;
     }
-    body.dark{
-      --bg:#0f1411; --card:#151b17; --text:#f1f1f1; --muted:#b9b9b9;
-      --border:#2a332d; --shadow: 0 1px 3px rgba(0,0,0,0.45);
-      --ghostbg: rgba(255,255,255,0.06);
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body {
+      background-color: var(--light);
+      color: #333;
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
     }
-    *{ box-sizing:border-box; margin:0; padding:0; font-family: system-ui, -apple-system, sans-serif;}
-    body{ background: var(--bg); color: var(--text); padding: 16px; max-width: 760px; margin: 0 auto; font-size: 18px; line-height: 1.35; }
-    header{
-      background: var(--primary); color:#fff; border-radius: 14px; padding: 14px; box-shadow: var(--shadow);
-      display:flex; align-items:center; justify-content: space-between; gap: 12px;
+    /* Tela de bloqueio */
+    #lockScreen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
     }
-    header h1{ font-size: 1.25rem; }
-    .top-actions{ display:flex; gap: 10px; align-items:center; }
-    .chip{
-      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25); color:#fff;
-      padding: 8px 10px; border-radius: 999px; font-size: 0.95rem; cursor:pointer; user-select:none; white-space: nowrap;
+    #lockScreen h2 {
+      margin-bottom: 20px;
+      color: var(--dark);
     }
-    .card{ background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-top: 14px; box-shadow: var(--shadow); }
-    .row{ display:flex; gap: 12px; flex-wrap: wrap; }
-    .col{ flex:1; min-width: 220px; }
-    label{ display:block; font-weight: 800; margin-bottom: 6px; }
-    input, select{
-      width:100%; padding: 12px; border: 1px solid var(--border); background: transparent; color: var(--text);
-      border-radius: 12px; font-size: 1rem; outline: none;
+    #pinInput {
+      width: 180px;
+      padding: 12px;
+      font-size: 1.5rem;
+      text-align: center;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      margin-bottom: 16px;
     }
-    button{
-      width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 1.05rem; cursor:pointer;
-      background: var(--primary); color:#fff; font-weight: 900;
+    #lockScreen button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
     }
-    button:hover{ filter: brightness(0.96); }
-    .btn-ghost{ background: transparent; border: 1px solid var(--border); color: var(--text); font-weight: 900; }
-    .btn-danger{ background: var(--danger); }
-    .btn-info{ background: var(--info); }
-    .small{ color: var(--muted); font-size: 0.95rem; }
-    .balance{ text-align:center; font-weight: 900; color: var(--dark); font-size: 1.12rem; }
-    body.dark .balance{ color: #a7ffb0; }
+    #lockScreen button:hover {
+      background: var(--dark);
+    }
+    #mainApp { display: none; }
 
-    .pill{
-      display:inline-block; padding: 6px 10px; border-radius: 999px;
-      border: 1px solid var(--border); font-weight: 900; font-size: 0.92rem;
-      background: var(--ghostbg);
+    /* Estilos do app */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 12px 0;
+      color: white;
+      background: var(--primary);
+      border-radius: 12px;
+    }
+    h1 { font-size: 1.6rem; }
+    .balance { 
+      background: white; 
+      padding: 12px; 
+      border-radius: 12px; 
+      margin: 16px 0; 
+      text-align: center;
+      font-weight: bold;
+      color: var(--dark);
+    }
+    .weekly-average {
+      background: #e3f2fd;
+      padding: 10px;
+      border-radius: 12px;
+      margin: 12px 0;
+      text-align: center;
+      color: #1976d2;
+      font-weight: bold;
+    }
+    .form-group { margin: 12px 0; }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button.app-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    button.app-btn:hover { background: var(--dark); }
+    .medal {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 16px 0;
+      color: gold;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin: 16px 0;
+    }
+    .cal-day {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.9rem;
+      background: #e0e0e0;
+      border-radius: 4px;
+    }
+    .cal-day.has-data {
+      background: var(--primary);
+      color: white;
+    }
+    .cal-day.today {
+      border: 2px solid var(--dark);
     }
 
-    .calendar{ display:grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
-    .cal-day{
-      text-align:center; padding: 10px 6px; background: rgba(0,0,0,0.06); border-radius: 10px;
-      font-size: 0.95rem; border: 1px solid transparent; cursor: pointer; user-select:none;
+    .summary-table, .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    body.dark .cal-day{ background: rgba(255,255,255,0.08); }
-    .cal-day.head{ background: transparent; border:none; cursor: default; font-weight:900; color: var(--muted); }
-    .cal-day.has-data{ background: var(--primary); color:#fff; }
-    .cal-day.today{ border-color: var(--dark); }
-    body.dark .cal-day.today{ border-color: #a7ffb0; }
-    .cal-day.selected{ outline: 3px solid rgba(33,150,243,0.45); }
+    .summary-table th,
+    .summary-table td,
+    .report-table th,
+    .report-table td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .summary-table th,
+    .report-table th {
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+    }
+    .summary-table tr:last-child td,
+    .report-table tr:last-child td {
+      border-bottom: none;
+    }
+    .summary-table tr:hover td,
+    .report-table tr:hover td {
+      background-color: #f9f9f9;
+    }
 
-    .detail-item{
-      display:flex; gap: 10px; align-items:flex-start; justify-content: space-between;
-      padding: 10px 0; border-bottom: 1px solid var(--border);
+    footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #666;
     }
-    .detail-item:last-child{ border-bottom:none; }
-    .detail-main{ font-weight: 900; margin-bottom: 2px; }
-    .detail-note{ color: var(--muted); font-size: 0.95rem; word-break: break-word; }
-    .detail-actions{ display:flex; gap: 8px; flex-shrink: 0; }
-    .mini-btn{ width: auto; padding: 10px 10px; border-radius: 10px; font-size: 0.95rem; font-weight: 900; }
-
-    .modal-backdrop{
-      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
-      display:none; align-items:center; justify-content:center; padding: 16px; z-index: 999;
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
     }
-    .modal{
-      width: 100%; max-width: 520px; background: var(--card); color: var(--text);
-      border: 1px solid var(--border); border-radius: 16px; padding: 14px; box-shadow: var(--shadow);
+    footer a:hover {
+      text-decoration: underline;
     }
-    .modal h3{ margin-bottom: 10px; }
-    .modal .row{ margin-top: 10px; }
-    .modal .modal-actions{ display:flex; gap: 10px; margin-top: 12px; }
-    .modal .modal-actions button{ flex:1; }
-
-    footer{ margin-top: 18px; text-align:center; color: var(--muted); font-size: 0.9rem; padding-bottom: 10px; }
   </style>
 </head>
-
 <body>
-  <header>
-    <h1>💰 Controle de Despesas</h1>
-    <div class="top-actions">
-      <div class="chip" id="darkToggle">🌙 Modo</div>
-      <div class="chip" id="helpBtn">❔ Ajuda</div>
-    </div>
-  </header>
-
-  <div class="card balance" id="balance">Balanço de hoje: R$ 0,00</div>
-
-  <!-- ✅ RESUMO SEMANAL / MENSAL + PDF -->
-  <div class="card">
-    <div style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-      <div style="font-weight:900;">📊 Resumo</div>
-      <div class="pill" id="statusPill">Carregando…</div>
-    </div>
-
-    <div class="small" id="weekLine" style="margin-top:10px;"></div>
-    <div class="small" id="monthLine" style="margin-top:6px;"></div>
-
-    <button class="btn-info" style="margin-top:12px;" onclick="generatePDF()">📄 Gerar relatório em PDF</button>
-    <div class="small" id="pdfHint" style="margin-top:8px;"></div>
+  <!-- Tela de bloqueio -->
+  <div id="lockScreen">
+    <h2>🔒 Proteção por PIN</h2>
+    <input type="password" id="pinInput" maxlength="4" placeholder="____" autocomplete="off">
+    <button onclick="unlockApp()">Acessar</button>
+    <button onclick="resetPin()" style="background:#f44336;">Esqueci o PIN</button>
+    <p id="pinMessage" style="margin-top:12px;color:#666;"></p>
   </div>
 
-  <div class="card">
-    <div class="row">
-      <div class="col">
-        <label for="date">Data</label>
-        <input type="date" id="date">
-        <div class="small" id="dateBR" style="margin-top:6px;"></div>
-      </div>
+  <!-- App principal -->
+  <div id="mainApp">
+    <header>
+      <h1>💰 Meu Controle Diário</h1>
+    </header>
 
-      <div class="col">
-        <label for="amount">Valor</label>
-        <input type="text" id="amount" inputmode="numeric" autocomplete="off" placeholder="R$ 0,00">
-        <div class="small" style="margin-top:6px;">Digite “1250” → R$ 12,50</div>
-      </div>
+    <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
+
+    <div class="weekly-average" id="weeklyAverage">Média semanal: R$ 0,00</div>
+
+    <div class="form-group">
+      <label for="date">Data do gasto</label>
+      <input type="date" id="date">
     </div>
 
-    <div class="row" style="margin-top:12px;">
-      <div class="col">
-        <label for="category">Categoria</label>
-        <select id="category"></select>
-      </div>
-      <div class="col">
-        <label for="note">Observação (opcional)</label>
-        <input type="text" id="note" placeholder="Ex: almoço, farmácia...">
-      </div>
+    <div class="form-group">
+      <label for="category">Categoria</label>
+      <select id="category">
+        <option value="alimentacao">🛒 Alimentação</option>
+        <option value="feira">🧺 Feira</option>
+        <option value="padaria">🥐 Padaria</option>
+        <option value="bares">🍷 Bares/Restaurantes</option>
+        <option value="farmacia">💊 Farmácia</option>
+        <option value="gasolina">⛽ Gasolina</option>
+        <option value="uber">🚕 Uber/Transporte</option>
+        <option value="agua">💧 Água</option>
+        <option value="energia">⚡ Energia</option>
+        <option value="telefone">📱 Telefone/Internet</option>
+        <option value="condominio">🏢 Condomínio</option>
+        <option value="diarista">🧹 Diarista</option>
+        <option value="impostos">🏛️ Impostos</option>
+        <option value="prestacoes">🏠 Prestações (casa/carro)</option>
+        <option value="manutencao">🔧 Manutenção (casa/carro)</option>
+        <option value="lazer">🎭 Lazer</option>
+        <option value="contas">📄 Contas Fixas</option>
+        <option value="aluguel">🏠 Aluguel</option>
+        <option value="cartao">💳 Fatura Cartão</option>
+        <option value="dizimo">❤️ Dízimo/Doação</option>
+        <option value="online">📦 Compras Online</option>
+        <option value="mensalidade">🏋️‍♂️ Mensalidade (academia/clube)</option>
+        <option value="educacao">🎓 Educação</option>
+        <option value="ajuda_familia">👨‍👩‍👧‍👦 Ajuda a filhos/netos</option>
+        <option value="diversos">✨ Diversos</option>
+      </select>
     </div>
 
-    <div class="row" style="margin-top:12px;">
-      <button class="btn-ghost" type="button" onclick="setToday()">📌 Hoje</button>
+    <div class="form-group">
+      <label for="amount">Valor (R$)</label>
+      <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
     </div>
 
-    <button style="margin-top:10px;" onclick="addExpense()">💾 Gravar despesa</button>
-    <div class="small" id="saveStatus" style="margin-top:10px;"></div>
-  </div>
+    <div class="form-group">
+      <label for="note">Observação (opcional)</label>
+      <textarea id="note" placeholder="Ex: Academia Corpo em Forma – saúde em primeiro lugar!"></textarea>
+    </div>
 
-  <div class="card">
-    <div style="font-weight:900;">📅 Calendário</div>
-    <div class="small">Clique em um dia para ver, editar ou excluir.</div>
+    <button class="app-btn" onclick="addExpense()">➕ Registrar Gasto</button>
+
+    <div class="medal" id="medal"></div>
+
+    <div class="monthly-summary" style="background:white;padding:16px;border-radius:12px;margin:24px 0;text-align:center;">
+      <div style="display:flex;justify-content:space-between;max-width:200px;margin:8px auto;">
+        <button class="app-btn" style="width:auto;padding:6px 12px;font-size:1rem;" onclick="changeMonth(-1)">◀</button>
+        <span id="currentMonth">Fevereiro 2026</span>
+        <button class="app-btn" style="width:auto;padding:6px 12px;font-size:1rem;" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div id="monthlyStats">Total: R$ 0,00 | Dias: 0/29 | Média: R$ 0,00</div>
+    </div>
+
     <div class="calendar" id="calendar"></div>
+
+    <h3 style="margin-top: 24px;">📅 Resumo Diário</h3>
+    <table class="summary-table" id="summaryTable">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="summaryBody">
+      </tbody>
+    </table>
+
+    <h3>📊 Total por Categoria</h3>
+    <table class="report-table" id="categoryReport">
+      <thead>
+        <tr>
+          <th>Categoria</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="categoryReportBody">
+      </tbody>
+    </table>
+
+    <button class="app-btn" style="background:#2196F3;margin-top:20px;" onclick="generatePDF()">📄 Gerar Relatório PDF</button>
+
+    <button class="app-btn" style="background:#E8F5E9;color:#2E7D32;border:1px solid #4CAF50;margin-top:16px;font-weight:bold;"
+            onclick="window.open('https://www.plenalongevidade.com.br', '_blank')">
+      🌿 Conheça a Plena Longevidade
+    </button>
+
+    <footer>
+      © 2026 Ricardo de Faria Barros. Todos os direitos reservados.<br>
+      Inspire-se na longelescência: <a href="https://www.plenalongevidade.com.br" target="_blank">www.plenalongevidade.com.br</a><br>
+      <strong>Dúvidas ou sugestões?</strong> Escreva para: <a href="mailto:ricardo@animodh.com.br">ricardo@animodh.com.br</a>
+    </footer>
   </div>
 
-  <div class="card">
-    <div style="font-weight:900;" id="selectedDayTitle">🧾 Detalhe do dia</div>
-    <div class="small" id="selectedDaySubtitle">Selecione um dia no calendário.</div>
-    <div id="dayDetailList" style="margin-top:10px;"></div>
-  </div>
-
-  <footer>© 2026 Ricardo de Faria Barros</footer>
-
-  <!-- Modal Editar -->
-  <div class="modal-backdrop" id="editBackdrop" role="dialog" aria-modal="true">
-    <div class="modal">
-      <h3>✏️ Editar despesa</h3>
-      <div class="small" id="editInfo"></div>
-
-      <div class="row">
-        <div class="col">
-          <label for="editAmount">Valor (R$)</label>
-          <input type="number" id="editAmount" step="0.01" min="0">
-        </div>
-        <div class="col">
-          <label for="editCategory">Categoria</label>
-          <select id="editCategory"></select>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <label for="editNote">Observação</label>
-          <input type="text" id="editNote" placeholder="Opcional">
-        </div>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn-ghost" onclick="closeEdit()">Cancelar</button>
-        <button onclick="saveEdit()">Salvar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Ajuda -->
-  <div class="modal-backdrop" id="helpBackdrop" role="dialog" aria-modal="true">
-    <div class="modal">
-      <h3>❔ Ajuda rápida</h3>
-      <div class="small">
-        • Este app salva LOCALMENTE no navegador (no mesmo celular e mesma URL).<br>
-        • Não use modo anônimo.<br>
-        • No iPhone: Safari → Compartilhar → “Adicionar à Tela de Início”.<br>
-        • No Android: Chrome → “Instalar app/Adicionar à tela inicial”.
-      </div>
-      <div class="modal-actions" style="margin-top:12px;">
-        <button onclick="closeHelp()">Fechar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ✅ PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    // --- Funções de segurança ---
+    function hashPin(pin) {
+      let hash = 0;
+      for (let i = 0; i < pin.length; i++) {
+        const char = pin.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return hash.toString();
+    }
 
-<script>
-/* =========================
-   IndexedDB (local, robusto)
-   ========================= */
-const DB_NAME = "despesas_local_db_v1";
-const DB_VER  = 1;
-const STORE   = "kv";
+    function setPin(pin) {
+      localStorage.setItem('appPinHash', hashPin(pin));
+    }
 
-function openDB(){
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VER);
-    req.onupgradeneeded = () => {
-      const db = req.result;
-      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
+    function verifyPin(pin) {
+      const savedHash = localStorage.getItem('appPinHash');
+      return savedHash && savedHash === hashPin(pin);
+    }
+
+    function hasPin() {
+      return localStorage.getItem('appPinHash') !== null;
+    }
+
+    function unlockApp() {
+      const pin = document.getElementById('pinInput').value;
+      const msg = document.getElementById('pinMessage');
+
+      if (pin.length !== 4 || isNaN(pin)) {
+        msg.textContent = "O PIN deve ter 4 dígitos.";
+        msg.style.color = "#f44336";
+        return;
+      }
+
+      if (!hasPin()) {
+        setPin(pin);
+        msg.textContent = "PIN definido com sucesso!";
+        msg.style.color = "#4CAF50";
+        setTimeout(() => {
+          document.getElementById('lockScreen').style.display = 'none';
+          document.getElementById('mainApp').style.display = 'block';
+          render();
+        }, 1000);
+      } else {
+        if (verifyPin(pin)) {
+          document.getElementById('lockScreen').style.display = 'none';
+          document.getElementById('mainApp').style.display = 'block';
+          render();
+        } else {
+          msg.textContent = "PIN incorreto. Tente novamente.";
+          msg.style.color = "#f44336";
+          document.getElementById('pinInput').value = '';
+        }
+      }
+    }
+
+    function resetPin() {
+      if (confirm("Isso apagará todos os seus dados de gastos. Deseja continuar?")) {
+        localStorage.removeItem('appPinHash');
+        localStorage.removeItem('expenses');
+        document.getElementById('pinInput').value = '';
+        document.getElementById('pinMessage').textContent = "Dados apagados. Defina um novo PIN.";
+        document.getElementById('pinMessage').style.color = "#4CAF50";
+      }
+    }
+
+    // --- Resto do app ---
+    function formatDate(date = new Date()) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function formatBR(dateStr) {
+      const [y, m, d] = dateStr.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    function getDatesLast7Days() {
+      const dates = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        dates.push(formatDate(d));
+      }
+      return dates;
+    }
+
+    function getMonthDates(year, month) {
+      const start = new Date(year, month, 1);
+      const end = new Date(year, month + 1, 0);
+      const days = [];
+      for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+        days.push(formatDate(new Date(d)));
+      }
+      return days;
+    }
+
+    const categoryNames = {
+      "alimentacao": "Alimentação",
+      "feira": "Feira",
+      "padaria": "Padaria",
+      "bares": "Bares/Restaurantes",
+      "farmacia": "Farmácia",
+      "gasolina": "Gasolina",
+      "uber": "Uber/Transporte",
+      "agua": "Água",
+      "energia": "Energia",
+      "telefone": "Telefone/Internet",
+      "condominio": "Condomínio",
+      "diarista": "Diarista",
+      "impostos": "Impostos",
+      "prestacoes": "Prestações",
+      "manutencao": "Manutenção",
+      "lazer": "Lazer",
+      "contas": "Contas Fixas",
+      "aluguel": "Aluguel",
+      "cartao": "Fatura Cartão",
+      "dizimo": "Dízimo/Doação",
+      "online": "Compras Online",
+      "mensalidade": "Mensalidade (academia/clube)",
+      "educacao": "Educação",
+      "ajuda_familia": "Ajuda a filhos/netos",
+      "diversos": "Diversos"
     };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-async function idbGet(key){
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, "readonly");
-    const st = tx.objectStore(STORE);
-    const r = st.get(key);
-    r.onsuccess = () => resolve(r.result);
-    r.onerror = () => reject(r.error);
-  });
-}
-async function idbSet(key, val){
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, "readwrite");
-    const st = tx.objectStore(STORE);
-    const r = st.put(val, key);
-    r.onsuccess = () => resolve(true);
-    r.onerror = () => reject(r.error);
-  });
-}
 
-/* =========================
-   Dados + UI
-   ========================= */
-const CATEGORIES = [
-  { id:"alimentacao", label:"🛒 Alimentação" },
-  { id:"feira", label:"🧺 Feira" },
-  { id:"padaria", label:"🥐 Padaria" },
-  { id:"bares", label:"🍷 Bares/Restaurantes" },
-  { id:"farmacia", label:"💊 Farmácia" },
-  { id:"gasolina", label:"⛽ Gasolina" },
-  { id:"uber", label:"🚕 Uber/Transporte" },
-  { id:"agua", label:"💧 Água" },
-  { id:"energia", label:"⚡ Energia" },
-  { id:"telefone", label:"📱 Telefone/Internet" },
-  { id:"condominio", label:"🏢 Condomínio" },
-  { id:"diarista", label:"🧹 Diarista" },
-  { id:"impostos", label:"🏛️ Impostos" },
-  { id:"manutencao", label:"🔧 Manutenção" },
-  { id:"lazer", label:"🎭 Lazer" },
-  { id:"contas", label:"📄 Contas Fixas" },
-  { id:"cartao", label:"💳 Fatura Cartão" },
-  { id:"dizimo", label:"❤️ Dízimo/Doação" },
-  { id:"online", label:"📦 Compras Online" },
-  { id:"diversos", label:"✨ Diversos" }
-];
+    let expenses = JSON.parse(localStorage.getItem('expenses')) || {};
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+    const today = formatDate();
 
-function fillCategorySelect(el){
-  el.innerHTML = "";
-  for (const c of CATEGORIES){
-    const o = document.createElement("option");
-    o.value = c.id;
-    o.textContent = c.label;
-    el.appendChild(o);
-  }
-}
-fillCategorySelect(document.getElementById("category"));
-fillCategorySelect(document.getElementById("editCategory"));
+    document.getElementById('date').value = today;
 
-function formatDateISO(date = new Date()) { return date.toISOString().split("T")[0]; }
-function formatBR(dateStr) { const [y,m,d] = dateStr.split("-"); return `${d}/${m}/${y}`; }
-function parseISO(dateStr){ const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10)); return new Date(y, m-1, d); }
-function formatCurrency(v){ return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v); }
-function safeNumber(n){ return (typeof n === "number" && isFinite(n)) ? n : 0; }
-
-function brlFromDigits(digits){
-  const clean = (digits || "").replace(/\D/g, "");
-  const cents = clean === "" ? 0 : parseInt(clean, 10);
-  const value = cents / 100;
-  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
-}
-function parseBRL(masked){
-  const clean = String(masked || "").replace(/\D/g, "");
-  if (!clean) return 0;
-  const cents = parseInt(clean, 10);
-  return cents / 100;
-}
-function applyMoneyMask(el){
-  const digits = el.value.replace(/\D/g, "");
-  el.value = brlFromDigits(digits);
-  try { el.setSelectionRange(el.value.length, el.value.length); } catch {}
-}
-
-function uuid(){ return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
-function escapeHTML(str){
-  return String(str)
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-
-/* =========================
-   Estado (local)
-   ========================= */
-let expenses = {};
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
-const todayISO = formatDateISO(new Date());
-let selectedDay = todayISO;
-
-const statusPill = document.getElementById("statusPill");
-const weekLine = document.getElementById("weekLine");
-const monthLine = document.getElementById("monthLine");
-const pdfHint = document.getElementById("pdfHint");
-
-/* =========================
-   Preferências
-   ========================= */
-const darkStored = localStorage.getItem("pref_dark");
-const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-const darkOn = (darkStored === null) ? prefersDark : (darkStored === "1");
-if (darkOn) document.body.classList.add("dark");
-document.getElementById("darkToggle").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("pref_dark", document.body.classList.contains("dark") ? "1" : "0");
-});
-
-/* =========================
-   Ajuda
-   ========================= */
-const helpBackdrop = document.getElementById("helpBackdrop");
-document.getElementById("helpBtn").addEventListener("click", () => helpBackdrop.style.display = "flex");
-function closeHelp(){ helpBackdrop.style.display = "none"; }
-window.closeHelp = closeHelp;
-helpBackdrop.addEventListener("click", (e) => { if (e.target === helpBackdrop) closeHelp(); });
-
-/* =========================
-   Inputs
-   ========================= */
-const dateInput = document.getElementById("date");
-const amountInput = document.getElementById("amount");
-const categoryInput = document.getElementById("category");
-const noteInput = document.getElementById("note");
-const saveStatus = document.getElementById("saveStatus");
-
-dateInput.value = todayISO;
-setDateBRHint(todayISO);
-function setDateBRHint(iso){ document.getElementById("dateBR").textContent = iso ? `Formato: ${formatBR(iso)}` : ""; }
-dateInput.addEventListener("change", () => setDateBRHint(dateInput.value));
-
-amountInput.value = "R$ 0,00";
-amountInput.addEventListener("input", () => applyMoneyMask(amountInput));
-amountInput.addEventListener("focus", () => {
-  if (!amountInput.value.trim()) amountInput.value = "R$ 0,00";
-  try { amountInput.setSelectionRange(amountInput.value.length, amountInput.value.length); } catch {}
-});
-
-amountInput.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); categoryInput.focus(); }});
-categoryInput.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); noteInput.focus(); }});
-noteInput.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); addExpense(); }});
-
-function setToday(){
-  const today = formatDateISO(new Date());
-  dateInput.value = today;
-  setDateBRHint(today);
-  selectedDay = today;
-  currentYear = new Date().getFullYear();
-  currentMonth = new Date().getMonth();
-  renderAll();
-  amountInput.focus();
-}
-window.setToday = setToday;
-
-/* =========================
-   Persistência (IndexedDB)
-   ========================= */
-async function loadAll(){
-  try{
-    const data = await idbGet("expenses");
-    expenses = data && typeof data === "object" ? data : {};
-    statusPill.textContent = "✅ Salvamento local ativo";
-    saveStatus.textContent = "Histórico carregado do armazenamento local deste aparelho.";
-  }catch(e){
-    statusPill.textContent = "⚠️ Falha no salvamento local";
-    saveStatus.textContent = "Seu navegador bloqueou o armazenamento local. Abra no Chrome/Safari normal (não anônimo).";
-    expenses = {};
-  }
-}
-async function saveAll(){
-  try{
-    await idbSet("expenses", expenses);
-    statusPill.textContent = "✅ Salvou localmente";
-    return true;
-  }catch(e){
-    statusPill.textContent = "⚠️ Não conseguiu salvar";
-    return false;
-  }
-}
-
-/* =========================
-   Totais por período
-   (semana = domingo a hoje)
-   ========================= */
-function startOfWeekSunday(date){
-  const d = new Date(date);
-  d.setHours(0,0,0,0);
-  const day = d.getDay(); // 0=dom
-  d.setDate(d.getDate() - day);
-  return d;
-}
-function startOfMonth(date){
-  const d = new Date(date.getFullYear(), date.getMonth(), 1);
-  d.setHours(0,0,0,0);
-  return d;
-}
-function endOfDay(date){
-  const d = new Date(date);
-  d.setHours(23,59,59,999);
-  return d;
-}
-function dayTotal(iso){
-  const list = expenses[iso] || [];
-  return list.reduce((s,e) => s + safeNumber(e.amount), 0);
-}
-function sumBetween(start, end){
-  let total = 0;
-  for (const iso in expenses){
-    const d = parseISO(iso);
-    if (d >= start && d <= end){
-      total += dayTotal(iso);
+    function save() {
+      localStorage.setItem('expenses', JSON.stringify(expenses));
+      render();
     }
-  }
-  return total;
-}
-function getDatesBetween(start, end){
-  const out = [];
-  const d = new Date(start);
-  d.setHours(0,0,0,0);
-  const last = new Date(end);
-  last.setHours(0,0,0,0);
-  while (d <= last){
-    out.push(formatDateISO(d));
-    d.setDate(d.getDate()+1);
-  }
-  return out;
-}
-function updatePeriodTotals(){
-  const now = new Date();
-  const weekStart = startOfWeekSunday(now);
-  const monthStart = startOfMonth(now);
-  const endToday = endOfDay(now);
 
-  const w = sumBetween(weekStart, endToday);
-  const m = sumBetween(monthStart, endToday);
+    function addExpense() {
+      const dateInput = document.getElementById('date').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const category = document.getElementById('category').value;
+      const note = (document.getElementById('note').value || '').trim();
 
-  weekLine.textContent  = `🗓️ Semana (${formatBR(formatDateISO(weekStart))} → ${formatBR(formatDateISO(now))}):  ${formatCurrency(w)}`;
-  monthLine.textContent = `📅 Mês (${String(now.getMonth()+1).padStart(2,"0")}/${now.getFullYear()}):  ${formatCurrency(m)}`;
+      if (!dateInput) {
+        alert('Selecione uma data.');
+        return;
+      }
+      if (isNaN(amount) || amount <= 0) {
+        alert('Digite um valor válido.');
+        return;
+      }
 
-  pdfHint.textContent = "O PDF sai com totais e detalhamento da semana e do mês.";
-}
+      if (!expenses[dateInput]) expenses[dateInput] = [];
+      expenses[dateInput].push({ amount, category, note });
+      save();
+      document.getElementById('amount').value = '';
+      document.getElementById('note').value = '';
+    }
 
-/* =========================
-   PDF
-   ========================= */
-function generatePDF(){
-  if (!window.jspdf || !window.jspdf.jsPDF){
-    alert("A biblioteca de PDF não carregou. Verifique sua internet e tente novamente.");
-    return;
-  }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
 
-  const now = new Date();
-  const weekStart = startOfWeekSunday(now);
-  const monthStart = startOfMonth(now);
-  const endToday = endOfDay(now);
+    function getTodayTotal() {
+      if (!expenses[today]) return 0;
+      return expenses[today].reduce((sum, e) => sum + e.amount, 0);
+    }
 
-  const weekTotal = sumBetween(weekStart, endToday);
-  const monthTotal = sumBetween(monthStart, endToday);
+    function getWeeklyAverage() {
+      const last7 = getDatesLast7Days();
+      let total = 0;
+      last7.forEach(date => {
+        if (expenses[date]) {
+          total += expenses[date].reduce((s, e) => s + e.amount, 0);
+        }
+      });
+      return total / 7;
+    }
 
-  const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
+    function checkMedal() {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yestStr = formatDate(yesterday);
 
-  let y = 14;
-  doc.setFontSize(16);
-  doc.text("Relatório de Despesas", 14, y);
-  y += 8;
+      const hasToday = !expenses[today] || expenses[today].length === 0;
+      const hasYesterday = !expenses[yestStr] || expenses[yestStr].length === 0;
 
-  doc.setFontSize(11);
-  doc.text(`Gerado em: ${formatBR(formatDateISO(now))}`, 14, y);
-  y += 7;
-
-  doc.setFontSize(12);
-  doc.text(`Semana: ${formatBR(formatDateISO(weekStart))} a ${formatBR(formatDateISO(now))}`, 14, y);
-  y += 6;
-  doc.text(`Total da semana: ${formatCurrency(weekTotal)}`, 14, y);
-  y += 8;
-
-  doc.text(`Mês: ${String(now.getMonth()+1).padStart(2,"0")}/${now.getFullYear()}`, 14, y);
-  y += 6;
-  doc.text(`Total do mês: ${formatCurrency(monthTotal)}`, 14, y);
-  y += 10;
-
-  // Detalhe da Semana
-  doc.setFontSize(13);
-  doc.text("Detalhamento da Semana", 14, y);
-  y += 7;
-
-  doc.setFontSize(10);
-  const weekDates = getDatesBetween(weekStart, now);
-  for (const iso of weekDates){
-    const items = expenses[iso] || [];
-    if (!items.length) continue;
-    const totalDay = dayTotal(iso);
-
-    if (y > 280){ doc.addPage(); y = 14; }
-    doc.setFontSize(11);
-    doc.text(`${formatBR(iso)} — Total: ${formatCurrency(totalDay)}`, 14, y);
-    y += 6;
-
-    doc.setFontSize(10);
-    for (const it of items){
-      const cat = catMap[it.category] || it.category;
-      let line = `• ${cat} — ${formatCurrency(safeNumber(it.amount))}`;
-      if (it.note) line += ` (${it.note})`;
-
-      const split = doc.splitTextToSize(line, 180);
-      for (const part of split){
-        if (y > 280){ doc.addPage(); y = 14; }
-        doc.text(part, 16, y);
-        y += 5;
+      if (hasToday && hasYesterday) {
+        document.getElementById('medal').innerHTML = '🏆 Parabéns! 2 dias sem gastos!';
+      } else {
+        document.getElementById('medal').innerHTML = '';
       }
     }
-    y += 3;
-  }
 
-  y += 4;
-  if (y > 280){ doc.addPage(); y = 14; }
+    function renderCalendar() {
+      const now = new Date(currentYear, currentMonth);
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDay = firstDay.getDay();
+      const daysInMonth = lastDay.getDate();
 
-  // Detalhe do Mês
-  doc.setFontSize(13);
-  doc.text("Detalhamento do Mês", 14, y);
-  y += 7;
+      let html = '';
+      const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      weekdays.forEach(d => html += `<div class="cal-day">${d}</div>`);
 
-  doc.setFontSize(10);
-  const monthDates = getDatesBetween(monthStart, now);
-  for (const iso of monthDates){
-    const items = expenses[iso] || [];
-    if (!items.length) continue;
-    const totalDay = dayTotal(iso);
-
-    if (y > 280){ doc.addPage(); y = 14; }
-    doc.setFontSize(11);
-    doc.text(`${formatBR(iso)} — Total: ${formatCurrency(totalDay)}`, 14, y);
-    y += 6;
-
-    doc.setFontSize(10);
-    for (const it of items){
-      const cat = catMap[it.category] || it.category;
-      let line = `• ${cat} — ${formatCurrency(safeNumber(it.amount))}`;
-      if (it.note) line += ` (${it.note})`;
-
-      const split = doc.splitTextToSize(line, 180);
-      for (const part of split){
-        if (y > 280){ doc.addPage(); y = 14; }
-        doc.text(part, 16, y);
-        y += 5;
+      for (let i = 0; i < startDay; i++) {
+        html += '<div class="cal-day"></div>';
       }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasData = expenses[dateStr] && expenses[dateStr].length > 0;
+        const isToday = dateStr === today;
+        let cls = 'cal-day';
+        if (hasData) cls += ' has-data';
+        if (isToday) cls += ' today';
+        html += `<div class="${cls}">${day}</div>`;
+      }
+
+      document.getElementById('calendar').innerHTML = html;
     }
-    y += 3;
-  }
 
-  doc.save("relatorio-despesas.pdf");
-}
-window.generatePDF = generatePDF;
+    function renderSummaryTable() {
+      const tbody = document.getElementById('summaryBody');
+      const datesWithExpenses = Object.keys(expenses)
+        .filter(date => expenses[date].length > 0)
+        .sort((a, b) => new Date(b) - new Date(a));
 
-/* =========================
-   CRUD
-   ========================= */
-async function addExpense(){
-  const iso = dateInput.value;
-  const amount = parseBRL(amountInput.value);
-  const category = categoryInput.value;
-  const note = (noteInput.value || "").trim();
+      if (datesWithExpenses.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#888;">Nenhum gasto registrado</td></tr>`;
+        return;
+      }
 
-  if (!iso) { alert("Selecione uma data."); return; }
-  if (!amount || amount <= 0) { alert("Digite um valor válido."); amountInput.focus(); return; }
+      let html = '';
+      datesWithExpenses.forEach(date => {
+        const total = expenses[date].reduce((s, e) => s + e.amount, 0);
+        html += `
+          <tr>
+            <td>${formatBR(date)}</td>
+            <td>${formatCurrency(total)}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
 
-  if (!expenses[iso]) expenses[iso] = [];
-  expenses[iso].push({ id: uuid(), amount, category, note });
+    function renderCategoryReport() {
+      const report = {};
+      for (const date in expenses) {
+        expenses[date].forEach(item => {
+          if (!report[item.category]) report[item.category] = 0;
+          report[item.category] += item.amount;
+        });
+      }
 
-  const ok = await saveAll();
-  if (!ok){
-    alert("Não consegui salvar localmente. Abra no Chrome/Safari normal (não anônimo) e tente novamente.");
-    return;
-  }
+      const tbody = document.getElementById('categoryReportBody');
+      if (Object.keys(report).length === 0) {
+        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#888;">Nenhum gasto registrado</td></tr>`;
+        return;
+      }
 
-  amountInput.value = "R$ 0,00";
-  noteInput.value = "";
+      const sorted = Object.entries(report).sort((a, b) => b[1] - a[1]);
 
-  selectedDay = iso;
-  const d = parseISO(iso);
-  currentYear = d.getFullYear();
-  currentMonth = d.getMonth();
+      let html = '';
+      sorted.forEach(([cat, total]) => {
+        html += `
+          <tr>
+            <td>${categoryNames[cat] || cat}</td>
+            <td>${formatCurrency(total)}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
 
-  saveStatus.textContent = `✅ Despesa gravada em ${formatBR(iso)}.`;
-  renderAll();
-  amountInput.focus();
-}
-window.addExpense = addExpense;
+    function renderMonthlySummary() {
+      const monthDates = getMonthDates(currentYear, currentMonth);
+      const daysInMonth = monthDates.length;
+      const expensesThisMonth = monthDates.filter(d => expenses[d] && expenses[d].length > 0);
+      const total = expensesThisMonth.reduce((sum, d) => {
+        return sum + expenses[d].reduce((s, e) => s + e.amount, 0);
+      }, 0);
+      const avg = daysInMonth > 0 ? total / daysInMonth : 0;
 
-async function deleteExpense(dayISO, itemId){
-  const list = expenses[dayISO] || [];
-  const idx = list.findIndex(x => x.id === itemId);
-  if (idx < 0) return;
-  if (!confirm("Excluir esta despesa?")) return;
-  list.splice(idx,1);
-  if (list.length === 0) delete expenses[dayISO];
+      document.getElementById('currentMonth').textContent = 
+        new Date(currentYear, currentMonth, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      document.getElementById('monthlyStats').textContent = 
+        `Total: ${formatCurrency(total)} | Dias: ${expensesThisMonth.length}/${daysInMonth} | Média: ${formatCurrency(avg)}`;
+    }
 
-  const ok = await saveAll();
-  if (!ok) return;
+    function changeMonth(delta) {
+      currentMonth += delta;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderAll();
+    }
 
-  renderAll();
-}
-window.deleteExpense = deleteExpense;
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-/* =========================
-   Editar
-   ========================= */
-const editBackdrop = document.getElementById("editBackdrop");
-const editInfo = document.getElementById("editInfo");
-const editAmount = document.getElementById("editAmount");
-const editCategory = document.getElementById("editCategory");
-const editNote = document.getElementById("editNote");
-let editing = { dayISO:null, id:null };
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.text("Relatório de Gastos", 20, 20);
 
-function openEdit(dayISO, itemId){
-  const item = (expenses[dayISO] || []).find(x => x.id === itemId);
-  if (!item) return;
-  editing = { dayISO, id: itemId };
-  editInfo.textContent = `Data: ${formatBR(dayISO)}`;
-  editAmount.value = String(item.amount ?? "");
-  editCategory.value = item.category ?? "diversos";
-  editNote.value = item.note ?? "";
-  editBackdrop.style.display = "flex";
-}
-window.openEdit = openEdit;
+      let y = 35;
 
-function closeEdit(){ editBackdrop.style.display = "none"; editing = { dayISO:null, id:null }; }
-window.closeEdit = closeEdit;
+      doc.setFontSize(14);
+      doc.text("Por Data:", 20, y);
+      y += 10;
 
-async function saveEdit(){
-  const { dayISO, id } = editing;
-  if (!dayISO || !id) return;
+      const sortedDates = Object.keys(expenses)
+        .filter(d => expenses[d].length > 0)
+        .sort((a, b) => new Date(a) - new Date(b));
 
-  const item = (expenses[dayISO] || []).find(x => x.id === id);
-  if (!item) return;
+      sortedDates.forEach(date => {
+        const total = expenses[date].reduce((s, e) => s + e.amount, 0);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        doc.text(`${formatBR(date)} – Total: ${formatCurrency(total)}`, 20, y);
+        y += 8;
+        expenses[date].forEach(e => {
+          let line = `- ${categoryNames[e.category] || e.category}: ${formatCurrency(e.amount)}`;
+          if (e.note) line += ` (${e.note})`;
+          if (y > 280) {
+            doc.addPage();
+            y = 20;
+          }
+          doc.text(line, 25, y);
+          y += 6;
+        });
+        y += 6;
+      });
 
-  const amount = parseFloat(editAmount.value);
-  if (isNaN(amount) || amount <= 0) { alert("Digite um valor válido."); return; }
+      doc.addPage();
+      y = 20;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text("Por Categoria:", 20, y);
+      y += 10;
 
-  item.amount = amount;
-  item.category = editCategory.value;
-  item.note = (editNote.value || "").trim();
+      const report = {};
+      for (const date in expenses) {
+        expenses[date].forEach(item => {
+          if (!report[item.category]) report[item.category] = 0;
+          report[item.category] += item.amount;
+        });
+      }
 
-  closeEdit();
-  const ok = await saveAll();
-  if (!ok) return;
-  renderAll();
-}
-window.saveEdit = saveEdit;
+      const sortedCat = Object.entries(report).sort((a, b) => b[1] - a[1]);
+      sortedCat.forEach(([cat, total]) => {
+        if (y > 280) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        doc.text(`${categoryNames[cat] || cat}: ${formatCurrency(total)}`, 20, y);
+        y += 8;
+      });
 
-editBackdrop.addEventListener("click", (e) => { if (e.target === editBackdrop) closeEdit(); });
+      doc.save('meu-controle-gastos.pdf');
+    }
 
-/* =========================
-   Calendário + detalhe
-   ========================= */
-function selectDay(iso){
-  selectedDay = iso;
-  const d = parseISO(iso);
-  currentYear = d.getFullYear();
-  currentMonth = d.getMonth();
-  renderAll();
-}
-window.selectDay = selectDay;
+    function renderAll() {
+      document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
+      document.getElementById('weeklyAverage').textContent = `Média semanal: ${formatCurrency(getWeeklyAverage())}`;
+      checkMedal();
+      renderCalendar();
+      renderSummaryTable();
+      renderCategoryReport();
+      renderMonthlySummary();
+    }
 
-function renderCalendar(){
-  const cal = document.getElementById("calendar");
-  const year = currentYear, month = currentMonth;
-
-  const first = new Date(year, month, 1);
-  const last = new Date(year, month+1, 0);
-  const startDay = first.getDay();
-  const daysInMonth = last.getDate();
-
-  let html = "";
-  const wd = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
-  for (const d of wd) html += `<div class="cal-day head">${d}</div>`;
-  for (let i=0;i<startDay;i++) html += `<div class="cal-day head"></div>`;
-
-  for (let day=1; day<=daysInMonth; day++){
-    const iso = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    const hasData = expenses[iso] && expenses[iso].length > 0;
-    const isToday = iso === todayISO;
-    const isSel = iso === selectedDay;
-
-    let cls = "cal-day";
-    if (hasData) cls += " has-data";
-    if (isToday) cls += " today";
-    if (isSel) cls += " selected";
-
-    html += `<div class="${cls}" onclick="selectDay('${iso}')">${day}</div>`;
-  }
-  cal.innerHTML = html;
-}
-
-function renderDayDetail(){
-  const title = document.getElementById("selectedDayTitle");
-  const sub = document.getElementById("selectedDaySubtitle");
-  const listEl = document.getElementById("dayDetailList");
-
-  title.textContent = `🧾 Detalhe do dia: ${formatBR(selectedDay)}`;
-  const items = expenses[selectedDay] || [];
-  const total = items.reduce((s,e)=> s + safeNumber(e.amount), 0);
-
-  sub.textContent = items.length
-    ? `Total do dia: ${formatCurrency(total)} • Itens: ${items.length}`
-    : "Sem despesas neste dia.";
-
-  if (!items.length){ listEl.innerHTML = ""; return; }
-
-  const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label]));
-  listEl.innerHTML = items.map(it => `
-    <div class="detail-item">
-      <div style="min-width:0;">
-        <div class="detail-main">${catMap[it.category] || it.category} • ${formatCurrency(safeNumber(it.amount))}</div>
-        ${it.note ? `<div class="detail-note">${escapeHTML(it.note)}</div>` : `<div class="detail-note">—</div>`}
-      </div>
-      <div class="detail-actions">
-        <button class="mini-btn btn-ghost" onclick="openEdit('${selectedDay}','${it.id}')">Editar</button>
-        <button class="mini-btn btn-danger" onclick="deleteExpense('${selectedDay}','${it.id}')">Excluir</button>
-      </div>
-    </div>
-  `).join("");
-}
-
-function renderBalance(){
-  const total = dayTotal(todayISO);
-  document.getElementById("balance").textContent = `Balanço de hoje (${formatBR(todayISO)}): ${formatCurrency(total)}`;
-}
-
-function renderAll(){
-  renderBalance();
-  updatePeriodTotals();
-  renderCalendar();
-  renderDayDetail();
-}
-
-/* =========================
-   Start
-   ========================= */
-(async function init(){
-  await loadAll();
-  renderAll();
-})();
-</script>
+    function render() {
+      renderAll();
+    }
+  </script>
 </body>
-</html>
+</html> 
