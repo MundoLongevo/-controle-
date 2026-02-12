@@ -1,867 +1,1205 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Meu Controle de Gastos</title>
-  
-  <!-- Comportamento como app -->
-  <meta name="theme-color" content="#4CAF50" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Controle" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
-  <!-- Ícone -->
-  <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
-  <link rel="icon" type="image/png" sizes="192x192" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
-
-  <style>
-    :root {
-      --primary: #4CAF50;
-      --light: #E8F5E9;
-      --dark: #2E7D32;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-    body {
-      background-color: var(--light);
-      color: #333;
-      padding: 16px;
-      max-width: 600px;
-      margin: 0 auto;
-      touch-action: manipulation;
-    }
-
-    /* Modal de boas-vindas */
-    #welcomeModal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: white;
-      padding: 24px;
-      z-index: 2000;
-      overflow-y: auto;
-    }
-    #welcomeModal h2 {
-      color: var(--dark);
-      margin-bottom: 16px;
-      text-align: center;
-      font-size: 1.4rem;
-    }
-    #welcomeModal p {
-      margin: 12px 0;
-      line-height: 1.6;
-      font-size: 1rem;
-    }
-    #welcomeModal button {
-      display: block;
-      margin: 24px auto 0;
-      padding: 14px 32px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      min-height: 48px;
-    }
-    #welcomeModal button:hover {
-      background: var(--dark);
-    }
-
-    /* Tela de bloqueio */
-    #lockScreen {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-    #lockScreen h2 {
-      margin-bottom: 20px;
-      color: var(--dark);
-      font-size: 1.4rem;
-    }
-    #pinInput {
-      width: 180px;
-      padding: 14px;
-      font-size: 1.6rem;
-      text-align: center;
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      margin-bottom: 16px;
-      font-family: inherit;
-    }
-    #lockScreen button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin: 8px;
-      min-height: 48px;
-      font-size: 1.1rem;
-    }
-    #lockScreen button:hover {
-      background: var(--dark);
-    }
-    #mainApp { display: none; }
-
-    /* Mensagem motivacional */
-    .motivational-message {
-      background: #f1f8e9;
-      padding: 14px;
-      border-radius: 12px;
-      margin: 16px 0;
-      text-align: center;
-      font-style: italic;
-      color: var(--dark);
-      font-size: 1.05rem;
-      line-height: 1.4;
-    }
-
-    /* Estilos do app */
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-      padding: 14px 0;
-      color: white;
-      background: var(--primary);
-      border-radius: 16px;
-    }
-    h1 { font-size: 1.5rem; }
-    .balance,
-    .weekly-average {
-      background: white;
-      padding: 14px;
-      border-radius: 16px;
-      margin: 16px 0;
-      text-align: center;
-      font-weight: bold;
-      color: var(--dark);
-      font-size: 1.1rem;
-    }
-    .weekly-average {
-      background: #e3f2fd;
-      color: #1976d2;
-    }
-    .form-group { margin: 14px 0; }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      font-size: 1rem;
-      min-height: 48px;
-    }
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-    button.app-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      width: 100%;
-      font-size: 1.1rem;
-      margin-top: 12px;
-      cursor: pointer;
-      min-height: 48px;
-    }
-    button.app-btn:hover {
-      background: var(--dark);
-    }
-    .medal {
-      text-align: center;
-      font-size: 1.2rem;
-      margin: 16px 0;
-      color: gold;
-    }
-    .calendar {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin: 16px 0;
-    }
-    .cal-day {
-      text-align: center;
-      padding: 8px 4px;
-      font-size: 0.9rem;
-      background: #e0e0e0;
-      border-radius: 8px;
-      min-height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .cal-day.has-data {
-      background: var(--primary);
-      color: white;
-    }
-    .cal-day.today {
-      border: 2px solid var(--dark);
-    }
-
-    .summary-table, .report-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .summary-table th,
-    .summary-table td,
-    .report-table th,
-    .report-table td {
-      padding: 14px 10px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-      font-size: 1rem;
-    }
-    .summary-table th,
-    .report-table th {
-      background: var(--primary);
-      color: white;
-      font-weight: bold;
-    }
-    .summary-table tr:last-child td,
-    .report-table tr:last-child td {
-      border-bottom: none;
-    }
-    .summary-table tr:hover td,
-    .report-table tr:hover td {
-      background-color: #f9f9f9;
-    }
-
-    .monthly-summary {
-      background: white;
-      padding: 16px;
-      border-radius: 16px;
-      margin: 24px 0;
-      text-align: center;
-    }
-    .month-nav {
-      display: flex;
-      justify-content: space-between;
-      max-width: 220px;
-      margin: 12px auto;
-    }
-    .month-nav button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 12px;
-      font-size: 1.2rem;
-      min-width: 44px;
-      min-height: 44px;
-    }
-
-    footer {
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid #ccc;
-      text-align: center;
-      font-size: 0.85rem;
-      color: #666;
-      line-height: 1.5;
-    }
-    footer a {
-      color: var(--primary);
-      text-decoration: none;
-      display: inline-block;
-      margin: 4px 0;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 360px) {
-      body { padding: 12px; }
-      .cal-day { font-size: 0.8rem; padding: 6px 2px; }
-      .summary-table th, .summary-table td, .report-table th, .report-table td {
-        padding: 12px 6px;
-        font-size: 0.95rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Meus Gastos</title>
+    
+    <!-- PWA / Ícone bonito na tela inicial -->
+    <meta name="theme-color" content="#10B981">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Meus Gastos">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAIGSURBVHic7Zq9ThtBFMf/51mQEAghQQoUsYDkJq6oQnogJSpKXkDR8QaUNHkCHgNRRElDRQWE+EhBEKEggc1nIWR2d2Z2ZmfGtvd+lZXi3P2d/53Z2dm5ERiGYRiGYRiGYRjGnBAU4OkeuK+ArqLUi7J/r4C9t3j/ywDwE7hdAY9V6fX3B3A7Tq/XHcB6Gb0uAO7WAe83ed7dAXzZAA3eFuB2DXhY4XneA7i7COosYJoKflwDrjL87hI+z/+A73r/x3fgvK6gdP2o+V+BQpO+B9AuKEiA9hwNoE1QkAC1mTRUBSYFBSBJyO27tEDhT0CjCZAG1OdHwN8i1Vc9AAYbZx3Fz0u7Afht+8/RSW8v1fPkY2h8Pw98twt86wyh/AV1h6rA2g+AAq0CAn6fAW5XgN6C2j61L01T0a0ggB4z8PELqLuZwrp/I1nf8m12VQd0BdAOQHdIs0xt3zYHqD2A7gN9L2M7SRnQEaDdAvrOq+xLgQNtI6A7BHQvI5m5tQwoCeg+AR2/wj4WuLc9AxoB7VXAd1+pHwuU2zOgCdBqR2grlI+k2BZAUwE0Y/tlYg2ALQJaB2gUoGtT5N1gkwBNAig9z1MuzUibP9EoQKObO63IQKMAjRKUoA8kRKNARgF6Ow1H+zSgBQDNE9T0Azh7L3b7c0ILoFkFNH4C/YO/Z/wPYCysYRiGYRiGYRiGMQ/8A1c2HynRQI5LAAAAAElFTkSuQmCC">
+    
+    <style>
+        /* CORES LIMPAS E CALMAS */
+        :root {
+            --verde: #10B981;
+            --verde-claro: #D1FAE5;
+            --vermelho: #EF4444;
+            --vermelho-claro: #FEE2E2;
+            --azul: #3B82F6;
+            --azul-claro: #DBEAFE;
+            --roxo: #8B5CF6;
+            --roxo-claro: #EDE9FE;
+            --amarelo: #F59E0B;
+            --amarelo-claro: #FEF3C7;
+            --cinza-claro: #F9FAFB;
+            --cinza-medio: #E5E7EB;
+            --cinza-escuro: #374151;
+            --branco: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--cinza-escuro);
+            line-height: 1.5;
+            padding-bottom: 90px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        
+        /* CABEÇALHO */
+        .cabecalho {
+            background: var(--branco);
+            padding: 20px 0 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--cinza-medio);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .cabecalho h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cinza-escuro);
+            text-align: center;
+        }
+        
+        .data-atual {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+        
+        /* META DO DIA - DESTAQUE */
+        .meta-dia {
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-left: 4px solid var(--verde);
+        }
+        
+        .meta-titulo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .meta-titulo h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--cinza-escuro);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .meta-valor {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 8px 0;
+        }
+        
+        .meta-zero {
+            color: var(--verde);
+        }
+        
+        .meta-gasto {
+            color: var(--vermelho);
+        }
+        
+        .meta-msg {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6B7280;
+        }
+        
+        /* MEDALHAS */
+        .medalhas {
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        
+        .medalha-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .medalha-icone {
+            width: 44px;
+            height: 44px;
+            background: var(--verde-claro);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            color: var(--verde);
+            font-size: 1.4rem;
+        }
+        
+        .medalha-icone.bloqueada {
+            background: var(--cinza-medio);
+            color: #9CA3AF;
+        }
+        
+        .medalha-texto {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        
+        /* LISTA DE GASTOS DO DIA */
+        .gastos-hoje {
+            background: var(--branco);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        
+        .gastos-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--cinza-medio);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .gastos-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .gasto-count {
+            background: var(--cinza-claro);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .lista-gastos {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        
+        .gasto-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--cinza-medio);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        
+        .gasto-item:active {
+            background: var(--cinza-claro);
+        }
+        
+        .gasto-info {
+            flex: 1;
+        }
+        
+        .gasto-categoria {
+            font-size: 0.75rem;
+            color: #6B7280;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        
+        .gasto-descricao {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .gasto-pagamento {
+            font-size: 0.7rem;
+            color: #9CA3AF;
+        }
+        
+        .gasto-valor {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--vermelho);
+        }
+        
+        .gasto-zero {
+            color: var(--verde);
+        }
+        
+        .gasto-vazio {
+            padding: 40px 20px;
+            text-align: center;
+            color: #9CA3AF;
+        }
+        
+        .gasto-vazio i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            color: var(--cinza-medio);
+        }
+        
+        /* BOTÃO ADICIONAR */
+        .btn-adicionar {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--verde);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            transition: transform 0.2s;
+        }
+        
+        .btn-adicionar:active {
+            transform: scale(0.95);
+        }
+        
+        /* MODAL (USADO PARA ADICIONAR E EDITAR) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-conteudo {
+            background: var(--branco);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--cinza-medio);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .btn-fechar {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+        
+        .form-group {
+            padding: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--cinza-escuro);
+            font-size: 0.9rem;
+        }
+        
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--cinza-medio);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--branco);
+            transition: border 0.2s;
+        }
+        
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--verde);
+        }
+        
+        .btn-salvar {
+            background: var(--verde);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        
+        .btn-deletar {
+            background: var(--vermelho-claro);
+            color: var(--vermelho);
+            border: 1px solid var(--vermelho);
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+        
+        /* BOTÕES DE DATA NO HISTÓRICO */
+        .navegador-data {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--branco);
+            border-radius: 20px;
+            padding: 12px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .btn-data {
+            background: var(--cinza-claro);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            color: var(--cinza-escuro);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .data-selecionada {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .resumo-dia {
+            background: var(--cinza-claro);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        /* CARTÕES - TELA SIMPLES */
+        .cartoes-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .cartao-card {
+            background: linear-gradient(145deg, #2c3e50, #1e2a36);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        
+        .cartao-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .cartao-nome {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cartao-input {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: white;
+            font-size: 0.95rem;
+            width: 100%;
+            margin-top: 6px;
+        }
+        
+        .cartao-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .cartao-total {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn-salvar-cartoes {
+            background: var(--azul);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        /* MENU INFERIOR */
+        .menu-inferior {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--branco);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.04);
+            z-index: 30;
+            border-top: 1px solid var(--cinza-medio);
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9CA3AF;
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s;
+            padding: 6px 0;
+            flex: 1;
+            border-radius: 12px;
+        }
+        
+        .menu-item i {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .menu-item.ativo {
+            color: var(--verde);
+            font-weight: 600;
+        }
+        
+        /* PÁGINAS */
+        .pagina {
+            display: none;
+        }
+        
+        .pagina.ativa {
+            display: block;
+        }
+        
+        /* NOTIFICAÇÃO */
+        .notificacao {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--verde);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 30px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            z-index: 2000;
+            animation: slideInRight 0.3s;
+            display: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* UTILITÁRIOS */
+        .mt-3 { margin-top: 16px; }
+        .text-center { text-align: center; }
+        .text-small { font-size: 0.8rem; color: #6B7280; }
+    </style>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Modal de boas-vindas -->
-  <div id="welcomeModal" style="display:none;">
-    <h2>🌿 Bem-vindo(a) ao seu Controle de Gastos!</h2>
+    <!-- NOTIFICAÇÃO FLUTUANTE -->
+    <div id="notificacao" class="notificacao">✅ Gasto salvo</div>
     
-    <p>Este aplicativo foi criado por <strong>Ricardo de Faria Barros</strong> no contexto do <strong>Projeto 70+ da ANABB</strong>, com o propósito de apoiar a autonomia financeira e o bem-estar na longevidade.</p>
-
-    <p>Sabemos que, na longevidade, pequenos gastos eventuais — como delivery, compras online por impulso ou assinaturas esquecidas — podem, aos poucos, "sangrar" suas economias. Não se trata de viver com miséria, mas de fazer escolhas conscientes: trocar um iFood por uma refeição caseira, por exemplo, pode representar uma economia significativa ao longo do mês.</p>
-
-    <p>Monitorar essas saídas não é controle rígido — é <strong>cuidado com o seu futuro</strong>.</p>
-
-    <p>🔒 <strong>Seus dados ficam apenas no seu celular</strong> — nada é enviado para a nuvem ou para servidores externos.</p>
-
-    <p>📱 Para usar como um app nativo, <strong>salve esta página no atalho da sua tela inicial</strong>:<br>
-    • No <strong>Android</strong>: abra no Chrome e toque nos <strong>três pontinhos</strong> → “Adicionar à tela inicial”<br>
-    • No <strong>iPhone</strong>: toque no botão de compartilhar → “Adicionar à Tela de Início”</p>
-
-    <button onclick="closeWelcome()">Começar</button>
-  </div>
-
-  <!-- Tela de bloqueio -->
-  <div id="lockScreen">
-    <h2>🔒 Proteção por PIN</h2>
-    <input type="password" id="pinInput" maxlength="4" placeholder="____" autocomplete="off">
-    <button onclick="unlockApp()">Acessar</button>
-    <button onclick="resetPin()" style="background:#f44336;">Esqueci o PIN</button>
-    <p id="pinMessage" style="margin-top:12px;color:#666;"></p>
-  </div>
-
-  <!-- App principal -->
-  <div id="mainApp">
-    <header>
-      <h1>💰 Meu Controle Diário</h1>
-    </header>
-
-    <div class="motivational-message" id="motivationalMessage">
-      <!-- Mensagem do dia será inserida aqui -->
+    <!-- MODAL PARA ADICIONAR/EDITAR GASTO -->
+    <div id="modalGasto" class="modal">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h2 id="modalTitulo"><i class="fas fa-plus-circle" style="color: var(--verde);"></i> Adicionar Gasto</h2>
+                <button class="btn-fechar" onclick="fecharModal()">×</button>
+            </div>
+            <div class="form-group">
+                <input type="hidden" id="gastoId" value="">
+                <div class="input-group">
+                    <label><i class="fas fa-tag"></i> Categoria</label>
+                    <select id="categoria">
+                        <option value="ifood">🍔 iFood / Delivery</option>
+                        <option value="uber">🚗 Uber / Transporte</option>
+                        <option value="padaria">🥖 Padaria / Pão</option>
+                        <option value="bar">🍺 Bar / Happy Hour</option>
+                        <option value="comprasonline">📦 Compras online</option>
+                        <option value="farmacia">💊 Farmácia</option>
+                        <option value="gasolina">⛽ Gasolina</option>
+                        <option value="dizimo">⛪ Dízimo</option>
+                        <option value="supermercado">🛒 Supermercado</option>
+                        <option value="lazer">🎬 Lazer</option>
+                        <option value="outros">📦 Outros</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label><i class="fas fa-calendar"></i> Data</label>
+                        <input type="date" id="dataGasto">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Valor (R$)</label>
+                        <input type="number" id="valor" step="0.01" min="0" placeholder="0,00">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-align-left"></i> Descrição</label>
+                    <input type="text" id="descricao" placeholder="Ex: pão francês, almoço...">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-credit-card"></i> Pagamento</label>
+                    <select id="pagamento">
+                        <option value="nubank">💜 Nubank</option>
+                        <option value="cef">🏦 Caixa</option>
+                        <option value="porto">🛡️ Porto Seguro</option>
+                        <option value="mercado">🛒 Mercado Pago</option>
+                        <option value="debito">💳 Débito BB</option>
+                        <option value="pix">⚡ Pix</option>
+                        <option value="dinheiro">💵 Dinheiro</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-pen"></i> Observação (opcional)</label>
+                    <textarea id="obs" rows="2" placeholder="Algo a mais?"></textarea>
+                </div>
+                
+                <button class="btn-salvar" id="btnSalvarGasto" onclick="salvarGasto()">
+                    <i class="fas fa-check-circle"></i> Salvar
+                </button>
+                
+                <!-- Botão de deletar (aparece apenas na edição) -->
+                <button class="btn-deletar" id="btnDeletarGasto" onclick="deletarGasto()" style="display: none;">
+                    <i class="fas fa-trash-alt"></i> Excluir gasto
+                </button>
+            </div>
+        </div>
     </div>
-
-    <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
-
-    <div class="weekly-average" id="weeklyAverage">Média semanal: R$ 0,00</div>
-
-    <div class="form-group">
-      <label for="date">Data do gasto</label>
-      <input type="date" id="date">
+    
+    <!-- PÁGINA PRINCIPAL - GASTOS DE HOJE -->
+    <div id="paginaHome" class="pagina ativa">
+        <div class="container">
+            <div class="cabecalho">
+                <h1><i class="fas fa-wallet" style="color: var(--verde);"></i> Meus Gastos</h1>
+                <div class="data-atual" id="dataAtualDisplay"></div>
+            </div>
+            
+            <!-- META DIÁRIA -->
+            <div class="meta-dia" id="metaDia">
+                <div class="meta-titulo">
+                    <h2><i class="fas fa-bullseye"></i> Meta de hoje</h2>
+                    <span id="medalhaDia"></span>
+                </div>
+                <div class="meta-valor" id="metaValor">R$ 0,00</div>
+                <div class="meta-msg" id="metaMsg">🎯 Gastei ZERO hoje!</div>
+            </div>
+            
+            <!-- MEDALHAS -->
+            <div class="medalhas">
+                <div class="medalha-item">
+                    <div class="medalha-icone" id="medalha7">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <span class="medalha-texto">7 dias</span>
+                </div>
+                <div class="medalha-item">
+                    <div class="medalha-icone" id="medalhaZero">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <span class="medalha-texto">Zero hoje</span>
+                </div>
+                <div class="medalha-item">
+                    <div class="medalha-icone" id="medalhaMes">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <span class="medalha-texto">Mês zerado</span>
+                </div>
+            </div>
+            
+            <!-- GASTOS DE HOJE -->
+            <div class="gastos-hoje">
+                <div class="gastos-header">
+                    <h2><i class="fas fa-sun"></i> Gastos de hoje</h2>
+                    <span class="gasto-count" id="contadorHoje">0</span>
+                </div>
+                <div id="listaGastosHoje" class="lista-gastos">
+                    <!-- preenchido via js -->
+                </div>
+            </div>
+            
+            <!-- RESUMO DO DIA (ANTES DE DORMIR) -->
+            <div class="resumo-dia">
+                <p><i class="fas fa-moon"></i> <strong>Resumo do dia</strong></p>
+                <p id="resumoTexto">Nenhum gasto registrado.</p>
+                <p style="font-size: 1.2rem; font-weight: bold; margin-top: 8px;" id="resumoValor">R$ 0,00</p>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-      <label for="category">Categoria</label>
-      <select id="category">
-        <option value="alimentacao">🛒 Alimentação</option>
-        <option value="feira">🧺 Feira</option>
-        <option value="padaria">🥐 Padaria</option>
-        <option value="bares">🍷 Bares/Restaurantes</option>
-        <option value="farmacia">💊 Farmácia</option>
-        <option value="gasolina">⛽ Gasolina</option>
-        <option value="uber">🚕 Uber/Transporte</option>
-        <option value="agua">💧 Água</option>
-        <option value="energia">⚡ Energia</option>
-        <option value="telefone">📱 Telefone/Internet</option>
-        <option value="condominio">🏢 Condomínio</option>
-        <option value="diarista">🧹 Diarista</option>
-        <option value="impostos">🏛️ Impostos</option>
-        <option value="prestacoes">🏠 Prestações (casa/carro)</option>
-        <option value="manutencao">🔧 Manutenção (casa/carro)</option>
-        <option value="lazer">🎭 Lazer</option>
-        <option value="contas">📄 Contas Fixas</option>
-        <option value="aluguel">🏠 Aluguel</option>
-        <option value="cartao">💳 Fatura Cartão</option>
-        <option value="dizimo">❤️ Dízimo/Doação</option>
-        <option value="online">📦 Compras Online</option>
-        <option value="mensalidade">🏋️‍♂️ Mensalidade (academia/clube)</option>
-        <option value="educacao">🎓 Educação</option>
-        <option value="ajuda_familia">👨‍👩‍👧‍👦 Ajuda a filhos/netos</option>
-        <option value="diversos">✨ Diversos</option>
-      </select>
+    
+    <!-- PÁGINA DE HISTÓRICO -->
+    <div id="paginaHistorico" class="pagina">
+        <div class="container">
+            <div class="cabecalho">
+                <h1><i class="fas fa-history" style="color: var(--azul);"></i> Histórico</h1>
+            </div>
+            
+            <!-- Navegador de datas -->
+            <div class="navegador-data">
+                <button class="btn-data" onclick="navegarDia(-1)"><i class="fas fa-chevron-left"></i></button>
+                <div>
+                    <div class="data-selecionada" id="dataHistoricoLabel"></div>
+                    <div style="font-size: 0.8rem; color: #6B7280;" id="totalDiaHistorico">R$ 0,00</div>
+                </div>
+                <button class="btn-data" onclick="navegarDia(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <!-- Lista de gastos do dia selecionado -->
+            <div class="gastos-hoje">
+                <div class="gastos-header">
+                    <h2><i class="fas fa-list"></i> Gastos do dia</h2>
+                    <span class="gasto-count" id="contadorHistorico">0</span>
+                </div>
+                <div id="listaGastosHistorico" class="lista-gastos">
+                    <!-- preenchido via js -->
+                </div>
+            </div>
+            
+            <!-- Medalha se zerou naquele dia -->
+            <div id="medalhaHistorico" style="text-align: center; padding: 12px; background: var(--amarelo-claro); border-radius: 16px; margin-top: 16px; display: none;">
+                <i class="fas fa-medal" style="color: var(--amarelo); font-size: 1.5rem;"></i>
+                <span style="font-weight: 600; color: var(--amarelo);">Você zerou esse dia! 🎖️</span>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-      <label for="amount">Valor (R$)</label>
-      <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
+    
+    <!-- PÁGINA DE CARTÕES -->
+    <div id="paginaCartoes" class="pagina">
+        <div class="container">
+            <div class="cabecalho">
+                <h1><i class="fas fa-credit-card" style="color: var(--roxo);"></i> Cartões</h1>
+                <p class="text-small text-center">Parcelas mensais e saldo devedor</p>
+            </div>
+            
+            <div class="cartoes-lista" id="cartoesContainer">
+                <!-- gerado via js -->
+            </div>
+            
+            <button class="btn-salvar-cartoes" onclick="salvarCartoes()">
+                <i class="fas fa-save"></i> Salvar cartões
+            </button>
+            
+            <div style="background: var(--roxo-claro); padding: 20px; border-radius: 20px; margin-top: 24px; text-align: center;">
+                <span style="font-weight: 600;">Total de parcelas mensais:</span>
+                <span style="font-size: 1.8rem; font-weight: 700; color: var(--roxo); display: block;" id="totalParcelas">R$ 0,00</span>
+                <span style="font-weight: 600; margin-top: 8px; display: block;">Saldo devedor total:</span>
+                <span style="font-size: 1.6rem; font-weight: 700; color: var(--roxo);" id="totalSaldo">R$ 0,00</span>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-      <label for="note">Observação (opcional)</label>
-      <textarea id="note" placeholder="Ex: Academia Corpo em Forma – saúde em primeiro lugar!"></textarea>
+    
+    <!-- MENU INFERIOR -->
+    <div class="menu-inferior">
+        <a href="#" class="menu-item ativo" onclick="mudarPagina('home'); return false;">
+            <i class="fas fa-home"></i>
+            <span>Hoje</span>
+        </a>
+        <a href="#" class="menu-item" onclick="mudarPagina('historico'); return false;">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Histórico</span>
+        </a>
+        <a href="#" class="menu-item" onclick="mudarPagina('cartoes'); return false;">
+            <i class="fas fa-credit-card"></i>
+            <span>Cartões</span>
+        </a>
     </div>
-
-    <button class="app-btn" onclick="addExpense()">➕ Registrar Gasto</button>
-
-    <div class="medal" id="medal"></div>
-
-    <div class="monthly-summary">
-      <div class="month-nav">
-        <button onclick="changeMonth(-1)">◀</button>
-        <span id="currentMonth">Fevereiro 2026</span>
-        <button onclick="changeMonth(1)">▶</button>
-      </div>
-      <div id="monthlyStats">Total: R$ 0,00 | Dias: 0/29 | Média: R$ 0,00</div>
-    </div>
-
-    <div class="calendar" id="calendar"></div>
-
-    <h3 style="margin-top: 24px; font-size: 1.2rem;">📅 Resumo Diário</h3>
-    <table class="summary-table" id="summaryTable">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody id="summaryBody">
-      </tbody>
-    </table>
-
-    <h3 style="margin-top: 24px; font-size: 1.2rem;">📊 Total por Categoria</h3>
-    <table class="report-table" id="categoryReport">
-      <thead>
-        <tr>
-          <th>Categoria</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody id="categoryReportBody">
-      </tbody>
-    </table>
-
-    <button class="app-btn" style="background:#2196F3;margin-top:20px;" onclick="generatePDF()">📄 Gerar Relatório PDF</button>
-
-    <button class="app-btn" style="background:#E8F5E9;color:#2E7D32;border:1px solid #4CAF50;margin-top:16px;font-weight:bold;"
-            onclick="window.open('https://www.plenalongevidade.com.br', '_blank')">
-      🌿 Conheça a Plena Longevidade
+    
+    <!-- BOTÃO FLUTUANTE (só aparece na home) -->
+    <button id="btnAddGasto" class="btn-adicionar" onclick="abrirModalNovo()">
+        <i class="fas fa-plus"></i>
     </button>
-
-    <footer>
-      © 2026 Ricardo de Faria Barros. Todos os direitos reservados.<br>
-      Inspire-se na longelescência: <a href="https://www.plenalongevidade.com.br" target="_blank">www.plenalongevidade.com.br</a><br>
-      <strong>Dúvidas ou sugestões?</strong> Escreva para: <a href="mailto:ricardo@animodh.com.br">ricardo@animodh.com.br</a>
-    </footer>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    // --- Mensagens motivacionais (domingo = 0, sábado = 6)
-    const motivationalMessages = [
-      "Hoje é dia de recarregar a alma. Cuide de você como quem cuida de um jardim: com paciência, amor e tempo.",
-      "Nova semana, nova chance de escolher com consciência. Cada real gasto é um voto no tipo de vida que você quer viver.",
-      "Você não precisa de mais dinheiro — precisa de mais clareza. E clareza nasce da atenção plena aos pequenos gestos diários.",
-      "No meio da semana, lembre-se: autonomia financeira é liberdade emocional. Cada escolha consciente fortalece sua longevidade plena.",
-      "Sua maturidade é seu maior ativo. Use-a para transformar impulsos em intenções — e gastos em significado.",
-      "Celebre o que construiu até aqui. E siga com sabedoria: gastar com propósito é viver com legado.",
-      "Relaxe, mas não se descuide. A longevidade plena se alimenta de equilíbrio — entre prazer, cuidado e consciência."
-    ];
-
-    function showMotivationalMessage() {
-      const todayIndex = new Date().getDay(); // 0 = domingo
-      document.getElementById('motivationalMessage').textContent = motivationalMessages[todayIndex];
-    }
-
-    // --- Verifica primeira vez ---
-    if (!localStorage.getItem('appVisited')) {
-      document.getElementById('welcomeModal').style.display = 'block';
-      document.getElementById('lockScreen').style.display = 'none';
-      document.getElementById('mainApp').style.display = 'none';
-    }
-
-    function closeWelcome() {
-      localStorage.setItem('appVisited', 'true');
-      document.getElementById('welcomeModal').style.display = 'none';
-      document.getElementById('lockScreen').style.display = 'flex';
-    }
-
-    // --- Funções de segurança ---
-    function hashPin(pin) {
-      let hash = 0;
-      for (let i = 0; i < pin.length; i++) {
-        const char = pin.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
-      }
-      return hash.toString();
-    }
-
-    function setPin(pin) {
-      localStorage.setItem('appPinHash', hashPin(pin));
-    }
-
-    function verifyPin(pin) {
-      const savedHash = localStorage.getItem('appPinHash');
-      return savedHash && savedHash === hashPin(pin);
-    }
-
-    function hasPin() {
-      return localStorage.getItem('appPinHash') !== null;
-    }
-
-    function unlockApp() {
-      const pin = document.getElementById('pinInput').value;
-      const msg = document.getElementById('pinMessage');
-
-      if (pin.length !== 4 || isNaN(pin)) {
-        msg.textContent = "O PIN deve ter 4 dígitos.";
-        msg.style.color = "#f44336";
-        return;
-      }
-
-      if (!hasPin()) {
-        setPin(pin);
-        msg.textContent = "PIN definido com sucesso!";
-        msg.style.color = "#4CAF50";
-        setTimeout(() => {
-          document.getElementById('lockScreen').style.display = 'none';
-          document.getElementById('mainApp').style.display = 'block';
-          showMotivationalMessage();
-          render();
-        }, 1000);
-      } else {
-        if (verifyPin(pin)) {
-          document.getElementById('lockScreen').style.display = 'none';
-          document.getElementById('mainApp').style.display = 'block';
-          showMotivationalMessage();
-          render();
-        } else {
-          msg.textContent = "PIN incorreto. Tente novamente.";
-          msg.style.color = "#f44336";
-          document.getElementById('pinInput').value = '';
+    
+    <script>
+        // ---------- DADOS ----------
+        const dados = {
+            gastos: [],           // todos os gastos, cada um com id, data, categoria, descricao, valor, pagamento, obs
+            cartoes: {
+                nubank: { parcela: 1250, saldo: 8500 },
+                cef: { parcela: 900, saldo: 6500 },
+                porto: { parcela: 600, saldo: 3200 },
+                mercado: { parcela: 400, saldo: 1800 }
+            },
+            medalhas: {
+                diasZero: 0,          // dias zerados no mês atual
+                sequenciaDias: 0      // dias seguidos registrando
+            },
+            ultimoAcesso: null
+        };
+        
+        // ---------- FUNÇÕES DE PERSISTÊNCIA ----------
+        function carregarDados() {
+            const storage = localStorage.getItem('meusGastosApp');
+            if (storage) {
+                const obj = JSON.parse(storage);
+                dados.gastos = obj.gastos || [];
+                dados.cartoes = obj.cartoes || dados.cartoes;
+                dados.medalhas = obj.medalhas || dados.medalhas;
+                dados.ultimoAcesso = obj.ultimoAcesso;
+            }
+            // Garantir que todos os gastos tenham ID
+            dados.gastos.forEach((g, idx) => { if (!g.id) g.id = Date.now() + idx; });
         }
-      }
-    }
-
-    function resetPin() {
-      if (confirm("Isso apagará todos os seus dados de gastos. Deseja continuar?")) {
-        localStorage.removeItem('appPinHash');
-        localStorage.removeItem('expenses');
-        document.getElementById('pinInput').value = '';
-        document.getElementById('pinMessage').textContent = "Dados apagados. Defina um novo PIN.";
-        document.getElementById('pinMessage').style.color = "#4CAF50";
-      }
-    }
-
-    // --- Resto do app ---
-    function formatDate(date = new Date()) {
-      return date.toISOString().split('T')[0];
-    }
-
-    function formatBR(dateStr) {
-      const [y, m, d] = dateStr.split('-');
-      return `${d}/${m}/${y}`;
-    }
-
-    function getDatesLast7Days() {
-      const dates = [];
-      for (let i = 0; i < 7; i++) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        dates.push(formatDate(d));
-      }
-      return dates;
-    }
-
-    function getMonthDates(year, month) {
-      const start = new Date(year, month, 1);
-      const end = new Date(year, month + 1, 0);
-      const days = [];
-      for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
-        days.push(formatDate(new Date(d)));
-      }
-      return days;
-    }
-
-    const categoryNames = {
-      "alimentacao": "Alimentação",
-      "feira": "Feira",
-      "padaria": "Padaria",
-      "bares": "Bares/Restaurantes",
-      "farmacia": "Farmácia",
-      "gasolina": "Gasolina",
-      "uber": "Uber/Transporte",
-      "agua": "Água",
-      "energia": "Energia",
-      "telefone": "Telefone/Internet",
-      "condominio": "Condomínio",
-      "diarista": "Diarista",
-      "impostos": "Impostos",
-      "prestacoes": "Prestações",
-      "manutencao": "Manutenção",
-      "lazer": "Lazer",
-      "contas": "Contas Fixas",
-      "aluguel": "Aluguel",
-      "cartao": "Fatura Cartão",
-      "dizimo": "Dízimo/Doação",
-      "online": "Compras Online",
-      "mensalidade": "Mensalidade (academia/clube)",
-      "educacao": "Educação",
-      "ajuda_familia": "Ajuda a filhos/netos",
-      "diversos": "Diversos"
-    };
-
-    let expenses = JSON.parse(localStorage.getItem('expenses')) || {};
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    const today = formatDate();
-
-    document.getElementById('date').value = today;
-
-    function save() {
-      localStorage.setItem('expenses', JSON.stringify(expenses));
-      render();
-    }
-
-    function addExpense() {
-      const dateInput = document.getElementById('date').value;
-      const amount = parseFloat(document.getElementById('amount').value);
-      const category = document.getElementById('category').value;
-      const note = (document.getElementById('note').value || '').trim();
-
-      if (!dateInput) {
-        alert('Selecione uma data.');
-        return;
-      }
-      if (isNaN(amount) || amount <= 0) {
-        alert('Digite um valor válido.');
-        return;
-      }
-
-      if (!expenses[dateInput]) expenses[dateInput] = [];
-      expenses[dateInput].push({ amount, category, note });
-      save();
-      document.getElementById('amount').value = '';
-      document.getElementById('note').value = '';
-    }
-
-    function formatCurrency(value) {
-      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-    }
-
-    function getTodayTotal() {
-      if (!expenses[today]) return 0;
-      return expenses[today].reduce((sum, e) => sum + e.amount, 0);
-    }
-
-    function getWeeklyAverage() {
-      const last7 = getDatesLast7Days();
-      let total = 0;
-      last7.forEach(date => {
-        if (expenses[date]) {
-          total += expenses[date].reduce((s, e) => s + e.amount, 0);
+        
+        function salvarDados() {
+            localStorage.setItem('meusGastosApp', JSON.stringify(dados));
         }
-      });
-      return total / 7;
-    }
-
-    function checkMedal() {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yestStr = formatDate(yesterday);
-
-      const hasToday = !expenses[today] || expenses[today].length === 0;
-      const hasYesterday = !expenses[yestStr] || expenses[yestStr].length === 0;
-
-      if (hasToday && hasYesterday) {
-        document.getElementById('medal').innerHTML = '🏆 Parabéns! 2 dias sem gastos!';
-      } else {
-        document.getElementById('medal').innerHTML = '';
-      }
-    }
-
-    function renderCalendar() {
-      const now = new Date(currentYear, currentMonth);
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
-      const startDay = firstDay.getDay();
-      const daysInMonth = lastDay.getDate();
-
-      let html = '';
-      const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-      weekdays.forEach(d => html += `<div class="cal-day">${d}</div>`);
-
-      for (let i = 0; i < startDay; i++) {
-        html += '<div class="cal-day"></div>';
-      }
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const hasData = expenses[dateStr] && expenses[dateStr].length > 0;
-        const isToday = dateStr === today;
-        let cls = 'cal-day';
-        if (hasData) cls += ' has-data';
-        if (isToday) cls += ' today';
-        html += `<div class="${cls}">${day}</div>`;
-      }
-
-      document.getElementById('calendar').innerHTML = html;
-    }
-
-    function renderSummaryTable() {
-      const tbody = document.getElementById('summaryBody');
-      const datesWithExpenses = Object.keys(expenses)
-        .filter(date => expenses[date].length > 0)
-        .sort((a, b) => new Date(b) - new Date(a));
-
-      if (datesWithExpenses.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#888;">Nenhum gasto registrado</td></tr>`;
-        return;
-      }
-
-      let html = '';
-      datesWithExpenses.forEach(date => {
-        const total = expenses[date].reduce((s, e) => s + e.amount, 0);
-        html += `
-          <tr>
-            <td>${formatBR(date)}</td>
-            <td>${formatCurrency(total)}</td>
-          </tr>
-        `;
-      });
-      tbody.innerHTML = html;
-    }
-
-    function renderCategoryReport() {
-      const report = {};
-      for (const date in expenses) {
-        expenses[date].forEach(item => {
-          if (!report[item.category]) report[item.category] = 0;
-          report[item.category] += item.amount;
-        });
-      }
-
-      const tbody = document.getElementById('categoryReportBody');
-      if (Object.keys(report).length === 0) {
-        tbody.innerHTML = `<tr><td colspan="2" style="text-align:center;color:#888;">Nenhum gasto registrado</td></tr>`;
-        return;
-      }
-
-      const sorted = Object.entries(report).sort((a, b) => b[1] - a[1]);
-
-      let html = '';
-      sorted.forEach(([cat, total]) => {
-        html += `
-          <tr>
-            <td>${categoryNames[cat] || cat}</td>
-            <td>${formatCurrency(total)}</td>
-          </tr>
-        `;
-      });
-      tbody.innerHTML = html;
-    }
-
-    function renderMonthlySummary() {
-      const monthDates = getMonthDates(currentYear, currentMonth);
-      const daysInMonth = monthDates.length;
-      const expensesThisMonth = monthDates.filter(d => expenses[d] && expenses[d].length > 0);
-      const total = expensesThisMonth.reduce((sum, d) => {
-        return sum + expenses[d].reduce((s, e) => s + e.amount, 0);
-      }, 0);
-      const avg = daysInMonth > 0 ? total / daysInMonth : 0;
-
-      document.getElementById('currentMonth').textContent = 
-        new Date(currentYear, currentMonth, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-      document.getElementById('monthlyStats').textContent = 
-        `Total: ${formatCurrency(total)} | Dias: ${expensesThisMonth.length}/${daysInMonth} | Média: ${formatCurrency(avg)}`;
-    }
-
-    function changeMonth(delta) {
-      currentMonth += delta;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      } else if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
-      renderAll();
-    }
-
-    async function generatePDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(20);
-      doc.text("Relatório de Gastos", 20, 20);
-
-      let y = 35;
-
-      doc.setFontSize(14);
-      doc.text("Por Data:", 20, y);
-      y += 10;
-
-      const sortedDates = Object.keys(expenses)
-        .filter(d => expenses[d].length > 0)
-        .sort((a, b) => new Date(a) - new Date(b));
-
-      sortedDates.forEach(date => {
-        const total = expenses[date].reduce((s, e) => s + e.amount, 0);
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(12);
-        doc.text(`${formatBR(date)} – Total: ${formatCurrency(total)}`, 20, y);
-        y += 8;
-        expenses[date].forEach(e => {
-          let line = `- ${categoryNames[e.category] || e.category}: ${formatCurrency(e.amount)}`;
-          if (e.note) line += ` (${e.note})`;
-          if (y > 280) {
-            doc.addPage();
-            y = 20;
-          }
-          doc.text(line, 25, y);
-          y += 6;
-        });
-        y += 6;
-      });
-
-      doc.addPage();
-      y = 20;
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text("Por Categoria:", 20, y);
-      y += 10;
-
-      const report = {};
-      for (const date in expenses) {
-        expenses[date].forEach(item => {
-          if (!report[item.category]) report[item.category] = 0;
-          report[item.category] += item.amount;
-        });
-      }
-
-      const sortedCat = Object.entries(report).sort((a, b) => b[1] - a[1]);
-      sortedCat.forEach(([cat, total]) => {
-        if (y > 280) {
-          doc.addPage();
-          y = 20;
+        
+        // ---------- UTILITÁRIOS ----------
+        function formatarMoeda(valor) {
+            return 'R$ ' + valor.toFixed(2).replace('.', ',');
         }
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(12);
-        doc.text(`${categoryNames[cat] || cat}: ${formatCurrency(total)}`, 20, y);
-        y += 8;
-      });
-
-      doc.save('meu-controle-gastos.pdf');
-    }
-
-    function renderAll() {
-      document.getElementById('balance').textContent = `Balanço de hoje: ${formatCurrency(getTodayTotal())}`;
-      document.getElementById('weeklyAverage').textContent = `Média semanal: ${formatCurrency(getWeeklyAverage())}`;
-      checkMedal();
-      renderCalendar();
-      renderSummaryTable();
-      renderCategoryReport();
-      renderMonthlySummary();
-    }
-
-    function render() {
-      renderAll();
-    }
-  </script>
+        
+        function obterDataHoje() {
+            const d = new Date();
+            const ano = d.getFullYear();
+            const mes = String(d.getMonth() + 1).padStart(2, '0');
+            const dia = String(d.getDate()).padStart(2, '0');
+            return `${ano}-${mes}-${dia}`;
+        }
+        
+        // ---------- INTERFACE PRINCIPAL ----------
+        let dataHistoricoAtual = obterDataHoje();
+        
+        function atualizarTelaHome() {
+            const hoje = obterDataHoje();
+            const gastosHoje = dados.gastos.filter(g => g.data === hoje);
+            const totalHoje = gastosHoje.reduce((acc, g) => acc + g.valor, 0);
+            
+            // Meta
+            const metaEl = document.getElementById('metaValor');
+            const metaMsg = document.getElementById('metaMsg');
+            const medalhaDia = document.getElementById('medalhaDia');
+            
+            if (totalHoje === 0) {
+                metaEl.innerHTML = 'R$ 0,00';
+                metaEl.className = 'meta-valor meta-zero';
+                metaMsg.innerHTML = '🎯 Gastei ZERO hoje! Meta cumprida!';
+                medalhaDia.innerHTML = '<i class="fas fa-medal" style="color: var(--amarelo);"></i>';
+                document.getElementById('medalhaZero').className = 'medalha-icone';
+                document.getElementById('medalhaZero').innerHTML = '<i class="fas fa-trophy"></i>';
+            } else {
+                metaEl.innerHTML = formatarMoeda(totalHoje);
+                metaEl.className = 'meta-valor meta-gasto';
+                metaMsg.innerHTML = `😬 Você gastou ${formatarMoeda(totalHoje)} hoje.`;
+                medalhaDia.innerHTML = '';
+                document.getElementById('medalhaZero').className = 'medalha-icone bloqueada';
+                document.getElementById('medalhaZero').innerHTML = '<i class="fas fa-lock"></i>';
+            }
+            
+            // Contador
+            document.getElementById('contadorHoje').innerText = gastosHoje.length;
+            
+            // Lista
+            const lista = document.getElementById('listaGastosHoje');
+            lista.innerHTML = '';
+            if (gastosHoje.length === 0) {
+                lista.innerHTML = '<div class="gasto-vazio"><i class="fas fa-smile-wink"></i><p>Nenhum gasto hoje! 🎉</p></div>';
+            } else {
+                gastosHoje.sort((a,b) => new Date(b.data) - new Date(a.data)).forEach(g => {
+                    const item = criarItemGasto(g);
+                    item.onclick = () => abrirModalEditar(g.id);
+                    lista.appendChild(item);
+                });
+            }
+            
+            // Resumo do dia
+            const resumoValor = document.getElementById('resumoValor');
+            resumoValor.innerText = formatarMoeda(totalHoje);
+            if (totalHoje === 0) {
+                document.getElementById('resumoTexto').innerHTML = '<i class="fas fa-check-circle" style="color: var(--verde);"></i> Parabéns! Você não gastou nada hoje.';
+            } else {
+                document.getElementById('resumoTexto').innerHTML = `<i class="fas fa-info-circle"></i> Total gasto hoje:`;
+            }
+            
+            // Atualizar data no cabeçalho
+            const hojeDate = new Date();
+            const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            const diaSem = diasSemana[hojeDate.getDay()];
+            const diaMes = hojeDate.toLocaleDateString('pt-BR');
+            document.getElementById('dataAtualDisplay').innerHTML = `${diaSem}, ${diaMes}`;
+            
+            // Medalha de 7 dias (exemplo simples)
+            // (implementação real pode ser mais complexa, mas aqui apenas ilustrativa)
+            const diasRegistrados = [...new Set(dados.gastos.map(g => g.data))].length;
+            if (diasRegistrados >= 7) {
+                document.getElementById('medalha7').className = 'medalha-icone';
+                document.getElementById('medalha7').innerHTML = '<i class="fas fa-calendar-check"></i>';
+            } else {
+                document.getElementById('medalha7').className = 'medalha-icone bloqueada';
+                document.getElementById('medalha7').innerHTML = '<i class="fas fa-lock"></i>';
+            }
+            
+            // Medalha de mês zerado (simplificada)
+            // ...
+        }
+        
+        function criarItemGasto(g) {
+            const div = document.createElement('div');
+            div.className = 'gasto-item';
+            
+            const iconesCategoria = {
+                ifood: '🍔', uber: '🚗', padaria: '🥖', bar: '🍺', comprasonline: '📦',
+                farmacia: '💊', gasolina: '⛽', dizimo: '⛪', supermercado: '🛒', lazer: '🎬', outros: '📦'
+            };
+            const nomeCategoria = {
+                ifood: 'iFood', uber: 'Uber', padaria: 'Padaria', bar: 'Bar', comprasonline: 'Online',
+                farmacia: 'Farmácia', gasolina: 'Gasolina', dizimo: 'Dízimo', supermercado: 'Mercado', lazer: 'Lazer', outros: 'Outros'
+            };
+            
+            div.innerHTML = `
+                <div class="gasto-info">
+                    <div class="gasto-categoria">${iconesCategoria[g.categoria] || '📦'} ${nomeCategoria[g.categoria] || 'Outros'}</div>
+                    <div class="gasto-descricao">${g.descricao || 'Sem descrição'}</div>
+                    <div class="gasto-pagamento">💳 ${g.pagamento || 'outro'}</div>
+                </div>
+                <div class="gasto-valor">R$ ${g.valor.toFixed(2).replace('.',',')}</div>
+            `;
+            return div;
+        }
+        
+        // ---------- HISTÓRICO ----------
+        function atualizarHistorico() {
+            document.getElementById('dataHistoricoLabel').innerText = new Date(dataHistoricoAtual + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'numeric' });
+            
+            const gastosDia = dados.gastos.filter(g => g.data === dataHistoricoAtual);
+            const total = gastosDia.reduce((acc, g) => acc + g.valor, 0);
+            document.getElementById('totalDiaHistorico').innerText = formatarMoeda(total);
+            document.getElementById('contadorHistorico').innerText = gastosDia.length;
+            
+            const lista = document.getElementById('listaGastosHistorico');
+            lista.innerHTML = '';
+            if (gastosDia.length === 0) {
+                lista.innerHTML = '<div class="gasto-vazio"><i class="fas fa-calendar-times"></i><p>Nenhum gasto nesse dia.</p></div>';
+            } else {
+                gastosDia.sort((a,b) => a.data.localeCompare(b.data)).forEach(g => {
+                    const item = criarItemGasto(g);
+                    item.onclick = () => abrirModalEditar(g.id);
+                    lista.appendChild(item);
+                });
+            }
+            
+            // Medalha de dia zerado
+            const medalhaHist = document.getElementById('medalhaHistorico');
+            if (total === 0 && gastosDia.length === 0) {
+                medalhaHist.style.display = 'block';
+            } else {
+                medalhaHist.style.display = 'none';
+            }
+        }
+        
+        function navegarDia(delta) {
+            const d = new Date(dataHistoricoAtual + 'T12:00:00');
+            d.setDate(d.getDate() + delta);
+            const ano = d.getFullYear();
+            const mes = String(d.getMonth() + 1).padStart(2, '0');
+            const dia = String(d.getDate()).padStart(2, '0');
+            dataHistoricoAtual = `${ano}-${mes}-${dia}`;
+            atualizarHistorico();
+        }
+        
+        // ---------- CARTÕES ----------
+        function renderizarCartoes() {
+            const container = document.getElementById('cartoesContainer');
+            container.innerHTML = '';
+            
+            const cards = [
+                { id: 'nubank', nome: 'Nubank', cor: '#8B5CF6', icone: '💜' },
+                { id: 'cef', nome: 'Caixa', cor: '#0060a9', icone: '🏦' },
+                { id: 'porto', nome: 'Porto Seguro', cor: '#0033a0', icone: '🛡️' },
+                { id: 'mercado', nome: 'Mercado Pago', cor: '#00b4ff', icone: '🛒' }
+            ];
+            
+            cards.forEach(c => {
+                const cartao = dados.cartoes[c.id] || { parcela: 0, saldo: 0 };
+                const div = document.createElement('div');
+                div.className = 'cartao-card';
+                div.style.background = `linear-gradient(145deg, ${c.cor}, ${ajustarTom(c.cor, -30)})`;
+                div.innerHTML = `
+                    <div class="cartao-header">
+                        <span class="cartao-nome">${c.icone} ${c.nome}</span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label style="font-size: 0.8rem; opacity: 0.9;">Parcela mensal (R$)</label>
+                        <input type="number" id="cartao_${c.id}_parcela" class="cartao-input" placeholder="0,00" step="0.01" value="${cartao.parcela}">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.8rem; opacity: 0.9;">Saldo devedor total (R$)</label>
+                        <input type="number" id="cartao_${c.id}_saldo" class="cartao-input" placeholder="0,00" step="0.01" value="${cartao.saldo}">
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            atualizarTotaisCartoes();
+        }
+        
+        function ajustarTom(cor, percent) {
+            // simplificação - retorna cor escurecida
+            return cor;
+        }
+        
+        function atualizarTotaisCartoes() {
+            let totalParcela = 0, totalSaldo = 0;
+            ['nubank','cef','porto','mercado'].forEach(id => {
+                const p = parseFloat(document.getElementById(`cartao_${id}_parcela`)?.value) || 0;
+                const s = parseFloat(document.getElementById(`cartao_${id}_saldo`)?.value) || 0;
+                totalParcela += p;
+                totalSaldo += s;
+            });
+            document.getElementById('totalParcelas').innerText = formatarMoeda(totalParcela);
+            document.getElementById('totalSaldo').innerText = formatarMoeda(totalSaldo);
+        }
+        
+        function salvarCartoes() {
+            ['nubank','cef','porto','mercado'].forEach(id => {
+                const parcela = parseFloat(document.getElementById(`cartao_${id}_parcela`)?.value) || 0;
+                const saldo = parseFloat(document.getElementById(`cartao_${id}_saldo`)?.value) || 0;
+                if (!dados.cartoes[id]) dados.cartoes[id] = {};
+                dados.cartoes[id].parcela = parcela;
+                dados.cartoes[id].saldo = saldo;
+            });
+            salvarDados();
+            mostrarNotificacao('Cartões salvos! 💳');
+            atualizarTotaisCartoes();
+        }
+        
+        // ---------- GASTOS (CRIAR, EDITAR, DELETAR) ----------
+        function abrirModalNovo() {
+            document.getElementById('modalTitulo').innerHTML = '<i class="fas fa-plus-circle" style="color: var(--verde);"></i> Adicionar Gasto';
+            document.getElementById('gastoId').value = '';
+            document.getElementById('categoria').value = 'ifood';
+            document.getElementById('dataGasto').value = obterDataHoje();
+            document.getElementById('valor').value = '';
+            document.getElementById('descricao').value = '';
+            document.getElementById('pagamento').value = 'nubank';
+            document.getElementById('obs').value = '';
+            document.getElementById('btnDeletarGasto').style.display = 'none';
+            document.getElementById('modalGasto').style.display = 'flex';
+        }
+        
+        function abrirModalEditar(id) {
+            const gasto = dados.gastos.find(g => g.id == id);
+            if (!gasto) return;
+            
+            document.getElementById('modalTitulo').innerHTML = '<i class="fas fa-edit" style="color: var(--azul);"></i> Editar Gasto';
+            document.getElementById('gastoId').value = gasto.id;
+            document.getElementById('categoria').value = gasto.categoria || 'outros';
+            document.getElementById('dataGasto').value = gasto.data || obterDataHoje();
+            document.getElementById('valor').value = gasto.valor;
+            document.getElementById('descricao').value = gasto.descricao || '';
+            document.getElementById('pagamento').value = gasto.pagamento || 'nubank';
+            document.getElementById('obs').value = gasto.obs || '';
+            document.getElementById('btnDeletarGasto').style.display = 'block';
+            document.getElementById('modalGasto').style.display = 'flex';
+        }
+        
+        function fecharModal() {
+            document.getElementById('modalGasto').style.display = 'none';
+        }
+        
+        function salvarGasto() {
+            const id = document.getElementById('gastoId').value;
+            const categoria = document.getElementById('categoria').value;
+            const data = document.getElementById('dataGasto').value;
+            const valor = parseFloat(document.getElementById('valor').value);
+            const descricao = document.getElementById('descricao').value.trim();
+            const pagamento = document.getElementById('pagamento').value;
+            const obs = document.getElementById('obs').value.trim();
+            
+            if (!valor || valor <= 0) {
+                alert('Informe um valor válido!');
+                return;
+            }
+            
+            if (id) {
+                // Editar
+                const index = dados.gastos.findIndex(g => g.id == id);
+                if (index !== -1) {
+                    dados.gastos[index] = { ...dados.gastos[index], categoria, data, valor, descricao, pagamento, obs };
+                }
+                mostrarNotificacao('Gasto atualizado! ✏️');
+            } else {
+                // Novo
+                const novoGasto = {
+                    id: Date.now(),
+                    categoria,
+                    data,
+                    valor,
+                    descricao: descricao || 'Gasto',
+                    pagamento,
+                    obs
+                };
+                dados.gastos.push(novoGasto);
+                mostrarNotificacao('Gasto adicionado! ✅');
+            }
+            
+            salvarDados();
+            fecharModal();
+            
+            // Atualizar telas
+            atualizarTelaHome();
+            if (dataHistoricoAtual === obterDataHoje()) atualizarHistorico();
+            else if (data === dataHistoricoAtual) atualizarHistorico();
+        }
+        
+        function deletarGasto() {
+            const id = document.getElementById('gastoId').value;
+            if (!id) return;
+            if (confirm('Tem certeza que deseja excluir este gasto?')) {
+                dados.gastos = dados.gastos.filter(g => g.id != id);
+                salvarDados();
+                fecharModal();
+                atualizarTelaHome();
+                atualizarHistorico();
+                mostrarNotificacao('Gasto excluído! 🗑️');
+            }
+        }
+        
+        // ---------- NAVEGAÇÃO ----------
+        function mudarPagina(pagina) {
+            // Esconder todas
+            document.querySelectorAll('.pagina').forEach(p => p.classList.remove('ativa'));
+            document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('ativo'));
+            
+            if (pagina === 'home') {
+                document.getElementById('paginaHome').classList.add('ativa');
+                document.querySelectorAll('.menu-item')[0].classList.add('ativo');
+                document.getElementById('btnAddGasto').style.display = 'flex';
+                atualizarTelaHome();
+            } else if (pagina === 'historico') {
+                document.getElementById('paginaHistorico').classList.add('ativa');
+                document.querySelectorAll('.menu-item')[1].classList.add('ativo');
+                document.getElementById('btnAddGasto').style.display = 'none';
+                dataHistoricoAtual = obterDataHoje();
+                atualizarHistorico();
+            } else if (pagina === 'cartoes') {
+                document.getElementById('paginaCartoes').classList.add('ativa');
+                document.querySelectorAll('.menu-item')[2].classList.add('ativo');
+                document.getElementById('btnAddGasto').style.display = 'none';
+                renderizarCartoes();
+            }
+        }
+        
+        // ---------- NOTIFICAÇÃO ----------
+        function mostrarNotificacao(msg) {
+            const el = document.getElementById('notificacao');
+            el.innerText = msg;
+            el.style.display = 'block';
+            setTimeout(() => { el.style.display = 'none'; }, 2500);
+        }
+        
+        // ---------- INICIALIZAÇÃO ----------
+        window.onload = function() {
+            carregarDados();
+            
+            // Exemplo de gastos iniciais (zerados, conforme pedido)
+            if (dados.gastos.length === 0) {
+                // Não adiciona nada - começa zerado
+            }
+            
+            atualizarTelaHome();
+            
+            // Fechar modal ao clicar fora
+            window.onclick = function(event) {
+                const modal = document.getElementById('modalGasto');
+                if (event.target === modal) {
+                    fecharModal();
+                }
+            };
+        };
+    </script>
 </body>
 </html>
