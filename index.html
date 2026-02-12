@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-title" content="Controle" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <!-- Ícone para iOS e Android -->
+  <!-- Ícone -->
   <link rel="apple-touch-icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
   <link rel="icon" type="image/png" sizes="192x192" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%234CAF50'/><text x='96' y='120' font-size='100' text-anchor='middle' fill='white'>💰</text></svg>">
 
@@ -25,7 +25,6 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      /* Fonte legível em mobile */
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
     body {
@@ -34,7 +33,6 @@
       padding: 16px;
       max-width: 600px;
       margin: 0 auto;
-      /* Evita zoom acidental ao tocar em campos */
       touch-action: manipulation;
     }
 
@@ -68,7 +66,7 @@
       border-radius: 12px;
       font-size: 1.1rem;
       cursor: pointer;
-      min-height: 48px; /* Tamanho mínimo para toque */
+      min-height: 48px;
     }
     #welcomeModal button:hover {
       background: var(--dark);
@@ -99,7 +97,6 @@
       border: 2px solid var(--primary);
       border-radius: 12px;
       margin-bottom: 16px;
-      /* Evita zoom no iOS ao focar */
       font-family: inherit;
     }
     #lockScreen button {
@@ -118,6 +115,19 @@
     }
     #mainApp { display: none; }
 
+    /* Mensagem motivacional */
+    .motivational-message {
+      background: #f1f8e9;
+      padding: 14px;
+      border-radius: 12px;
+      margin: 16px 0;
+      text-align: center;
+      font-style: italic;
+      color: var(--dark);
+      font-size: 1.05rem;
+      line-height: 1.4;
+    }
+
     /* Estilos do app */
     header {
       text-align: center;
@@ -127,9 +137,7 @@
       background: var(--primary);
       border-radius: 16px;
     }
-    h1 {
-      font-size: 1.5rem;
-    }
+    h1 { font-size: 1.5rem; }
     .balance,
     .weekly-average {
       background: white;
@@ -145,9 +153,7 @@
       background: #e3f2fd;
       color: #1976d2;
     }
-    .form-group {
-      margin: 14px 0;
-    }
+    .form-group { margin: 14px 0; }
     label {
       display: block;
       margin-bottom: 8px;
@@ -160,7 +166,7 @@
       border: 1px solid #ccc;
       border-radius: 12px;
       font-size: 1rem;
-      min-height: 48px; /* Altura mínima para toque */
+      min-height: 48px;
     }
     textarea {
       min-height: 80px;
@@ -212,7 +218,6 @@
       border: 2px solid var(--dark);
     }
 
-    /* Tabelas */
     .summary-table, .report-table {
       width: 100%;
       border-collapse: collapse;
@@ -246,7 +251,6 @@
       background-color: #f9f9f9;
     }
 
-    /* Navegação mensal */
     .monthly-summary {
       background: white;
       padding: 16px;
@@ -290,19 +294,10 @@
       text-decoration: underline;
     }
 
-    /* Garantir que não transborde em telas muito estreitas */
     @media (max-width: 360px) {
-      body {
-        padding: 12px;
-      }
-      .cal-day {
-        font-size: 0.8rem;
-        padding: 6px 2px;
-      }
-      .summary-table th,
-      .summary-table td,
-      .report-table th,
-      .report-table td {
+      body { padding: 12px; }
+      .cal-day { font-size: 0.8rem; padding: 6px 2px; }
+      .summary-table th, .summary-table td, .report-table th, .report-table td {
         padding: 12px 6px;
         font-size: 0.95rem;
       }
@@ -343,6 +338,10 @@
     <header>
       <h1>💰 Meu Controle Diário</h1>
     </header>
+
+    <div class="motivational-message" id="motivationalMessage">
+      <!-- Mensagem do dia será inserida aqui -->
+    </div>
 
     <div class="balance" id="balance">Balanço de hoje: R$ 0,00</div>
 
@@ -449,6 +448,22 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
+    // --- Mensagens motivacionais (domingo = 0, sábado = 6)
+    const motivationalMessages = [
+      "Hoje é dia de recarregar a alma. Cuide de você como quem cuida de um jardim: com paciência, amor e tempo.",
+      "Nova semana, nova chance de escolher com consciência. Cada real gasto é um voto no tipo de vida que você quer viver.",
+      "Você não precisa de mais dinheiro — precisa de mais clareza. E clareza nasce da atenção plena aos pequenos gestos diários.",
+      "No meio da semana, lembre-se: autonomia financeira é liberdade emocional. Cada escolha consciente fortalece sua longevidade plena.",
+      "Sua maturidade é seu maior ativo. Use-a para transformar impulsos em intenções — e gastos em significado.",
+      "Celebre o que construiu até aqui. E siga com sabedoria: gastar com propósito é viver com legado.",
+      "Relaxe, mas não se descuide. A longevidade plena se alimenta de equilíbrio — entre prazer, cuidado e consciência."
+    ];
+
+    function showMotivationalMessage() {
+      const todayIndex = new Date().getDay(); // 0 = domingo
+      document.getElementById('motivationalMessage').textContent = motivationalMessages[todayIndex];
+    }
+
     // --- Verifica primeira vez ---
     if (!localStorage.getItem('appVisited')) {
       document.getElementById('welcomeModal').style.display = 'block';
@@ -503,12 +518,14 @@
         setTimeout(() => {
           document.getElementById('lockScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
+          showMotivationalMessage();
           render();
         }, 1000);
       } else {
         if (verifyPin(pin)) {
           document.getElementById('lockScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
+          showMotivationalMessage();
           render();
         } else {
           msg.textContent = "PIN incorreto. Tente novamente.";
