@@ -368,7 +368,7 @@
 
       <div class="form-group">
         <label for="amount">Valor (R$)</label>
-        <input type="number" id="amount" step="0.01" placeholder="0,00" min="0">
+        <input type="text" id="amount" placeholder="0,00" inputmode="decimal">
       </div>
 
       <div class="form-group">
@@ -435,13 +435,43 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
+    // --- Máscara de moeda ---
+    document.getElementById('amount').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é número
+      if (value === '') {
+        e.target.value = '';
+        return;
+      }
+      // Garante pelo menos dois dígitos
+      while (value.length < 3) value = '0' + value;
+      const integer = value.slice(0, -2);
+      const decimal = value.slice(-2);
+      e.target.value = `R$ ${parseInt(integer).toLocaleString('pt-BR')},${decimal}`;
+    });
+
     // --- Função para mostrar/ocultar formulário ---
     function toggleForm() {
       const form = document.getElementById('expenseForm');
       if (form.style.display === 'none' || form.style.display === '') {
         form.style.display = 'block';
+        document.getElementById('amount').value = '';
       } else {
         form.style.display = 'none';
+      }
+    }
+
+    // --- Extrai valor numérico do campo mascarado ---
+    function parseCurrencyInput(inputValue) {
+      if (!inputValue) return 0;
+      // Remove "R$", espaços, pontos e vírgula final
+      let clean = inputValue.replace(/[^\d,]/g, '');
+      if (clean.includes(',')) {
+        let parts = clean.split(',');
+        let integer = parts[0] || '0';
+        let decimal = (parts[1] || '00').padEnd(2, '0').substring(0, 2);
+        return parseFloat(`${integer}.${decimal}`);
+      } else {
+        return parseFloat(clean) / 100;
       }
     }
 
@@ -598,7 +628,8 @@
 
     function addExpense() {
       const dateInput = document.getElementById('date').value;
-      const amount = parseFloat(document.getElementById('amount').value);
+      const amountStr = document.getElementById('amount').value;
+      const amount = parseCurrencyInput(amountStr);
       const category = document.getElementById('category').value;
       const note = (document.getElementById('note').value || '').trim();
 
